@@ -79,7 +79,7 @@ done
 # Dictionaries: Prompt for removal
 echo "In our opinion; these dictionaries are unecessary"
 
-for DICT in /Library/Dictionaries/*.dictonary
+for DICT in /Library/Dictionaries/*.dictionary
   do
     while :
     do
