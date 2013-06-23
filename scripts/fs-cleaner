@@ -1,5 +1,9 @@
 #! /bin/sh
 
+#
+# - Do NOT run this script at this point. It is under development. If you run this script right now, you will render your system unusable....
+#
+
 
 # Check for root
 if [[ $EUID -ne  0 ]]; then
