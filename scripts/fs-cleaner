@@ -1,0 +1,83 @@
+#! /bin/sh
+
+
+# Check for root
+if [[ $EUID -ne  0 ]]; then
+  echo "This script must be run as root!"
+  exit 1
+fi
+
+# Disable hibernation
+echo "Disabling hibernation"
+pmset -a hibernatemode 0
+rm -f /pivate/var/vm/sleepimage
+
+# Remove speech files
+echo "Removing speech files"
+rm -f /System/Library/Voices/*
+
+# Remove log files & caches
+echo "Removing logs, tmp files & caches"
+rm -rf /private/var/{log,folders}/* # General logs & quick look caches
+rm -rf /private/var/tmp/TM* # tmp files
+rm -rf /Library/Caches/* # General caches
+
+# Remove update files
+echo "Removing update files"
+rm -rf /Library/Updates/*
+
+# Render spotlight unusable
+echo "Disabling Spotlight"
+mdutil -a -v -i off 2&>1 > /dev/null
+chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* 2&>1 > /dev/null
+launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist 2&>1 > /dev/null
+mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} 2&>1 > /dev/null
+chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled 2&>1 > /dev/null
+mv /System/Library/CoreServices/Search.bundle{,.disabled} 2&>1 > /dev/null
+killall SystemUIServer 2&>1 > /dev/null
+
+# Emacs: Ask fo confirmation of removal
+while :
+do
+  read -r -p "Would you like to remove the Emacs editor [y/n]? " ANSWER
+    case $ANSWER in
+        [yY][eE][sS]|[yY])
+          echo 'Removing Emacs'
+          rm -rf /usr/{bin,libexec,share/info}/emacs
+          rm -rf /opt/local/share/emacs
+          break
+          ;;
+        [nN][oO]|[nN])
+           echo 'Leaving Emacs intact'
+           break
+           ;;
+        *)
+          echo 'Please answer yes or no'
+    esac
+done
+
+# Swapping: Ask for confirmation
+while :
+do
+  read -r -p "Would you like to disable swapping [y/n]? " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+        echo 'Disabling swap and removing swap file'
+        launchctl unlaod -w /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist 2&>1 > /dev/null
+        rm -f /private/var/vm/swapfile*
+        break
+        ;;
+      [nN][oO]|[nN])
+        echo 'Leaving swap intact'
+        break
+        ;;
+      *)
+        echo "Please answer yes or no"
+    esac
+done
+
+# Dictionaries: Prompt for removal
+echo "In out opinion; these dictionaries are unecessary"
+while :
+do
+    read -r -p ""
