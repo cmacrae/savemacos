@@ -77,7 +77,27 @@ do
 done
 
 # Dictionaries: Prompt for removal
-echo "In out opinion; these dictionaries are unecessary"
-while :
-do
-    read -r -p ""
+echo "In our opinion; these dictionaries are unecessary"
+
+for DICT in /Library/Dictionaries/
+  do
+    while :
+    do
+      read -r -p "Would you like to remove $DICT [y/n]?" ANSWER
+        case $ANSWER in
+          [yY][eE][sS]|[yY])
+            echo "Removing $DICT"
+            break
+            ;;
+          [nN][oO]|[nN])
+            echo "Leaving $DICT intact"
+            break
+            ;;
+           *)
+            echo "Please answer yes or no"
+        esac
+    done
+  done
+
+echo "test complete"
+
