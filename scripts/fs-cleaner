@@ -30,78 +30,83 @@ rm -rf /Library/Caches/* # General caches
 echo "Removing update files"
 rm -rf /Library/Updates/*
 
+# Commented out, as this is currently causing problems
+
 # Render spotlight unusable
-echo "Disabling Spotlight"
-mdutil -a -v -i off 2&>1 > /dev/null
-chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* 2&>1 > /dev/null
-launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist 2&>1 > /dev/null
-mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} 2&>1 > /dev/null
-chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled 2&>1 > /dev/null
-mv /System/Library/CoreServices/Search.bundle{,.disabled} 2&>1 > /dev/null
-killall SystemUIServer 2&>1 > /dev/null
+#echo "Disabling Spotlight"
+#mdutil -a -v -i off > /dev/null 2>&1
+#chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* > /dev/null 2>&1
+#launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist > /dev/null 2>&1
+#mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} > /dev/null 2>&1
+#chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled > /dev/null 2>&1
+#mv /System/Library/CoreServices/Search.bundle{,.disabled} > /dev/null 2>&1
+#killall SystemUIServer > /dev/null 2>&1
 
-# Emacs: Ask fo confirmation of removal
-while :
-do
-  read -r -p "Would you like to remove the Emacs editor [y/n]? " ANSWER
-    case $ANSWER in
-        [yY][eE][sS]|[yY])
-          echo 'Removing Emacs'
-          rm -rf /usr/{bin,libexec,share/info}/emacs
-          rm -rf /opt/local/share/emacs
-          break
-          ;;
-        [nN][oO]|[nN])
-           echo 'Leaving Emacs intact'
-           break
-           ;;
-        *)
-          echo 'Please answer yes or no'
-    esac
-done
 
-# Swapping: Ask for confirmation
-while :
-do
-  read -r -p "Would you like to disable swapping [y/n]? " ANSWER
+# Confirm function to prompt user for decision
+confirm() {
     case $ANSWER in
       [yY][eE][sS]|[yY])
-        echo 'Disabling swap and removing swap file'
-        launchctl unlaod -w /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist 2&>1 > /dev/null
-        rm -f /private/var/vm/swapfile*
-        break
-        ;;
+        if [ "$2" = "-d" ]; then
+          launchctl unload -w $DAEMONPATH > /dev/null 2>&1
+          echo "Removing $1"
+        fi
+          echo "Removing $1"
+          rm -rf $FILEPATH
+          break
+          ;;
       [nN][oO]|[nN])
-        echo 'Leaving swap intact'
+        echo "Leaving $1 intact"
         break
         ;;
       *)
-        echo "Please answer yes or no"
+        echo "Please answer yes or no... "
     esac
+}
+
+
+# Emacs
+FILEPATH=/usr/{bin,libexec,share/info}/emacs,/opt/local/share/emacs
+
+while :
+do
+  read -r -p "Would you like to remove the Emacs editor [y/n]? " ANSWER
+  confirm Emacs
 done
 
-# Dictionaries: Prompt for removal
-echo "In our opinion; these dictionaries are unecessary"
+# Non-English dictionaries
+FILEPATH=/Library/Dictionaries/*.dictionary
 
-for DICT in /Library/Dictionaries/*.dictionary
-  do
-    while :
-    do
-      read -r -p "Would you like to remove $DICT [y/n]?" ANSWER
-        case $ANSWER in
-          [yY][eE][sS]|[yY])
-            echo "Removing $DICT"
-            break
-            ;;
-          [nN][oO]|[nN])
-            echo "Leaving $DICT intact"
-            break
-            ;;
-           *)
-            echo "Please answer yes or no"
-        esac
-    done
-  done
+while :
+do
+  read -r -p "Would you like to remove unecessary dictionaries? [y/n] " ANSWER
+  confirm dictionaries
+done
 
-echo "test complete"
+# Swap
+DAEMONPATH=/System/Library/LaunchDaemons/com.apple.dynamic_pager.plist
+FILEPATH=/private/var/vm/swapfile*
 
+while :
+do
+  read -r -p "Would you like to disable swapping [y/n]? " ANSWER
+  confirm swap -d
+done
+
+# Leaving old code here whilst I test the daemon flag for the confirm function
+
+#    case $ANSWER in
+#      [yY][eE][sS]|[yY])
+#        echo 'Disabling swap and removing swap file'
+#        launchctl unlaod -w /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist > /dev/null 2>&1
+#        rm -f /private/var/vm/swapfile*
+#        break
+#        ;;
+#      [nN][oO]|[nN])
+#       echo 'Leaving swap intact'
+#        break
+#        ;;
+#      *)
+#        echo "Please answer yes or no"
+#    esac
+#done
