@@ -92,21 +92,3 @@ do
   read -r -p "Would you like to disable swapping [y/n]? " ANSWER
   confirm swap -d
 done
-
-# Leaving old code here whilst I test the daemon flag for the confirm function
-
-#    case $ANSWER in
-#      [yY][eE][sS]|[yY])
-#        echo 'Disabling swap and removing swap file'
-#        launchctl unlaod -w /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist > /dev/null 2>&1
-#        rm -f /private/var/vm/swapfile*
-#        break
-#        ;;
-#      [nN][oO]|[nN])
-#       echo 'Leaving swap intact'
-#        break
-#        ;;
-#      *)
-#        echo "Please answer yes or no"
-#    esac
-#done
