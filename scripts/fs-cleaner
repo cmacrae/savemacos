@@ -48,8 +48,8 @@ confirm() {
     case $ANSWER in
       [yY][eE][sS]|[yY])
         if [ "$2" = "-d" ]; then
-          launchctl unload -w $DAEMONPATH > /dev/null 2>&1
           echo "Removing $1"
+          launchctl unload -w $DAEMONPATH > /dev/null 2>&1
           rm -rf $FILEPATH
         fi
           echo "Removing $1"
