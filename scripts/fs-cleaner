@@ -33,14 +33,15 @@ rm -rf /Library/Updates/*
 # Commented out, as this is currently causing problems
 
 # Render spotlight unusable
-#echo "Disabling Spotlight"
-#mdutil -a -v -i off > /dev/null 2>&1
-#chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* > /dev/null 2>&1
-#launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist > /dev/null 2>&1
-#mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} > /dev/null 2>&1
-#chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled > /dev/null 2>&1
-#mv /System/Library/CoreServices/Search.bundle{,.disabled} > /dev/null 2>&1
-#killall SystemUIServer > /dev/null 2>&1
+echo "Disabling Spotlight"
+mdutil -a -v -i off > /dev/null 2>&1
+chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* > /dev/null 2>&1
+launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist > /dev/null 2>&1
+mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} > /dev/null 2>&1
+chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled > /dev/null 2>&1
+rm -rf /System/Library/CoreServices/Search.bundle.disabled > /dev/null 2>&1
+mv /System/Library/CoreServices/Search.bundle{,.disabled} > /dev/null 2>&1
+killall SystemUIServer > /dev/null 2>&1
 
 
 # Confirm function to prompt user for decision
