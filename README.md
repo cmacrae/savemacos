@@ -3,7 +3,7 @@ Save OS X
 
 A repo for work on making Apple's operating system more "usable" for us UNIX geeks.
 
-<div style="float: center"><img src="img/hexley.png" /></div>
+<div style="float: middle"><img src="img/hexley.png" /></div>
 
 About
 -----
