@@ -20,6 +20,18 @@ rm -f /pivate/var/vm/sleepimage
 echo "Removing speech files"
 rm -f /System/Library/Voices/*
 
+# Remove wallpapers & screensavers
+echo "Removing wallpapers & screen savers"
+rm -rf /Library/{Desktop\ Pictures,Screen\ Savers}/*
+
+# Remove widget files
+echo "Removing widgets"
+rf -rf /Library/Widgets/*
+
+# Remove internet plug-ins
+echo "Removing internet plug-ins"
+rf -rf /Library/Internet\ Plug-ins/*
+
 # Remove log files & caches
 echo "Removing logs, tmp files & caches"
 rm -rf /private/var/{log,folders}/* # General logs & quick look caches
