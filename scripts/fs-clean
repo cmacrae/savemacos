@@ -26,17 +26,26 @@ rm -rf /Library/{Desktop\ Pictures,Screen\ Savers}/*
 
 # Remove widget files
 echo "Removing widgets"
-rf -rf /Library/Widgets/*
+rm -rf /Library/Widgets/*
 
 # Remove internet plug-ins
 echo "Removing internet plug-ins"
-rf -rf /Library/Internet\ Plug-ins/*
+rm -rf /Library/Internet\ Plug-ins/*
+
+# Remove fonts
+echo "Removing fonts"
+rm -rf {/System,}/Library/Fonts/*
+
+# Remove Automater
+echo "Removing Automater"
+rm -rf /System/Library/Automater
 
 # Remove log files & caches
 echo "Removing logs, tmp files & caches"
 rm -rf /private/var/{log,folders}/* # General logs & quick look caches
 rm -rf /private/var/tmp/TM* # tmp files
 rm -rf /Library/Caches/* # General caches
+rm -rf /Users/*/[lL]ibrary/Caches/* # User library cache
 
 # Remove update files
 echo "Removing update files"
