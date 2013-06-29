@@ -1,6 +1,0 @@
-# For app deletion
-
-find /Applications/* -maxdepth 1 \
--not -name app1 \
--not -name app3 \
--not -name app4 -delete
