@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 #  Simply put; this script "cleans up" the system services we deem unecessary.
 #
