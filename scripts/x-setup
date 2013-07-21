@@ -1,16 +1,44 @@
 #! /bin/bash
 
+# This is a script to create scripts and plists to launch X upon user login to replace the Aqua desktop, or run along side it.
+#
+# Written by phyrne 21/07/13
+
 # Check for root
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root!"
   exit 1
 fi
 
-# Check to ensure X has been installed throgh MacPorts
-if [[ $(which X | wc -l) -eq 0 ]];
+# Check to ensure MacPorts is installed
+if [[ $(which port | wc -l) -eq 0 ]];
   then
-    echo "X doesn't appear to be installed. Please install it via MacPorts..."
-    exit 1
+    echo -e "MacPorts doesn't appear to be installed...\nMacPorts is an essential piece of software for this project, please install it!"
+  exit 1
+fi
+
+# Check to ensure X has been installed throgh MacPorts (using `which X` is untrustworthy)
+echo "Querying MacPorts database to see if Xorg is installed. This could take some time..."
+if [[ $(port list installed | awk '/xorg$/{print $1}') -eq "xorg" ]]; 
+  then
+    while :
+    do
+      echo -e "Xorg doesn't appear to be installed...\n"
+      read -r -p "Would you like to install it? [y/n] " ANSWER
+        case $ANSWER in
+          [yY][eE][sS]|[yY])
+            port install xorg
+            break
+            ;;
+          [nN][oO]|[nN])
+            echo "Well, if you don't want to install X, there's no point in running this script ;)"  
+            exit 1
+            break
+            ;;
+          *)
+            echo "Please answer yes or no...."
+        esac
+    done
 fi
 
 # Create a small script to set the environment variables for zsh properly before calling the startx wrapper
