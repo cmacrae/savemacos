@@ -37,6 +37,8 @@ read -r -p "\033[38;36mAre you sure you want to run this script?\033[39m \033[38
         echo
         echo "Exiting..."
         exit 1
+        break
+        ;;
       *)
         echo "Please answer yes or no..."
   esac
