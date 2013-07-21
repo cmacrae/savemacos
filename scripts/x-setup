@@ -44,6 +44,5 @@ EOF
 
 # Echo instrcutions to have X start on desired user login
 echo ''
-echo -e 'Necessary X files have been created, please run the following command as the user you wish to use X with:\n'
-echo 'launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist'
+echo -e 'Necessary X files have been created. \033[38;33mPlease run the following command as the user you wish to use X with:\033[39m\n\033[38;36mlaunchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist\033[39m'
 
