@@ -3,18 +3,21 @@
 #  Simply put; this script "cleans up" the system services we deem unecessary.
 #
 #  Please, for your own sake, don't run this script if you don't have an X session set to launch upon login.
-#  Simply don't run this script if you don't know what any of it does.
+#  Don't run this script if you don't know what any of it does.
 #  If you have been stupid enough to run this without an X environment to interact with your system, you can thank the guys at Apple for the '>console' login....
 #
-#  Should you wish to contact either myself or Beastie, we're usually on the Unix Hub irc (#unixhub @ irc.unixhub.net)
+#  Should you wish to contact either myself or yrmt, we're usually on the Unix Hub irc (#unixhub @ irc.unixhub.net)
 #  Alternitavely, feel free to e-mail me at calum0macrae@gmail.com
 #
 #  Written by phyrne 05/06/13
 
+
+# Variables
 UNLOAD='launchctl unload -w'
 APATH='/System/Library/LaunchAgents/com.apple'
 DPATH='/System/Library/LaunchDaemons/com.apple'
 
+# List of services that will be disabled by this script
 AGENTS="$APATH.UserEventAgent-Aqua
 $APATH.ZoomWindow
 $APATH.weibod
@@ -153,11 +156,12 @@ $APATH.cvmsCompAgent_i386_1
 $APATH.cvmsCompAgent_i386
 $APATH.cfprefsd.xpc.agent"
 
-for a in $AGENTS
+# for loop that disables the above list of services
+for agent in $AGENTS
   do
-    echo "Unloading $(echo $a | cut -d '/' -f5)"
-    $UNLOAD $a.plist 2> /dev/null
+    echo -e "Unloading \033[38;34m$(echo $agent | cut -d '/' -f5)\033[39m"
+    $UNLOAD $agent.plist 2> /dev/null
 done
 
 echo
-echo "Complete!"
+echo -e "\033[38;32mComplete!\033[39m"
