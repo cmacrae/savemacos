@@ -18,15 +18,14 @@ APATH='/System/Library/LaunchAgents/com.apple'
 DPATH='/System/Library/LaunchDaemons/com.apple'
 
 # User friendly prompt to ensure they have a working X environment set up prior to unloading services
-echo "This script will unload multiple Apple services that we, the creators of Save OS X, deem unecessary."
-echo -e "Some of the services included will render Apple's Aqua desktop inoperable from login. That's not to say that one cannot revoke these changes or run their usual Aqua Applications, however,\033[38;31m we highly recommend you have a working X environment set to launch upon login\033[39m."
+echo "This script will unload multiple Apple services that we, the creators of Save OS X, deem unecessary.\nSome of the services included will render Apple's Aqua desktop inoperable from login.\nThat's not to say that one cannot revoke these changes or run their usual Aqua Applications,\nhowever,\033[38;31m we highly recommend you have a working X environment set to launch upon login\033[39m."
 echo
 echo "Please ensure you have fully read the documentation provided on the Save OS X website."
 echo
 
 while :
 do
-read -r -p "\033[38;36mAre you sure you want to run this script?\033[39m \033[38;33m[y/n]\033[39m" ANSWER
+read -r -p "Are you sure you want to run this script? [y/n]" ANSWER
   case $ANSWER in
       [yY][eE][sS]|[yY])
         echo
