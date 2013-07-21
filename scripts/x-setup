@@ -18,7 +18,7 @@ if [[ $(which port | wc -l) -eq 0 ]];
 fi
 
 # Check to ensure X has been installed throgh MacPorts (using `which X` is untrustworthy)
-echo "Querying MacPorts database to see if Xorg is installed. This could take some time..."
+echo "Querying MacPorts database to see if Xorg is installed. This could take some time..." 2>&1 > /dev/null
 if [[ $(port list installed | awk '/xorg$/{print $1}') -eq "xorg" ]]; 
   then
     while :
