@@ -39,6 +39,8 @@ if [[ $(port list installed | awk '/xorg$/{print $1}') != "xorg" ]];
             echo "Please answer yes or no...."
         esac
     done
+  else
+    echo "Looks like Xorg is already installed. Proceeding to create launcher scripts"
 fi
 
 # Create a small script to set the environment variables for zsh properly before calling the startx wrapper
