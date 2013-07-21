@@ -1,0 +1,49 @@
+#! /bin/bash
+
+# Check for root
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root!"
+  exit 1
+fi
+
+# Check to ensure X has been installed throgh MacPorts
+if [[ $(which X | wc -l) -eq 0 ]];
+  then
+    echo "X doesn't appear to be installed. Please install it via MacPorts..."
+    exit 1
+fi
+
+# Create a small script to set the environment variables for zsh properly before calling the startx wrapper
+cat <<'EOF' > /opt/local/bin/startx.zsh
+#!/bin/zsh
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+/opt/local/bin/startx
+EOF
+
+# Make the above script executable
+chmod a+x /opt/local/bin/startx.zsh
+
+# Create a service file to be enabled to run at login to start X with the above script
+cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.startx.userlogin</string>
+  <key>ProgramArguments</key>
+  <array>
+      <string>/opt/local/bin/startx.zsh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist
+EOF
+
+# Echo instrcutions to have X start on desired user login
+echo ''
+echo -e 'Necessary X files have been created, please run the following command as the user you wish to use X with:\n'
+echo 'launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist'
+
