@@ -39,7 +39,7 @@ cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
   <key>RunAtLoad</key>
   <true/>
 </dict>
-</plist
+</plist>
 EOF
 
 # Echo instrcutions to have X start on desired user login
