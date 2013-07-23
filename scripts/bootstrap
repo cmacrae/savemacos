@@ -1,0 +1,42 @@
+#! /bin/bash
+
+# Fancy title function
+title() {
+  COLUMNS=$(tput cols)
+  tput clear
+  Y=$((($COLUMNS-${#MESSAGE})/2))
+  X=1
+  tput cup $X $Y
+  echo -e "\e[4m${MESSAGE}\e[0m"
+}
+
+# Colours
+BLUE='\033[38;34m'
+GREEN='\033[38;32m'
+CYAN='\033[38;36m'
+RED='\033[38;31m'
+PURPLE='\033[38;35m'
+YELLOW='\033[38;33m'
+
+# Welcome screen
+MESSAGE=""$BLUE"Welcome to Save OS X!"
+
+title
+echo ''
+echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
+echo ''
+read -p "Press [Enter] to continue"
+clear
+
+# Grab essential tools
+MESSAGE=""$RED"Grabbing Essential Tools"
+
+title
+echo ''
+echo -e "This project uses \e[1mGit\e[21m, \e[1mGCC\e[21m & \e[1mMacPorts\e[21m\n"
+echo ''
+echo -e "Will now download and install essential tools"
+echo ''
+echo -e "\e[2mGrabbing Git...\e[22m"
+wget http://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg 2>&1 > /dev/null && echo -e "Now mounting Git's disk image. Please enter your "$YELLOW"sudo\e[0m password"
+sudo hdiutil mount ~/[Dd]ownloads/git-1.8.3.2-intel-universal-snow-leopard.dmg
