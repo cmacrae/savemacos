@@ -76,7 +76,7 @@ echo -e ""$GREEN"MacPorts has now been installed!"$ESC""
 echo ''
 echo -e "Creating XCode dummy file for MacPorts, "$YELLOW"sudo privileges required."$ESC""
 sudo mv /usr/bin/xcodebuild{,.orig}
-sudo cat <'EOF' >> /usr/bin/xcodebuild
+sudo cat <<'EOF' > /usr/bin/xcodebuild
 #!/bin/bash
 if [[ $1 == '-version' ]]; then
   echo "Xcode 4.4"
