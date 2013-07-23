@@ -7,19 +7,27 @@ title() {
   Y=$((($COLUMNS-${#MESSAGE})/2))
   X=1
   tput cup $X $Y
-  echo -e "\e[4m${MESSAGE}\e[0m"
+  echo -e "${MESSAGE}"
 }
 
-# Colours
+# ANSI properties/colours
+ESC='\033[0m'
+BOLD='\033[1m'
 BLUE='\033[38;34m'
+BLUE_UL='\033[38;4;34m'
 GREEN='\033[38;32m'
+GREEN_UL='\033[38;4;32m'
 CYAN='\033[38;36m'
+CYAN_IL='\033[38;4;36m'
 RED='\033[38;31m'
+RED_UL='\033[38;4;31m'
 PURPLE='\033[38;35m'
+PURPLE_UL='\033[38;4;35m'
 YELLOW='\033[38;33m'
+YELLOW_UL='\033[38;4;33m'
 
 # Welcome screen
-MESSAGE=""$BLUE"Welcome to Save OS X!"
+MESSAGE=""$BLUE_UL"Welcome to Save OS X!\033[0;39m"
 
 title
 echo ''
@@ -29,14 +37,16 @@ read -p "Press [Enter] to continue"
 clear
 
 # Grab essential tools
-MESSAGE=""$RED"Grabbing Essential Tools"
+MESSAGE=""$RED"Grabbing Essential Tools$ESC"
 
 title
 echo ''
-echo -e "This project uses \e[1mGit\e[21m, \e[1mGCC\e[21m & \e[1mMacPorts\e[21m\n"
+echo -e "This project uses $BOLDGit$ESC, $BOLDGCC$ESC & $BOLDMacPorts$ESC\n"
 echo ''
 echo -e "Will now download and install essential tools"
 echo ''
-echo -e "\e[2mGrabbing Git...\e[22m"
-wget http://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg 2>&1 > /dev/null && echo -e "Now mounting Git's disk image. Please enter your "$YELLOW"sudo\e[0m password"
-sudo hdiutil mount ~/[Dd]ownloads/git-1.8.3.2-intel-universal-snow-leopard.dmg
+echo -e "Grabbing Git...$ESC"
+wget http://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg -o ~/git.dmg 2>&1 > /dev/null
+echo -e "Now mounting Git's disk image. "$YELLOW"Please enter your sudo password"$ESC""
+sudo hdiutil mount ~/git.dmg
+sudo installer -pkg /Volumes/Git\ 1.8.3.1\ Snow\ Leopard\ Intel\ Universal/*.pkg -target /
