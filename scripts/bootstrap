@@ -86,4 +86,4 @@ else
   /usr/bin/xcodebuild.orig $@
 fi
 EOF
-xcode-select --switch /usr/bin 2>&1 > /dev/null
+sudo xcode-select --switch /usr/bin 2>&1 > /dev/null
