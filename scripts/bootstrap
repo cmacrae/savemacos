@@ -49,7 +49,7 @@ echo "Grabbing Git..."
 echo ''
 curl https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg > ~/git.dmg
 echo ''
-echo -e "Now mounting Git's disk image. "$YELLOW"Please enter your sudo password"$ESC""
+echo -e "Now mounting Git's disk image, "$YELLOW"sudo privileges required."$ESC""
 sudo hdiutil mount ~/git.dmg 2>&1 > /dev/null
 echo ''
 echo "Installing Git..."
@@ -58,4 +58,32 @@ echo ''
 echo -e ""$GREEN"Git has now been installed!"$ESC""
 echo ''
 echo "Grabbing GCC..."
-
+curl https://github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg > ~/gcc.pkg
+echo ''
+echo -e "Now installing GCC, "$YELLOW"sudo privileges required."$ESC""
+sudo installer -pkg ~/gcc.pkg -target / 2>&1 > /dev/null
+echo ''
+echo -e ""$GREEN"GCC has now been installed!"$ESC""
+echo ''
+echo "Grabbing MacPorts..."
+echo ''
+curl https://distfiles.macports.org/MacPorts/MacPorts-2.1.3-10.8-MountainLion.pkg > ~/macports.pkg
+echo ''
+echo -e "Now installing MacPorts, "$YELLOW"sudo privileges required."$ESC""
+sudo installer -pkg ~/macports.pkg -target / 2>&1 > /dev/null
+echo ''
+echo -e ""$GREEN"MacPorts has now been installed!"$ESC""
+echo ''
+echo -e "Creating XCode dummy file for MacPorts, "$YELLOW"sudo privileges required."$ESC""
+sudo mv /usr/bin/xcodebuild{,.orig}
+sudo cat <'EOF' >> /usr/bin/xcodebuild
+#!/bin/bash
+if [[ $1 == '-version' ]]; then
+  echo "Xcode 4.4"
+  echo "Build version 4F250"
+else
+  # Pass Through
+  /usr/bin/xcodebuild.orig $@
+fi
+EOF
+xcode-select --switch /usr/bin 2>&1 > /dev/null
