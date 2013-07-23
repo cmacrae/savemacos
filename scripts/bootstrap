@@ -37,16 +37,25 @@ read -p "Press [Enter] to continue"
 clear
 
 # Grab essential tools
-MESSAGE=""$RED"Grabbing Essential Tools$ESC"
+MESSAGE=""$RED_UL"Essential Tools$ESC"
 
 title
 echo ''
-echo -e "This project uses $BOLDGit$ESC, $BOLDGCC$ESC & $BOLDMacPorts$ESC\n"
+echo -e "This project uses "$BOLD"Git"$ESC", "$BOLD"GCC"$ESC" & "$BOLD"MacPorts"$ESC"\n"
 echo ''
-echo -e "Will now download and install essential tools"
+echo "Will now download and install essential tools"
 echo ''
-echo -e "Grabbing Git...$ESC"
-wget http://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg -o ~/git.dmg 2>&1 > /dev/null
+echo "Grabbing Git..."
+echo ''
+curl https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg > ~/git.dmg
+echo ''
 echo -e "Now mounting Git's disk image. "$YELLOW"Please enter your sudo password"$ESC""
-sudo hdiutil mount ~/git.dmg
-sudo installer -pkg /Volumes/Git\ 1.8.3.1\ Snow\ Leopard\ Intel\ Universal/*.pkg -target /
+sudo hdiutil mount ~/git.dmg 2>&1 > /dev/null
+echo ''
+echo "Installing Git..."
+sudo installer -pkg /Volumes/Git\ 1.8.3.2\ Snow\ Leopard\ Intel\ Universal/*.pkg -target / 2>&1 > /dev/null
+echo ''
+echo -e ""$GREEN"Git has now been installed!"$ESC""
+echo ''
+echo "Grabbing GCC..."
+
