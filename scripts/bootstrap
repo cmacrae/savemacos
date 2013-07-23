@@ -27,7 +27,7 @@ YELLOW='\033[38;33m'
 YELLOW_UL='\033[38;4;33m'
 
 # Welcome screen
-MESSAGE=""$BLUE_UL"Welcome to Save OS X!\033[0;39m"
+MESSAGE=""$BLUE_UL"Welcome to Save OS X!"$ESC""
 
 title
 echo ''
