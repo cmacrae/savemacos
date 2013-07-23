@@ -58,6 +58,7 @@ echo ''
 echo -e ""$GREEN"Git has now been installed!"$ESC""
 echo ''
 echo "Grabbing GCC..."
+echo ''
 curl https://github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg > ~/gcc.pkg
 echo ''
 echo -e "Now installing GCC, "$YELLOW"sudo privileges required."$ESC""
@@ -74,6 +75,7 @@ sudo installer -pkg ~/macports.pkg -target / 2>&1 > /dev/null
 echo ''
 echo -e ""$GREEN"MacPorts has now been installed!"$ESC""
 echo ''
+# Create xcode dummy file to satisfy MacPorts (errors may still echo)
 echo -e "Creating XCode dummy file for MacPorts, "$YELLOW"sudo privileges required."$ESC""
 sudo mv /usr/bin/xcodebuild{,.orig} 2>&1 > /dev/null
 sudo touch /usr/bin/xcodebuild && sudo chmod a+wx /usr/bin/xcodebuild
@@ -86,3 +88,6 @@ sudo echo "  # Pass Through" >> /usr/bin/xcodebuild
 sudo echo "  /usr/bin/xcodebuild.orig $@" >> /usr/bin/xcodebuild
 sudo echo "fi" >> /usr/bin/xcodebuild
 sudo xcode-select --switch /usr/bin 2>&1 > /dev/null
+
+# Temporary test entry 
+port install xorg
