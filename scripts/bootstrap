@@ -59,7 +59,7 @@ echo -e ""$GREEN"Git has now been installed!"$ESC""
 echo ''
 echo "Grabbing GCC..."
 echo ''
-curl https://github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg > ~/gcc.pkg
+curl -o ~/gcc.pkg -O http://cloud.github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg
 echo ''
 echo -e "Now installing GCC, "$YELLOW"sudo privileges required."$ESC""
 sudo installer -pkg ~/gcc.pkg -target / 2>&1 > /dev/null
