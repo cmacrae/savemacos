@@ -4,7 +4,7 @@ The Save OSX Project:
 
 # Goal:
 
-Our goal is to make the Mac OS X operating system more suited to power users used to minimalistic environments (*nix users will feel at home).
+Our goal is to make the Mac OS X operating system more suited to power users used to minimalistic environments (where *nix users will feel at home).
 
 We want to bring the real power of OS X to the user in a convenient and clean manner whilst still having a stable OS for daily use.
 
