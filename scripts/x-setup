@@ -19,7 +19,7 @@ fi
 
 # Check to ensure X has been installed throgh MacPorts (using `which X` is untrustworthy)
 echo "Querying MacPorts database to see if Xorg is installed. This could take some time..."
-if [[ $(port list installed | awk '/xorg$/{print $1}') != "xorg" ]]; 
+if [[ $(/opt/local/bin/port list installed | awk '/xorg$/{print $1}') != "xorg" ]]; 
   then
     while :
     do
@@ -27,7 +27,7 @@ if [[ $(port list installed | awk '/xorg$/{print $1}') != "xorg" ]];
       read -r -p "Would you like to install it? [y/n] " ANSWER
         case $ANSWER in
           [yY][eE][sS]|[yY])
-            port install xorg
+            /opt/local/bin/port install xorg
             break
             ;;
           [nN][oO]|[nN])
