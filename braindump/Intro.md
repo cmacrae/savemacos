@@ -11,7 +11,7 @@ We want to bring the real power of OS X to the user in a convenient and clean ma
 
 # The issue:
 
-Apple's Mac OS X has some great underlying features and some solid tools, such as PF & other nifty programs, taken from various projects, including FreeBSD, NetBSD and OpenBSD. But the GUI is intended for average users with no desire to use said tools and we feel it just gets in the way.
+Apple's Mac OS X has some great underlying features and some solid tools, such as PF & other nifty programs taken from various projects, including FreeBSD, NetBSD and OpenBSD. But the GUI is intended for average users with no desire to use said tools and we feel it just gets in the way.
 
 There are already lots of great applications available on the system to remediate these problems, such as Apple Open Source's X11: Xquartz and the MacPorts package system that brings thousands of programs which we will mainly use during the project.
 
