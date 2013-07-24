@@ -91,3 +91,7 @@ sudo echo "  # Pass Through" >> /usr/bin/xcodebuild
 sudo echo "  /usr/bin/xcodebuild.orig $@" >> /usr/bin/xcodebuild
 sudo echo "fi" >> /usr/bin/xcodebuild
 sudo xcode-select --switch /usr/bin 2>&1 > /dev/null
+# Clone the Save OS X repo
+echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
+cd ~ ; git clone https://github.com/Phyrne/saveosx
+cd ~/saveosx
