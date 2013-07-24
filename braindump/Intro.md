@@ -2,7 +2,7 @@ The Save OSX Project:
 ======================
 
 
-# Goal:
+# The Goal:
 
 Our goal is to make the Mac OS X operating system more suited to power users used to minimalistic environments (where *nix users will feel at home).
 
