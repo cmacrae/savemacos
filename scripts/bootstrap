@@ -62,7 +62,7 @@ echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    #
 echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf    # No sudo access to file
 echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # Temporarily drop permissions
-sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf.conf.conf.conf.conf.conf.conf.conf.conf                                                   #
+sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   #
 echo ''
 echo 'Updating pkgsrc repository information'
 export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
