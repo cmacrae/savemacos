@@ -65,26 +65,10 @@ echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repos
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf.conf.conf.conf.conf.conf.conf.conf.conf                                                   #
 echo ''
 echo 'Updating pkgsrc repository information'
+export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update
 echo ''
 echo 'Adding pkgsrc path to your $PATH environment'
-export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
-UPDATEDPATH=$(echo /usr/pkg/bin:/usr/pkg/sbin:$PATH)
-while:
-do
-  print -n "Please enter the full path to your shell's rc file (.bashrc,.zshrc,.kshrc) "
-  read SHELLRC
-    if [ -f $SHELLRC ]; then
-      PATHLINE=$(grep -n '^PATH=' $SHELLRC | cut -d ':' -f1)
-      USERSPATH=$(grep '^PATH=' $SHELLRC)
-      sed -i$PATHLINE 's/${USERPATH}/${UPDATEDPATH}/' $SHELLRC
-      source $SHELLRC
-      echo "Your shell's PATH has been updated"
-      break
-    else
-      echo -e "It doesn't look like $SHELLRC exists, please check and try again\n"
-    fi
-done
 # Clone the Save OS X repo
 #echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
 #cd ~ ; git clone https://github.com/Phyrne/saveosx
