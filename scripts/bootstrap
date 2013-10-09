@@ -1,5 +1,12 @@
 #! /bin/bash
 
+# Ensure script is not being run with root privileges
+if [[ $EUID -eq 0 ]]; then
+   echo "Please don't run this script with root priveleges!"
+   exit 1
+fi
+
+
 # Fancy title function
 title() {
   COLUMNS=$(tput cols)
@@ -36,7 +43,8 @@ title
 echo ''
 echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
 echo ''
-read -p "Press [Enter] to continue"
+read -p "Press [Enter] to provide your sudo password and proceed"
+sudo echo "sudo authenticaion successful!" ; # Prompt for initial sudo password (will be updated througout with `sudo -v`)
 clear
 
 
@@ -49,7 +57,8 @@ echo -e "This project uses "$BOLD"pkgsrc"$ESC" & "$BOLD"XQuartz"$ESC"\n"
 echo ''
 echo "Proceeding to download and install essential tools"
 echo ''
-# Download and install Git
+sudo -v # Keep sudo authentication open
+# Download and install pkgsrc
 echo "Grabbing pkgsrc from the Save OS X repo..."
 echo ''
 curl -s -O http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz
@@ -57,6 +66,7 @@ if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successful
   echo -e '\n\n\nIt looks like there was an issue retrieving the pkgsrc bootstrap script\nPlease see above output for details'
   exit $ec
 fi
+sudo -v # Keep sudo authentication open
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    #
@@ -64,6 +74,7 @@ echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgi
 echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # Temporarily drop permissions
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   #
 echo ''
+sudo -v # Keep sudo authentication open
 echo 'Updating pkgsrc repository information'
 export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update
