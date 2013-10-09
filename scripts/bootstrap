@@ -62,10 +62,10 @@ sudo -v # Keep sudo authentication open
 echo "Grabbing pkgsrc from the Save OS X repo..."
 echo ''
 curl -s -O http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz
-if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successfully before trying to extract it
-  echo -e '\n\n\nIt looks like there was an issue retrieving the pkgsrc bootstrap script\nPlease see above output for details'
-  exit $ec
-fi
+#if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successfully before trying to extract it
+#  echo -e '\n\n\nIt looks like there was an issue retrieving the pkgsrc bootstrap script\nPlease see above output for details'
+#  exit $ec
+#fi
 sudo -v # Keep sudo authentication open
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
