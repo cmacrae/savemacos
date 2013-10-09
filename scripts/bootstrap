@@ -68,7 +68,7 @@ echo 'Updating pkgsrc repository information'
 export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update
 echo ''
-echo 'Adding pkgsrc path to your $PATH environment'
+echo -e "Please update the \$PATH variable in your shell's rc file as below:\n\n$PATH"
 # Clone the Save OS X repo
 #echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
 #cd ~ ; git clone https://github.com/Phyrne/saveosx
