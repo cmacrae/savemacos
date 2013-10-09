@@ -59,8 +59,10 @@ if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successful
 fi
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
-sudo echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories
-sudo echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories
+sudo chmod a+w /usr/pkg/etc/pkgin/repositories                                                    #
+echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories    # No sudo access to file
+echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories           # Temporarily drop permissions
+sudo chmod og-w /usr/pkg/etc/pkgin/repositories                                                   #
 echo ''
 echo 'Updating pkgsrc repository information'
 sudo pkgin -y update
