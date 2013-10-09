@@ -10,6 +10,9 @@ title() {
   echo -e "${MESSAGE}"
 }
 
+# exit status of previous executed command
+ec=$?
+
 # ANSI properties/colours
 ESC='\033[0m'
 BOLD='\033[1m'
@@ -36,62 +39,51 @@ echo ''
 read -p "Press [Enter] to continue"
 clear
 
-# Grab essential tools (Git, GCC & MacPorts)
-MESSAGE=""$RED_UL"Essential Tools$ESC"
 
+# Grab essential tools (pkgsrc & Xquartz)
+cd /tmp # cd to tmp, don't want to clutter stuff up ;)
+MESSAGE=""$RED_UL"Essential Tools$ESC"
 title
 echo ''
-echo -e "This project uses "$BOLD"Git"$ESC", "$BOLD"GCC"$ESC" & "$BOLD"MacPorts"$ESC"\n"
+echo -e "This project uses "$BOLD"pkgsrc"$ESC" & "$BOLD"XQuartz"$ESC"\n"
 echo ''
-echo "Will now download and install essential tools"
+echo "Proceeding to download and install essential tools"
 echo ''
 # Download and install Git
-echo "Grabbing Git..."
+echo "Grabbing pkgsrc from the Save OS X repo..."
 echo ''
-curl https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg > ~/git.dmg
+curl -s -O http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz
+if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successfully before trying to extract it
+  echo -e '\n\n\nIt looks like there was an issue retrieving the pkgsrc bootstrap script\nPlease see above output for details'
+  exit $ec
+fi
+cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
+echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
+sudo echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories
+sudo echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories
 echo ''
-echo -e "Now mounting Git's disk image, "$YELLOW"sudo privileges required."$ESC""
-sudo hdiutil mount ~/git.dmg 2>&1 > /dev/null
+echo 'Updating pkgsrc repository information'
+sudo pkgin -y update
 echo ''
-echo "Installing Git..."
-sudo installer -pkg /Volumes/Git\ 1.8.3.2\ Snow\ Leopard\ Intel\ Universal/*.pkg -target / 2>&1 > /dev/null
-echo ''
-echo -e ""$GREEN"Git has now been installed!"$ESC""
-echo ''
-# Download and install GCC with kennethreitz's GCC Installer
-echo "Grabbing GCC..."
-echo ''
-curl -o ~/gcc.pkg -O http://cloud.github.com/downloads/kennethreitz/osx-gcc-installer/GCC-10.7-v2.pkg
-echo ''
-echo -e "Now installing GCC, "$YELLOW"sudo privileges required."$ESC""
-sudo installer -pkg ~/gcc.pkg -target / 2>&1 > /dev/null
-echo ''
-echo -e ""$GREEN"GCC has now been installed!"$ESC""
-echo ''
-# Download and install MacPorts
-echo "Grabbing MacPorts..."
-echo ''
-curl https://distfiles.macports.org/MacPorts/MacPorts-2.1.3-10.8-MountainLion.pkg > ~/macports.pkg
-echo ''
-echo -e "Now installing MacPorts, "$YELLOW"sudo privileges required."$ESC""
-sudo installer -pkg ~/macports.pkg -target / 2>&1 > /dev/null
-echo ''
-echo -e ""$GREEN"MacPorts has now been installed!"$ESC""
-echo ''
-# Create xcode dummy file to satisfy MacPorts (errors may still echo, but should work fine)
-echo -e "Creating XCode dummy file for MacPorts, "$YELLOW"sudo privileges required."$ESC""
-sudo mv /usr/bin/xcodebuild{,.orig} 2>&1 > /dev/null
-sudo touch /usr/bin/xcodebuild && sudo chmod a+wx /usr/bin/xcodebuild
-sudo echo "#!/bin/bash" >> /usr/bin/xcodebuild
-sudo echo "if [[ $1 == '-version' ]]; then" >> /usr/bin/xcodebuild
-sudo echo "  echo "Xcode 4.4"" >> /usr/bin/xcodebuild
-sudo echo "  echo "Build version 4F250"" >> /usr/bin/xcodebuild
-sudo echo "else" >> /usr/bin/xcodebuild
-sudo echo "  # Pass Through" >> /usr/bin/xcodebuild
-sudo echo "  /usr/bin/xcodebuild.orig $@" >> /usr/bin/xcodebuild
-sudo echo "fi" >> /usr/bin/xcodebuild
-sudo xcode-select --switch /usr/bin 2>&1 > /dev/null
+echo 'Adding pkgsrc path to your $PATH environment'
+export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
+UPDATEDPATH=$(echo /usr/pkg/bin:/usr/pkg/sbin:$PATH)
+while:
+do
+  print -n "Please enter the full path to your shell's rc file (.bashrc,.zshrc,.kshrc) "
+  read SHELLRC
+    if [ -f $SHELLRC ]; then
+      PATHLINE=$(grep -n '^PATH=' $SHELLRC | cut -d ':' -f1)
+      USERSPATH=$(grep '^PATH=' $SHELLRC)
+      sed -i$PATHLINE 's/${USERPATH}/${UPDATEDPATH}/' $SHELLRC
+      source $SHELLRC
+      echo "Your shell's PATH has been updated"
+      break
+    else
+      echo -e "It doesn't look like $SHELLRC exists, please check and try again\n"
+    fi
+done
 # Clone the Save OS X repo
-echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
-cd ~ ; git clone https://github.com/Phyrne/saveosx
-cd ~/saveosx
+#echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
+#cd ~ ; git clone https://github.com/Phyrne/saveosx
+#cd ~/saveosx
