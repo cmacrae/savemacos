@@ -74,20 +74,51 @@ echo ''
 sudo -v # Keep sudo authentication open
 
 # Download and install pkgsrc
-echo "Grabbing pkgsrc from the Save OS X repo..."
+echo "Fetching pkgsrc from the Save OS X repo..."
 export ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz # Safely attempt to retrive the pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 sudo -v # Keep sudo authentication open
+echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
-echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
+echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding SmartOS & Save OS X repos..."
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    # Add SmartOS & Save OS X pkgsrc repos
 echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf    # 
 echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   # Temporarily drop permissions
 echo ''
 sudo -v # Keep sudo authentication open
-echo 'Updating pkgsrc repository information'
+echo "Updating pkgsrc repository information..."
 export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update # Update the pkgsrc repository information
+sudo -v # Keep sudo authentication open
 echo ''
 echo -e "Please update the \$PATH variable in your shell's rc file as below:\n\n$PATH"
+#
+# - Will add loop to add PATH to user's rc file (interactively)
+#   Ask which editor with a case loop (nano,vim,TextEdit)
+#   Ask for full path to shellrc file (default to ~/.bashrc)
+#   Check specified shellrc file exists, if so; open a new Terminal.app
+#   window with the editor for the shellrc file (TextEdit if they've been weird enough to choose that)
+#   Lastly, once they've written the file, use a read to confirm they're finished and grep for the string
+#   To ensure the PATH variable has been updated
+
+# Fetch the Xquartz dmg
+sudo -v # Keep sudo authentication open
+echo ''
+echo "Fetching XQuartz..."
+saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
+export ERR_MSG="mounting the XQuartz disk image"
+sudo -v # Keep sudo authentication open
+echo "Mounting XQuartz disk image..."
+saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
+export ERR_MSG="installing XQuartz"
+echo "Installing XQuartz..."
+saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
+echo -e "\n"$GREEN"XQuarz installed successfully!"
+#
+# - Here, we will proceed to a "new screen" to ask the user if they wish to
+#   install Git from git-scm.com. If they answer yes, proceed to fetch the dmg
+#   and install it, then symlink the git binaries over the OS X ones to surpress
+#   XCode warnings. Then finally run git-config for them.
+#
+#   After this, proceed to clone the Save OS X git repo and get started running the other scripts! :D
