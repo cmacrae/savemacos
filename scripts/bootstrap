@@ -17,8 +17,19 @@ title() {
   echo -e "${MESSAGE}"
 }
 
-# exit status of previous executed command
-ec=$?
+# Safe run function to ensure commands are executed successfully
+saferun() {
+  typeset cmnd="$*"
+  typeset ret_code
+
+  eval  $cmnd
+  ret_code=$?
+  
+  if [ $ret_code != 0 ]; then
+     echo -e ""$RED_UL"\n\nIt looks like there was an issue "$ERR_MSG"!"$ESC"\n\nExiting..."
+     exit $?
+  fi
+}
 
 # ANSI properties/colours
 ESC='\033[0m'
@@ -36,6 +47,9 @@ PURPLE_UL='\033[38;4;35m'
 YELLOW='\033[38;33m'
 YELLOW_UL='\033[38;4;33m'
 
+# First, drop any chached sudo access (sudo does not require a password to perform this function)
+sudo -k
+
 # Welcome screen
 MESSAGE=""$BLUE_UL"Welcome to Save OS X!"$ESC""
 
@@ -43,13 +57,13 @@ title
 echo ''
 echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
 echo ''
-read -p "Press [Enter] to provide your sudo password and proceed"
-sudo echo "sudo authenticaion successful!" ; # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+export ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
+read -p "Press [Enter] to provide your sudo password and proceed "
+saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+sleep 1
 clear
 
-
 # Grab essential tools (pkgsrc & Xquartz)
-cd /tmp # cd to tmp, don't want to clutter stuff up ;)
 MESSAGE=""$RED_UL"Essential Tools$ESC"
 title
 echo ''
@@ -58,29 +72,22 @@ echo ''
 echo "Proceeding to download and install essential tools"
 echo ''
 sudo -v # Keep sudo authentication open
+
 # Download and install pkgsrc
 echo "Grabbing pkgsrc from the Save OS X repo..."
-echo ''
-curl -s -O http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz
-#if [[ $ec -ne ]]; then  # Check to ensure the bootstrap was retrieved successfully before trying to extract it
-#  echo -e '\n\n\nIt looks like there was an issue retrieving the pkgsrc bootstrap script\nPlease see above output for details'
-#  exit $ec
-#fi
+export ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
+saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz # Safely attempt to retrive the pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 sudo -v # Keep sudo authentication open
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e '\npkgsrc downloaded and installed. Adding SmartOS & Save OS X repos...'
-sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    #
-echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf    # No sudo access to file
-echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # Temporarily drop permissions
-sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   #
+sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    # Add SmartOS & Save OS X pkgsrc repos
+echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf    # 
+echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
+sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   # Temporarily drop permissions
 echo ''
 sudo -v # Keep sudo authentication open
 echo 'Updating pkgsrc repository information'
 export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
-sudo pkgin -y update
+sudo pkgin -y update # Update the pkgsrc repository information
 echo ''
 echo -e "Please update the \$PATH variable in your shell's rc file as below:\n\n$PATH"
-# Clone the Save OS X repo
-#echo ""$GREEN"Cloning the Save OS X Git repo for other scripts..."
-#cd ~ ; git clone https://github.com/Phyrne/saveosx
-#cd ~/saveosx
