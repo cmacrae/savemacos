@@ -58,7 +58,7 @@ echo ''
 echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
 echo ''
 export ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
-read -p "Press [Enter] to provide your sudo password and proceed "
+read -r -p "Press [Enter] to provide your sudo password and proceed "
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
 sleep 1
 clear
@@ -92,16 +92,45 @@ export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo ''
-echo -e "Please update the \$PATH variable in your shell's rc file as below:\n\n$PATH"
-#
-# - Will add loop to add PATH to user's rc file (interactively)
-#   Ask which editor with a case loop (nano,vim,TextEdit)
-#   Ask for full path to shellrc file (default to ~/.bashrc)
-#   Check specified shellrc file exists, if so; open a new Terminal.app
-#   window with the editor for the shellrc file (TextEdit if they've been weird enough to choose that)
-#   Lastly, once they've written the file, use a read to confirm they're finished and grep for the string
-#   To ensure the PATH variable has been updated
+echo -e "Updating \$PATH variable so new binaries can be found...\n"
+echo $PATH | pbcopy # Copy the $PATH to the clipboard
+echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
+echo ''
+while :
+do
+  read -r -p "Please choose an editor to edit your shell's rc file with [nano/vim]: " ED_SEL
+     case $ED_SEL in                                                  #
+       vim)                                                           #   Ask user which editor to use to
+         export EDITOR="vim"                                          #   add the $PATH to their shell's rc file
+         break                                                        #
+         ;;
+       nano)
+         export EDITOR="nano"
+         break
+         ;;
+       *)
+        echo "Please select nano or vim..." 
+     esac
+done
+# Check user's shell
+export SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
+echo -e "$EDITOR selected...\n\nIt looks like your shell is $SHELL"
 
+# If user's shell is bash, and bashrc doesn't exist copy skel file (/etc/bashrc)
+#if [[ $SHELL -eq '/bin/bash' -a ! -f ~/.bashrc ]]; then
+#  echo -e "It doesn't look like ~/.bashrc exists...\nCopying systemwide config\n"
+#  cp /etc/bashrc ~/.bashrc
+#fi
+
+# Use the user defined editor to edit the shell rc file
+if [ ! -f ${SHELLRC} ]; then
+  echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created, simply paste the \$PATH into the file\n"
+fi
+echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the \$PATH variable, save and exit"$ESC""
+echo ''
+read -r -p "Press [Enter] to continue..."
+$EDITOR $SHELLRC
+  
 # Fetch the Xquartz dmg
 sudo -v # Keep sudo authentication open
 echo ''
@@ -114,7 +143,7 @@ saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null 
 export ERR_MSG="installing XQuartz"
 echo "Installing XQuartz..."
 saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
-echo -e "\n"$GREEN"XQuarz installed successfully!"
+echo -e "\n"$GREEN"XQuarz installed successfully!"$ESC""
 #
 # - Here, we will proceed to a "new screen" to ask the user if they wish to
 #   install Git from git-scm.com. If they answer yes, proceed to fetch the dmg
