@@ -96,16 +96,18 @@ if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') -eq "brew" ]]; 
     BREW_INSTALLED="false"
 fi
 
+# If the 'brew' binary is found, echo instructions on removal and exit
 if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
+  echo ''
   echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
   echo -e "remove it."$ESC""
   echo ''
-  echo -e ""$BLUE"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""
+  echo -e ""$BLUE_UL"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""
   echo ''
   echo "For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:"
   echo ''
-  echo -e "cd `brew --prefix`\nrm -rf Cellar\nbrew prune\nrm `git ls-files`"
+  echo -e "cd \`brew --prefix\`\nrm -rf Cellar\nbrew prune\nrm \`git ls-files\`"
   echo -e "rm -rf Library/{Homebrew,Aliases,Formula,Contributions}"
   echo -e "rm -rf .git"
   echo -e "rm -rf ~/Library/Caches/Homebrew"
@@ -121,13 +123,15 @@ if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') -eq "port" ]]; 
     PORTS_INSTALLED="false"
 fi
 
+# If the 'port' binary is found, echo instructions on removal and exit
 
 if [[ $(echo $PORTS_INSTALLED) -eq "true" ]]; then
+  echo ''
   echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
   echo -e "remove it."$ESC""
   echo ''
-  echo -e ""$BLUE"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""
+  echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""
   echo ''
   echo "For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:"
   echo ''
