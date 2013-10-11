@@ -58,9 +58,9 @@ echo ''
 echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
 echo ''
 ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
-read -r -p "Press [Enter] to provide your sudo password and proceed "
+echo "Please enter your password for sudo authentication"
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
-sleep 1
+read -r -p "Press [Enter] to continue..."
 clear
 
 # Grab essential tools (pkgsrc & Xquartz)
@@ -178,10 +178,11 @@ if [[ $(system_profiler SPApplicationsDataType | grep XQuartz | wc -l) -lt 1 ]];
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
   umount /Volumes/xquartz
 else
+  echo ''
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH # Update path to so new binaries can be found (not including X11 apps)
 fi
-
+read -r -p "Press [Enter] to continute..."
 sudo -v # Keep sudo authentication open
 
 # Git screen
@@ -206,7 +207,7 @@ do
           ERR_MSG="installing Git with pkgin"
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
-          saferun sudo /usr/pkg/bin/pkgin -y in scmgit 1> /dev/null
+          saferun sudo /usr/pkg/bin/pkgin -y in scmgit-base scmgit-docs 1> /dev/null
           break
           ;;
       [nN][oO]|[nN])
@@ -221,28 +222,12 @@ done
 
 # Check to see if user installed from pkgsrc
 if [ $(pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
+  echo ''
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
 fi
 
-
-# Fetch Git from git-scm.com
-#echo ''
-#ERR_MSG="retrieving the Git disk image"
-#echo "Fetching Git..."
-#saferun curl -s -o /tmp/git.dmg https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg
-#sudo -v # Keep sudo authentication open
-## Install Git & symlink over Apple's dummy binaries
-#ERR_MSG="mounting the Git disk image"
-#echo "Mounting Git disk image..."
-#saferun hdiutil mount -mountpoint /Volumes/git /tmp/git.dmg 1> /dev/null
-#ERR_MSG="installing Git"
-#echo "Installing Git..."
-#saferun sudo installer -pkg /Volumes/git/*.pkg -target /
-#saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
-#echo -e "\n"$GREEN"Git installed successfully!"$ESC""
-#echo ''
-
 # Update user's shell rc file with new $PATH
+echo ''
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
 echo $PATH | pbcopy # Copy the $PATH to the clipboard
 echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
