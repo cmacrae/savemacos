@@ -4,52 +4,11 @@
 # - Do NOT run this script at this point. It is under development. If you run this script right now, you will render your system unusable....
 #
 
-
 # Check for root
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root!"
   exit 1
 fi
-
-# Disable hibernation
-echo "Disabling hibernation"
-pmset -a hibernatemode 0
-rm -f /pivate/var/vm/sleepimage
-
-# Remove speech files
-echo "Removing speech files"
-rm -f /System/Library/Voices/*
-
-# Remove wallpapers & screensavers
-echo "Removing wallpapers & screen savers"
-rm -rf /Library/{Desktop\ Pictures,Screen\ Savers}/*
-
-# Remove widget files
-echo "Removing widgets"
-rm -rf /Library/Widgets/*
-
-# Remove internet plug-ins
-echo "Removing internet plug-ins"
-rm -rf /Library/Internet\ Plug-ins/*
-
-# Remove fonts
-echo "Removing fonts"
-rm -rf {/System,}/Library/Fonts/*
-
-# Remove Automater
-echo "Removing Automater"
-rm -rf /System/Library/Automater
-
-# Remove log files & caches
-echo "Removing logs, tmp files & caches"
-rm -rf /private/var/{log,folders}/* # General logs & quick look caches
-rm -rf /private/var/tmp/TM* # tmp files
-rm -rf /Library/Caches/* # General caches
-rm -rf /Users/*/[lL]ibrary/Caches/* # User library cache
-
-# Remove update files
-echo "Removing update files"
-rm -rf /Library/Updates/*
 
 # Commented out, as this is currently causing problems
 
@@ -68,7 +27,7 @@ rm -rf /Library/Updates/*
 # Confirm function to prompt user for decision
 confirm() {
     case $ANSWER in
-      [yY][eE][sS]|[yY])
+      y)
           echo "Removing $1"
         if [ "$2" = "-d" ]; then
           launchctl unload -w $DAEMONPATH > /dev/null 2>&1
@@ -78,7 +37,7 @@ confirm() {
         fi
           break
           ;;
-      [nN][oO]|[nN])
+      n)
         echo "Leaving $1 intact"
         break
         ;;
@@ -87,22 +46,73 @@ confirm() {
     esac
 }
 
+# Hibernation
+FILEPATH=/pivate/var/vm/sleepimage
+while :
+do
+  read -r -p "Would you like to disable hibernation? [y/n] " ANSWER
+    confirm hibernation
+done
+if [ $ANSWER == 'y' ]; then
+  pmset -a hibernatemode 0
+fi
+
+# Speech files
+FILEPATH=/System/Library/Voices/*
+while :
+do
+  read -r -p "Would you like to remove the Speach Files? [y/n] " ANSWER
+    confirm "Speach Files"
+done
+
+# Remove wallpapers & screensavers
+FILEPATH=/Library/{Desktop\ Pictures,Screen\ Savers}/*
+while :
+do
+  read -r -p "Would you like to remove the wallpapers & screensavers? [y/n] " ANSWER
+  confirm "wallpapers & screensavers"
+done
+
+# Remove widget files
+FILEPATH=/Library/Widgets/*
+while :
+do
+  read -r -p "Would you like to remove the widgets? [y/n] " ANSWER
+done
+
+# Remove Automater
+FILEPATH=/System/Library/Automater
+while :
+do
+  read -r -p "Would you like to remove Automater? [y/n] " ANSWER
+
+# Remove log files & caches
+echo "Removing unecessary logs, tmp files & caches"
+rm -rf /private/var/folders/* # Quick look caches
+rm -rf /private/var/tmp/TM* # tmp files
+rm -rf /Library/Caches/* # General caches
+rm -rf /Users/*/[lL]ibrary/Caches/* # User library cache
+
+# Remove update files
+echo "Removing update files"
+rm -rf /Library/Updates/*
+
 
 # Emacs
 FILEPATH=/usr/{bin,libexec,share/info}/emacs,/opt/local/share/emacs
 
 while :
 do
-  read -r -p "Would you like to remove the Emacs editor [y/n]? " ANSWER
+  read -r -p "Would you like to remove the Emacs editor? [y/n] " ANSWER
   confirm Emacs
 done
 
-# Non-English dictionaries
+# Dictionaries
 FILEPATH=/Library/Dictionaries/*.dictionary
 
 while :
 do
-  read -r -p "Would you like to remove unecessary dictionaries? [y/n] " ANSWER
+  read -r -p "Would you like to remove the dictionaries? [y/n] " ANSWER
   confirm dictionaries
 done
 
@@ -112,6 +122,6 @@ FILEPATH=/private/var/vm/swapfile*
 
 while :
 do
-  read -r -p "Would you like to disable swapping [y/n]? " ANSWER
+  read -r -p "Would you like to disable swapping? [y/n] " ANSWER
   confirm swap -d
 done
