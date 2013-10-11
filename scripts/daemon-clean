@@ -53,7 +53,6 @@ $APATH.ZoomWindow
 $APATH.weibod
 $APATH.WebKit.PluginAgent
 $APATH.VoiceOver
-$APATH.UserNotificationCenterAgent
 $APATH.UserNotificationCenterAgent-LoginWindow
 $APATH.unmountassistant.useragent
 $APATH.universalaccessd
@@ -135,7 +134,6 @@ $APATH.fontd.useragent
 $APATH.findmymacmessenger
 $APATH.Finder
 $APATH.familycontrols.useragent
-$APATH.Dock
 $APATH.DiskArbitrationAgent
 $APATH.csuseragent
 $APATH.coreservices.uiagent
