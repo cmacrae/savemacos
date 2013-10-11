@@ -90,14 +90,14 @@ saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/boot
 sudo -v # Keep sudo authentication open
 
 # Check for Home Brew install
-if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') == "brew" ]]; then
+if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') == 'brew' ]]; then
     BREW_INSTALLED="true"
   else
     BREW_INSTALLED="false"
 fi
 
 # If the 'brew' binary is found, echo instructions on removal and exit
-if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
+if [[ $(echo $BREW_INSTALLED) == 'true' ]]; then
   echo ''
   echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
@@ -117,7 +117,7 @@ if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
 fi
 
 # Check for MacPorts install
-if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') == "port" ]]; then
+if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') == 'port' ]]; then
     PORTS_INSTALLED="true"
   else
     PORTS_INSTALLED="false"
@@ -125,7 +125,7 @@ fi
 
 # If the 'port' binary is found, echo instructions on removal and exit
 
-if [[ $(echo $PORTS_INSTALLED) -eq "true" ]]; then
+if [[ $(echo $PORTS_INSTALLED) == 'true' ]]; then
   echo ''
   echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
