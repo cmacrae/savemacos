@@ -144,6 +144,7 @@ echo "Installing Git..."
 saferun sudo installer -pkg /Volumes/git/*.pkg -target /
 saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
 echo -e "\n"$GREEN"Git installed successfully!"$ESC""
+echo ''
 
 # Update user's shell rc file with new $PATH
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
@@ -174,8 +175,14 @@ echo -e "$EDITOR selected...\n\nIt looks like your shell is $SHELL"
 if [ ! -f ${SHELLRC} ]; then
   echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created, simply paste the \$PATH into the file\n"
 fi
+
 echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the \$PATH variable, save and exit"$ESC""
 echo ''
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
+echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
+read -r -p "Press [Enter] to continue..."
 
+#   Next, proceed to the "Retrieve Save OS X Scripts" screen
+#   
+#   Clone the saveosx repo and proceed to run scripts
