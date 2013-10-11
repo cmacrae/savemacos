@@ -112,7 +112,7 @@ if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
   echo -e "rm -rf .git"
   echo -e "rm -rf ~/Library/Caches/Homebrew"
   echo ''
-  echo -e ""$RED_UL"WARNING:"$ESC""$RED"This will remove all software installed with Home Brew!"$ESC""
+  echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""
   exit 1
 fi
 
@@ -142,7 +142,7 @@ if [[ $(echo $PORTS_INSTALLED) -eq "true" ]]; then
   echo -e "Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}"
   echo -e "rm -rf ~/.macports"
   echo ''
-  echo -e ""$RED_UL"WARNING:"$ESC""$RED"This will remove all software installed with MacPorts!"$ESC""
+  echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""
   exit 1
 fi
 
