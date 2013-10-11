@@ -134,27 +134,54 @@ echo "Using Save OS X requires Git. Apple's implementation of Git is"
 echo "Included with XCode. Unless you're a developer of software for"
 echo "OS X/iOS, this isn't necessary"
 echo ''
-echo "Even if you do have XCode intalled, installing Git from the official"
-echo "website will get you a more recent revision."
+echo "Even if you do have XCode intalled, installing Git from pkgsrc"
+echo "will get you a more recent revision."
 echo ''
-read -r -p "Press [Enter] to install Git from the official Git website..."
+
+# Ask user if they would like to install Git from pkgsrc
+while :
+do
+  read -r -p "Would you like to install Git from pkgsrc? [y/n] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+          ERR_MSG="installing Git with pkgin"
+          echo ''
+          echo -e "Installing Git with pkgin...\n\n"
+          saferun sudo /usr/pkg/bin/pkin -y in scmgit 1> /dev/null
+          ;;
+          break
+      [nN][oO]|[nN])
+          echo ''
+          echo "Leaving Apple's Git in place..."
+          ;;
+          break
+      *)
+          echo "Please answer yes or no..."
+    esac
+done
+
+# Check to see if user installed from pkgsrc
+if [ $(pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
+  echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
+fi
+
 
 # Fetch Git from git-scm.com
-echo ''
-ERR_MSG="retrieving the Git disk image"
-echo "Fetching Git..."
-saferun curl -s -o /tmp/git.dmg https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg
-sudo -v # Keep sudo authentication open
-# Install Git & symlink over Apple's dummy binaries
-ERR_MSG="mounting the Git disk image"
-echo "Mounting Git disk image..."
-saferun hdiutil mount -mountpoint /Volumes/git /tmp/git.dmg 1> /dev/null
-ERR_MSG="installing Git"
-echo "Installing Git..."
-saferun sudo installer -pkg /Volumes/git/*.pkg -target /
-saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
-echo -e "\n"$GREEN"Git installed successfully!"$ESC""
-echo ''
+#echo ''
+#ERR_MSG="retrieving the Git disk image"
+#echo "Fetching Git..."
+#saferun curl -s -o /tmp/git.dmg https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg
+#sudo -v # Keep sudo authentication open
+## Install Git & symlink over Apple's dummy binaries
+#ERR_MSG="mounting the Git disk image"
+#echo "Mounting Git disk image..."
+#saferun hdiutil mount -mountpoint /Volumes/git /tmp/git.dmg 1> /dev/null
+#ERR_MSG="installing Git"
+#echo "Installing Git..."
+#saferun sudo installer -pkg /Volumes/git/*.pkg -target /
+#saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
+#echo -e "\n"$GREEN"Git installed successfully!"$ESC""
+#echo ''
 
 # Update user's shell rc file with new $PATH
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
