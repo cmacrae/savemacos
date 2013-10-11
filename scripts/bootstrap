@@ -90,7 +90,7 @@ saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/boot
 sudo -v # Keep sudo authentication open
 
 # Check for Home Brew install
-if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') -eq "brew" ]]; then
+if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') == "brew" ]]; then
     BREW_INSTALLED="true"
   else
     BREW_INSTALLED="false"
@@ -117,7 +117,7 @@ if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
 fi
 
 # Check for MacPorts install
-if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') -eq "port" ]]; then
+if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') == "port" ]]; then
     PORTS_INSTALLED="true"
   else
     PORTS_INSTALLED="false"
