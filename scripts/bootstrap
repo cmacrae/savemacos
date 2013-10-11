@@ -57,7 +57,7 @@ title
 echo ''
 echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
 echo ''
-export ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
+ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
 read -r -p "Press [Enter] to provide your sudo password and proceed "
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
 sleep 1
@@ -75,7 +75,7 @@ sudo -v # Keep sudo authentication open
 
 # Download and install pkgsrc
 echo "Fetching pkgsrc from the Save OS X repo..."
-export ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
+ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz # Safely attempt to retrive the pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 sudo -v # Keep sudo authentication open
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
@@ -88,10 +88,71 @@ sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                            
 echo ''
 sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
-export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH
 sudo pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo ''
+
+# Fetch & install XQuartz if it isn't already installed
+if [[ $(system_profiler SPApplicationsDataType | grep XQuartz | wc -l) -lt 1 ]]; then
+  echo ''
+  ERR_MSG="retrieving the XQuartz disk image"
+  echo "Fetching XQuartz..."
+  saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
+  sudo -v # Keep sudo authentication open
+  ERR_MSG="mounting the XQuartz disk image"
+  echo "Mounting XQuartz disk image..."
+  saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
+  ERR_MSG="installing XQuartz"
+  echo "Installing XQuartz..."
+  saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
+  echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
+  umount /Volumes/xquartz
+else
+  echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
+  export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH # Update path to so new binaries can be found (not including X11 apps)
+fi
+
+export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
+sudo -v # Keep sudo authentication open
+
+# Git screen
+MESSAGE=""$GREEN_UL"Git"$ESC""
+
+title
+echo
+echo "Using Save OS X requires Git. Apple's implementation of Git is"
+echo "Included with XCode. Unless you're a developer of software for"
+echo "OS X/iOS, this isn't necessary"
+echo ''
+echo "Even if you do have XCode intalled, installing Git from the official"
+echo "website will get you a more recent revision."
+echo ''
+read -r -p "Press [Enter] to install Git from the official Git website..."
+
+# Fetch Git from git-scm.com
+echo ''
+ERR_MSG="retrieving the Git disk image"
+echo "Fetching Git..."
+saferun curl -s -o /tmp/git.dmg https://git-osx-installer.googlecode.com/files/git-1.8.3.2-intel-universal-snow-leopard.dmg
+sudo -v # Keep sudo authentication open
+# Install Git & symlink over Apple's dummy binaries
+ERR_MSG="mounting the Git disk image"
+echo "Mounting Git disk image..."
+saferun hdiutil mount -mountpoint /Volumes/git /tmp/git.dmg 1> /dev/null
+ERR_MSG="installing Git"
+echo "Installing Git..."
+saferun sudo installer -pkg /Volumes/git/*.pkg -target /
+saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
+echo -e "\n"$GREEN"Git installed successfully!"$ESC""
+
+#
+# - Here, we will proceed to a "new screen" to ask the user if they wish to
+#   install Git from git-scm.com. If they answer yes, proceed to fetch the dmg
+#   and install it, then symlink the git binaries over the OS X ones to surpress
+#   XCode warnings. Then finally run git-config for them.
+#
+#   After this, proceed to clone the Save OS X git repo and get started running the other scripts! :D
+
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
 echo $PATH | pbcopy # Copy the $PATH to the clipboard
 echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
@@ -101,11 +162,11 @@ do
   read -r -p "Please choose an editor to edit your shell's rc file with [nano/vim]: " ED_SEL
      case $ED_SEL in                                                  #
        vim)                                                           #   Ask user which editor to use to
-         export EDITOR="vim"                                          #   add the $PATH to their shell's rc file
+         EDITOR="vim"                                                 #   add the $PATH to their shell's rc file
          break                                                        #
          ;;
        nano)
-         export EDITOR="nano"
+         EDITOR="nano"
          break
          ;;
        *)
@@ -113,14 +174,8 @@ do
      esac
 done
 # Check user's shell
-export SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
+SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
 echo -e "$EDITOR selected...\n\nIt looks like your shell is $SHELL"
-
-# If user's shell is bash, and bashrc doesn't exist copy skel file (/etc/bashrc)
-#if [[ $SHELL -eq '/bin/bash' -a ! -f ~/.bashrc ]]; then
-#  echo -e "It doesn't look like ~/.bashrc exists...\nCopying systemwide config\n"
-#  cp /etc/bashrc ~/.bashrc
-#fi
 
 # Use the user defined editor to edit the shell rc file
 if [ ! -f ${SHELLRC} ]; then
@@ -130,24 +185,4 @@ echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\
 echo ''
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
-  
-# Fetch the Xquartz dmg
-sudo -v # Keep sudo authentication open
-echo ''
-echo "Fetching XQuartz..."
-saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
-export ERR_MSG="mounting the XQuartz disk image"
-sudo -v # Keep sudo authentication open
-echo "Mounting XQuartz disk image..."
-saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
-export ERR_MSG="installing XQuartz"
-echo "Installing XQuartz..."
-saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
-echo -e "\n"$GREEN"XQuarz installed successfully!"$ESC""
-#
-# - Here, we will proceed to a "new screen" to ask the user if they wish to
-#   install Git from git-scm.com. If they answer yes, proceed to fetch the dmg
-#   and install it, then symlink the git binaries over the OS X ones to surpress
-#   XCode warnings. Then finally run git-config for them.
-#
-#   After this, proceed to clone the Save OS X git repo and get started running the other scripts! :D
+
