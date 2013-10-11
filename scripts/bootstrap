@@ -147,14 +147,14 @@ do
           ERR_MSG="installing Git with pkgin"
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
-          saferun sudo /usr/pkg/bin/pkin -y in scmgit 1> /dev/null
-          ;;
+          saferun sudo /usr/pkg/bin/pkgin -y in scmgit 1> /dev/null
           break
+          ;;
       [nN][oO]|[nN])
           echo ''
           echo "Leaving Apple's Git in place..."
-          ;;
           break
+          ;;
       *)
           echo "Please answer yes or no..."
     esac
