@@ -106,13 +106,13 @@ if [[ $(system_profiler SPApplicationsDataType | grep XQuartz | wc -l) -lt 1 ]];
   echo "Installing XQuartz..."
   saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
+  export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
   umount /Volumes/xquartz
 else
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH # Update path to so new binaries can be found (not including X11 apps)
 fi
 
-export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
 sudo -v # Keep sudo authentication open
 
 # Git screen
@@ -145,14 +145,7 @@ saferun sudo installer -pkg /Volumes/git/*.pkg -target /
 saferun sudo ln -sf /usr/local/git/bin/* /usr/bin/
 echo -e "\n"$GREEN"Git installed successfully!"$ESC""
 
-#
-# - Here, we will proceed to a "new screen" to ask the user if they wish to
-#   install Git from git-scm.com. If they answer yes, proceed to fetch the dmg
-#   and install it, then symlink the git binaries over the OS X ones to surpress
-#   XCode warnings. Then finally run git-config for them.
-#
-#   After this, proceed to clone the Save OS X git repo and get started running the other scripts! :D
-
+# Update user's shell rc file with new $PATH
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
 echo $PATH | pbcopy # Copy the $PATH to the clipboard
 echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
