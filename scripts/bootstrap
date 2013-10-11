@@ -59,7 +59,8 @@ echo -e "Here's some stuff about the project that will be echo'd\non the first s
 echo ''
 ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
 echo "Please enter your password for sudo authentication"
-saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+saferun sudo echo -e "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+echo -e "\n\n"
 read -r -p "Press [Enter] to continue..."
 clear
 
@@ -211,8 +212,6 @@ do
           break
           ;;
       [nN][oO]|[nN])
-          echo ''
-          echo "Leaving Apple's Git in place..."
           break
           ;;
       *)
