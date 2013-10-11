@@ -10,49 +10,16 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-# Check to ensure MacPorts is installed
-if [[ $(which port | wc -l) -eq 0 ]];
-  then
-    echo -e "MacPorts doesn't appear to be installed...\nMacPorts is an essential piece of software for this project, please install it!"
-  exit 1
-fi
-
-# Check to ensure X has been installed throgh MacPorts (using `which X` is untrustworthy)
-echo "Querying MacPorts database to see if Xorg is installed. This could take some time..."
-if [[ $(/opt/local/bin/port list installed | awk '/xorg$/{print $1}') != "xorg" ]]; 
-  then
-    while :
-    do
-      echo -e "Xorg doesn't appear to be installed...\n"
-      read -r -p "Would you like to install it? [y/n] " ANSWER
-        case $ANSWER in
-          [yY][eE][sS]|[yY])
-            /opt/local/bin/port install xorg
-            break
-            ;;
-          [nN][oO]|[nN])
-            echo "Well, if you don't want to install X, there's no point in running this script ;)"  
-            exit 1
-            break
-            ;;
-          *)
-            echo "Please answer yes or no...."
-        esac
-    done
-  else
-    echo "Looks like Xorg is already installed. Proceeding to create launcher scripts"
-fi
-
 # Create a small script to set the environment variables for zsh properly before calling the startx wrapper
-cat <<'EOF' > /opt/local/bin/startx.zsh
+cat <<'EOF' > /opt/X11/bin/startx.zsh
 #!/bin/zsh
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-/opt/local/bin/startx
+/opt/X11/bin/startx
 EOF
 
 # Make the above script executable
-chmod a+x /opt/local/bin/startx.zsh
+chmod a+x /opt/X11/bin/startx.zsh
 
 # Create a service file to be enabled to run at login to start X with the above script
 cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
@@ -64,7 +31,7 @@ cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
   <string>com.startx.userlogin</string>
   <key>ProgramArguments</key>
   <array>
-      <string>/opt/local/bin/startx.zsh</string>
+      <string>/opt/X11/bin/startx.zsh</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
@@ -74,5 +41,5 @@ EOF
 
 # Echo instrcutions to have X start on desired user login
 echo ''
-echo -e 'Necessary X files have been created. \033[38;33mPlease run the following command as the user you wish to use X with:\033[39m\n\033[38;36mlaunchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist\033[39m'
-
+echo -e 'Necessary X files have been created.\n\033[38;36mSetting X to launch at login\033[39m'
+sudo -c $USER launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist
