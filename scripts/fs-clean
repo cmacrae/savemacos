@@ -78,6 +78,7 @@ FILEPATH=/Library/Widgets/*
 while :
 do
   read -r -p "Would you like to remove the widgets? [y/n] " ANSWER
+  confirm widgets
 done
 
 # Remove Automater
@@ -85,6 +86,8 @@ FILEPATH=/System/Library/Automater
 while :
 do
   read -r -p "Would you like to remove Automater? [y/n] " ANSWER
+  confirm Automator
+done
 
 # Remove log files & caches
 echo "Removing unecessary logs, tmp files & caches"

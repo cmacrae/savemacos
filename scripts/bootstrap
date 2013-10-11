@@ -265,6 +265,7 @@ echo ''
 echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
-#   Next, proceed to the "Retrieve Save OS X Scripts" screen
-#   
-#   Clone the saveosx repo and proceed to run scripts
+# Testing
+git clone git@github.com:Phyrne/saveosx /tmp/saveosx
+cd /tmp/saveosx
+sudo ./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
