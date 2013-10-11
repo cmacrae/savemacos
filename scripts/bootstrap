@@ -67,7 +67,17 @@ clear
 MESSAGE=""$RED_UL"Essential Tools$ESC"
 title
 echo ''
-echo -e "This project uses "$BOLD"pkgsrc"$ESC" & "$BOLD"XQuartz"$ESC"\n"
+echo -e ""$BLUE"This project uses pkgsrc & XQuartz"$ESC"\n"
+echo ''
+echo -e ""$YELLOW_UL"pkgsrc"$ESC""
+echo "pkgsrc is a framework for building third-party software on NetBSD and other UNIX-like systems,"
+echo "currently containing over 12000 packages. It is used to enable freely available software to be"
+echo "configured and built easily on supported platforms."
+echo ''
+echo -e ""$YELLOW_UL"XQuartz"$ESC""
+echo "XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X."
+echo "Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with"
+echo "OS X since version 10.5. "
 echo ''
 echo "Proceeding to download and install essential tools"
 echo ''
