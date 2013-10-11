@@ -88,6 +88,61 @@ echo "Fetching pkgsrc from the Save OS X repo..."
 ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz # Safely attempt to retrive the pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 sudo -v # Keep sudo authentication open
+
+# Check for Home Brew install
+if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') -eq "brew" ]]; then
+    BREW_INSTALLED="true"
+  else
+    BREW_INSTALLED="false"
+fi
+
+if [[ $(echo $BREW_INSTALLED) -eq "true" ]]; then
+  echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
+  echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
+  echo -e "remove it."$ESC""
+  echo ''
+  echo -e ""$BLUE"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""
+  echo ''
+  echo "For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:"
+  echo ''
+  echo -e "cd `brew --prefix`\nrm -rf Cellar\nbrew prune\nrm `git ls-files`"
+  echo -e "rm -rf Library/{Homebrew,Aliases,Formula,Contributions}"
+  echo -e "rm -rf .git"
+  echo -e "rm -rf ~/Library/Caches/Homebrew"
+  echo ''
+  echo -e ""$RED_UL"WARNING:"$ESC""$RED"This will remove all software installed with Home Brew!"$ESC""
+  exit 1
+fi
+
+# Check for MacPorts install
+if [[ $(which port | awk -F/ '{print$NF}' | grep -v 'not found') -eq "port" ]]; then
+    PORTS_INSTALLED="true"
+  else
+    PORTS_INSTALLED="false"
+fi
+
+
+if [[ $(echo $PORTS_INSTALLED) -eq "true" ]]; then
+  echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
+  echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
+  echo -e "remove it."$ESC""
+  echo ''
+  echo -e ""$BLUE"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""
+  echo ''
+  echo "For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:"
+  echo ''
+  echo -e "port -fp uninstall installed"
+  echo -e "rm -rf /opt/local"
+  echo -e "rm -rf /Applications/{DarwinPorts,MacPorts}"
+  echo -e "rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\"
+  echo -e "Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}"
+  echo -e "rm -rf ~/.macports"
+  echo ''
+  echo -e ""$RED_UL"WARNING:"$ESC""$RED"This will remove all software installed with MacPorts!"$ESC""
+  exit 1
+fi
+
+
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding SmartOS & Save OS X repos..."
@@ -202,6 +257,7 @@ do
          ;;
        *)
         echo "Please select nano or vim..." 
+        echo ''
      esac
 done
 # Check user's shell
@@ -217,6 +273,7 @@ echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\
 echo ''
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
+echo ''
 echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
