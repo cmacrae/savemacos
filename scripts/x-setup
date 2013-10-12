@@ -42,4 +42,4 @@ EOF
 # Echo instrcutions to have X start on desired user login
 echo ''
 echo -e 'Necessary X files have been created.\n\033[38;36mSetting X to launch at login\033[39m'
-sudo -c $USER launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist
+sudo -u $USER launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist
