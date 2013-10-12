@@ -62,7 +62,6 @@ $APATH.twitterd
 $APATH.TMLaunchAgent
 $APATH.tiswitcher
 $APATH.talagent
-$APATH.SystemUIServer
 $APATH.systemprofiler
 $APATH.syncservices.uihandler
 $APATH.syncservices.SyncServer
@@ -149,7 +148,6 @@ $APATH.CalendarAgent
 $APATH.btsa
 $APATH.bluetoothUIServer
 $APATH.bluetoothAudioAgent
-$APATH.BezelUI
 $APATH.assistantd
 $APATH.assistant_service
 $APATH.apsctl
