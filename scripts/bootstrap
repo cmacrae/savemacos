@@ -228,7 +228,7 @@ fi
 # Update user's shell rc file with new $PATH
 echo ''
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
-echo $PATH | pbcopy # Copy the $PATH to the clipboard
+echo "PATH=$PATH" | pbcopy # Copy the $PATH to the clipboard
 echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
 echo ''
 while :
@@ -266,6 +266,6 @@ echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
 # Testing
-git clone git@github.com:Phyrne/saveosx /tmp/saveosx
+/usr/pkg/bin/git clone git://github.com/Phyrne/saveosx /tmp/saveosx
 cd /tmp/saveosx
 sudo ./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
