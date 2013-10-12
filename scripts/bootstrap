@@ -158,7 +158,7 @@ sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                            
 echo ''
 sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
-sudo pkgin -y update # Update the pkgsrc repository information
+sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo ''
 
@@ -220,7 +220,7 @@ do
 done
 
 # Check to see if user installed from pkgsrc
-if [ $(pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
+if [ $(/usr/pkg/bin/pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
   echo ''
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
 fi
