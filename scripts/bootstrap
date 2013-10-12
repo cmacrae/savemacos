@@ -209,7 +209,7 @@ do
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
           saferun sudo /usr/pkg/bin/pkgin -y in scmgit-base scmgit-docs 1> /dev/null
-          sudo ln -sf /usr/pkin/bin/git* /usr/bin/
+          sudo ln -sf /usr/pkin/bin/git* /usr/bin/git*
           break
           ;;
       [nN][oO]|[nN])
@@ -229,12 +229,12 @@ fi
 # Update user's shell rc file with new $PATH
 echo ''
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
-echo "PATH=$PATH" | pbcopy # Copy the $PATH to the clipboard
-echo -e ""$YELLOW_UL"\$PATH copied to clipboard"$ESC""  
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | pbcopy # Copy new binary paths, line-by-line to clipboard
+echo -e ""$YELLOW_UL"New binary paths copied to clipboard"$ESC""  
 echo ''
 while :
 do
-  read -r -p "Please choose an editor to edit your shell's rc file with [nano/vim]: " ED_SEL
+  read -r -p "Please choose an editor to edit your system-wide PATH & shell's rc file with [nano/vim]: " ED_SEL
      case $ED_SEL in                                                  #
        vim)                                                           #   Ask user which editor to use to
          EDITOR="vim"                                                 #   add the $PATH to their shell's rc file
@@ -249,16 +249,31 @@ do
         echo ''
      esac
 done
+echo -e "$EDITOR selected...\n"
+echo ''
+echo "First, we need to add the new binary paths system-wide"
+echo "In a moment you will be dropped into the file that defines the system-wide PATH"
+echo -e "Please simply "$YELLOW"paste the contents of the clipboard at the beggining of the file"$ESC""
+echo ''
+read -r -p "Press [Enter] to continue..."
+sudo $EDITOR /etc/paths
+echo ''
+echo -e ""$GREEN"That should be the system-wide PATH updated..."$ESC""
+
+echo ''
+echo -e "Now we need to edit your shell's rc file...\n"
+
 # Check user's shell
 SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
-echo -e "$EDITOR selected...\n\nIt looks like your shell is $SHELL"
-
+echo "It looks like your shell is $SHELL"
 # Use the user defined editor to edit the shell rc file
 if [ ! -f ${SHELLRC} ]; then
-  echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created, simply paste the \$PATH into the file\n"
+  echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
-echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the \$PATH variable, save and exit"$ESC""
+echo -e "if [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" | pbcopy
+
+echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the clipboard at the end of the file, save and exit"$ESC""
 echo ''
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
