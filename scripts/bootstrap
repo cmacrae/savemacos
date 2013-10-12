@@ -286,3 +286,6 @@ read -r -p "Press [Enter] to continue..."
 /usr/pkg/bin/git clone git://github.com/Phyrne/saveosx /tmp/saveosx
 cd /tmp/saveosx
 sudo ./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
+
+# Hide menu bar for XQuartz
+sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; sudo cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
