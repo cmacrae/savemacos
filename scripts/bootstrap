@@ -209,6 +209,7 @@ do
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
           saferun sudo /usr/pkg/bin/pkgin -y in scmgit-base scmgit-docs 1> /dev/null
+          sudo ln -sf /usr/pkin/bin/git* /usr/bin/
           break
           ;;
       [nN][oO]|[nN])
@@ -261,6 +262,7 @@ echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\
 echo ''
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
+source $SHELLRC
 echo ''
 echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
