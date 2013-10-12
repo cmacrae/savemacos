@@ -192,7 +192,7 @@ MESSAGE=""$GREEN_UL"Git"$ESC""
 title
 echo
 echo "Using Save OS X requires Git. Apple's implementation of Git is"
-echo "Included with XCode. Unless you're a developer of software for"
+echo "included with XCode. Unless you're a developer of software for"
 echo "OS X/iOS, this isn't necessary"
 echo ''
 echo "Even if you do have XCode intalled, installing Git from pkgsrc"
