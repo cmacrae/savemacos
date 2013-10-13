@@ -39,7 +39,7 @@ BLUE_UL='\033[38;4;34m'
 GREEN='\033[38;32m'
 GREEN_UL='\033[38;4;32m'
 CYAN='\033[38;36m'
-CYAN_IL='\033[38;4;36m'
+CYAN_UL='\033[38;4;36m'
 RED='\033[38;31m'
 RED_UL='\033[38;4;31m'
 PURPLE='\033[38;35m'
@@ -285,7 +285,7 @@ read -r -p "Press [Enter] to continue..."
 # Testing
 /usr/pkg/bin/git clone git://github.com/Phyrne/saveosx /tmp/saveosx
 cd /tmp/saveosx
-sudo ./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
+./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
 
 # Hide menu bar for XQuartz
 sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; sudo cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
