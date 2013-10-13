@@ -10,7 +10,53 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+# Fancy title function
+title() {
+  COLUMNS=$(tput cols)
+  tput clear
+  Y=$((($COLUMNS-${#MESSAGE})/2))
+  X=1
+  tput cup $X $Y
+  echo -e "${MESSAGE}"
+}
+
+# ANSI properties/colours
+ESC='\033[0m'
+BOLD='\033[1m'
+BLUE='\033[38;34m'
+BLUE_UL='\033[38;4;34m'
+GREEN='\033[38;32m'
+GREEN_UL='\033[38;4;32m'
+CYAN='\033[38;36m'
+CYAN_UL='\033[38;4;36m'
+RED='\033[38;31m'
+RED_UL='\033[38;4;31m'
+PURPLE='\033[38;35m'
+PURPLE_UL='\033[38;4;35m'
+YELLOW='\033[38;33m'
+YELLOW_UL='\033[38;4;33m'
+
+# Title
+clear
+MESSAGE=""$BLUE_UL"X11 Setup"$ESC""
+echo ''
+echo -e "This script will set X11 to run on login in a seamless manner.\n"
+echo -e "We've taken the liberty of leaving the Dock.app running, as this\nhandles Aqua's virtual workspaces."
+echo -e "This means you can have a fully functional, seamless X11 environment, like on any other UNIX based system,"
+echo -e "but still get all the fancy gesture based navigation and animations that Apple have implemented in Aqua."
+echo ''
+echo -e "You will still be able to run your Aqua applications as usual!"
+echo ''
+echo -e "Lastly, before we finish saving OS X ;) Please understand that you will need to set up your"
+echo -e "X11 environment yourself. This is done as it would be on any other OS, simply install your"
+echo -e "window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,"
+echo -e "and you should be all set!"
+echo ''
+read -r -p "Press [Enter] to continue..."
+echo ''
+
 # Create a small script to set the environment variables for zsh properly before calling the startx wrapper
+echo -e "Creating environment friendly startx wrapper..."
 cat <<'EOF' > /opt/X11/bin/startx.zsh
 #!/bin/zsh
 export LANG=en_US.UTF-8
@@ -22,6 +68,7 @@ EOF
 chmod a+x /opt/X11/bin/startx.zsh
 
 # Create a service file to be enabled to run at login to start X with the above script
+echo -e "Creating X11 Apple service..."
 cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -42,7 +89,15 @@ EOF
 # Make Finder quitable
 defaults write com.apple.finder QuitMenuItem -bool YES
 
-# Echo instrcutions to have X start on desired user login
+# Hide menu bar for XQuartz
+echo -e "Configuring XQuartz to be seemless..."
+ sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; sudo cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
+
+# Set XQuartz to launch at login
 echo ''
-echo -e 'Necessary X files have been created.\n\033[38;36mSetting X to launch at login\033[39m'
+echo -e "Necessary X files have been created.\n"$YELLOW"Setting X to launch at login"$ESC""
 sudo -u $USER launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist
+echo ''
+echo -e ""$GREEN"Complete!"$ESC""
+echo ''
+read -r -p "Press [Enter] to continue... "
