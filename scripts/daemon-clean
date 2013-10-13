@@ -26,17 +26,16 @@ GREEN='\033[38;32m'
 RED_UL='\033[38;4;31m'
 YELLOW='\033[38;33m'
 
-# User friendly prompt to ensure they have a working X environment set up prior to unloading services
+# Title screen
 clear
 MESSAGE=""$RED_UL"Daemon Cleanup"$ESC""
+title
 echo
 echo -e "This script will unload multiple Apple services that we, the creators of Save OS X, deem unecessary."
 echo ''
 echo -e "Should you wish to load any that we have disabled, simply run the below command:\n"
 echo -e ""$YELLOW"launchctl load -w /System/Library/LaunchAgents/*name-of-service*"$ESC""
 echo ''
-while :
-do
 read -r -p "Press [Enter] to proceed... "
   
 # List of services that will be disabled by this script
