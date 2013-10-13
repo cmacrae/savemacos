@@ -199,6 +199,8 @@ echo "Even if you do have XCode intalled, installing Git from pkgsrc"
 echo "will get you a more recent revision."
 echo ''
 
+sudo -v # Keep sudo authentication open
+
 # Ask user if they would like to install Git from pkgsrc
 while :
 do
@@ -219,6 +221,8 @@ do
           echo "Please answer yes or no..."
     esac
 done
+
+sudo -v # Keep sudo authentication open
 
 # Check to see if user installed from pkgsrc
 if [ $(/usr/pkg/bin/pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
@@ -249,6 +253,9 @@ do
         echo ''
      esac
 done
+
+sudo -v # Keep sudo authentication open
+
 echo -e "$EDITOR selected...\n"
 echo ''
 echo "First, we need to add the new binary paths system-wide"
@@ -262,6 +269,8 @@ echo -e ""$GREEN"That should be the system-wide PATH updated..."$ESC""
 
 echo ''
 echo -e "Now we need to edit your shell's rc file...\n"
+
+sudo -v # Keep sudo authentication open
 
 # Check user's shell
 SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
@@ -282,10 +291,33 @@ echo ''
 echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
-# Testing
+sudo -v # Keep sudo authentication open
+
+# Clone Save OS X git repo and run through the other scripts
 /usr/pkg/bin/git clone git://github.com/Phyrne/saveosx /tmp/saveosx
 cd /tmp/saveosx
-./scripts/daemon-clean && sudo ./scripts/fs-clean && sudo ./scripts/x-setup
+./scripts/daemon-clean
+sudo -v # Keep sudo authentication open
+sudo ./scripts/fs-clean
+sudo -v # Keep sudo authentication open
+sudo ./scripts/x-setup
 
-# Hide menu bar for XQuartz
-sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; sudo cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
+# Final screen!
+clear
+MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
+echo ''
+echo -e "All processes are complete!\nSo what now? Well, we reccomend you read the"
+echo -e "manpage for pkgin at least, as you'll be managing all your non-Apple software"
+echo -e "with this excellent package manager."
+echo ''
+echo -e "From here, get your X11 environment set up, and more importantly; enjoy!"
+echo ''
+echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$BLUE" for all the latest news"
+echo -e "and other ramblings from the authors:"$ESC""
+echo -e ""$YELLOW"Youri Mouton & Calum MacRae"$ESC""
+echo ''
+echo ""$BLUE"You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"$ESC""
+echo -e "\n\n"
+echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
+read -r -p "Press [q] to quit.."
+exit 0
