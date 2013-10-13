@@ -40,19 +40,9 @@ confirm() {
 
 #ANSI properties/colours
 ESC='\033[0m'
-BOLD='\033[1m'
-BLUE='\033[38;34m'
-BLUE_UL='\033[38;4;34m'
 GREEN='\033[38;32m'
-GREEN_UL='\033[38;4;32m'
-CYAN='\033[38;36m'
-CYAN_UL='\033[38;4;36m'
-RED='\033[38;31m'
-RED_UL='\033[38;4;31m'
-PURPLE='\033[38;35m'
 PURPLE_UL='\033[38;4;35m'
 YELLOW='\033[38;33m'
-YELLOW_UL='\033[38;4;33m'
 
 # Title screen
 clear
@@ -63,7 +53,7 @@ echo -e "This script will remove various parts of OS X which could be considered
 echo -e "As there may be some features you wish to keep, we've taken the courtesy of prompting you for each action taken."
 echo -e "The only action taken in this script that will not ask for permission is the removal of some useless cache and logs."
 echo ''
-echo -e "Please anser 'y' to take action, or 'n' to leave things in tact.\n"
+echo -e ""$YELLOW"Please anser 'y' to take action, or 'n' to leave things in tact."$ESC"\n"
 read -r -p "Press [Enter] to continue..."
 echo ''
 
@@ -161,3 +151,7 @@ do
   read -r -p "Would you like to disable swapping? [y/n] " ANSWER
   confirm swap -d
 done
+
+echo -e ""$GREEN"Complete!"$ESC""
+echo ''
+read -r -p "Press [Enter] to continue... "
