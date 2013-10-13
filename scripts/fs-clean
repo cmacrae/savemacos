@@ -1,28 +1,20 @@
 #! /bin/bash
 
-#
-# - Do NOT run this script at this point. It is under development. If you run this script right now, you will render your system unusable....
-#
-
 # Check for root
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root!"
   exit 1
 fi
 
-# Commented out, as this is currently causing problems
-
-# Render spotlight unusable
-#echo "Disabling Spotlight"
-#mdutil -a -v -i off > /dev/null 2>&1
-#chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* > /dev/null 2>&1
-#launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist > /dev/null 2>&1
-#mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} > /dev/null 2>&1
-#chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled > /dev/null 2>&1
-#rm -rf /System/Library/CoreServices/Search.bundle.disabled > /dev/null 2>&1
-#mv /System/Library/CoreServices/Search.bundle{,.disabled} > /dev/null 2>&1
-#killall SystemUIServer > /dev/null 2>&1
-
+# Fancy title function
+title() {
+  COLUMNS=$(tput cols)
+  tput clear
+  Y=$((($COLUMNS-${#MESSAGE})/2))
+  X=1
+  tput cup $X $Y
+  echo -e "${MESSAGE}"
+}
 
 # Confirm function to prompt user for decision
 confirm() {
@@ -45,6 +37,47 @@ confirm() {
         echo "Please answer yes or no... "
     esac
 }
+
+#ANSI properties/colours
+ESC='\033[0m'
+BOLD='\033[1m'
+BLUE='\033[38;34m'
+BLUE_UL='\033[38;4;34m'
+GREEN='\033[38;32m'
+GREEN_UL='\033[38;4;32m'
+CYAN='\033[38;36m'
+CYAN_UL='\033[38;4;36m'
+RED='\033[38;31m'
+RED_UL='\033[38;4;31m'
+PURPLE='\033[38;35m'
+PURPLE_UL='\033[38;4;35m'
+YELLOW='\033[38;33m'
+YELLOW_UL='\033[38;4;33m'
+
+# Title screen
+clear
+MESSAGE=""$PURPLE_UL"Filesystem Cleanup"$ESC""
+title
+echo ''
+echo -e "This script will remove various parts of OS X which could be considered unecessary with regards\n to general function."
+echo -e "As there may be some features you wish to keep, we've taken the courtesy of prompting you for each action taken."
+echo -e "The only action taken in this script that will not ask for permission is the removal of some useless cache and logs."
+echo ''
+echo -e "Please anser 'y' to take action, or 'n' to leave things in tact.\n"
+read -r -p "Press [Enter] to continue..."
+echo ''
+
+# Commented out, as this is currently causing problems
+# Render spotlight unusable
+#echo "Disabling Spotlight"
+#mdutil -a -v -i off > /dev/null 2>&1
+#chmod 000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/        ↳ Support/* > /dev/null 2>&1
+#launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist > /dev/null 2>&1
+#mv /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search{,.disabled} > /dev/null 2>&1
+#chmod -x /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search.disabled > /dev/null 2>&1
+#rm -rf /System/Library/CoreServices/Search.bundle.disabled > /dev/null 2>&1
+#mv /System/Library/CoreServices/Search.bundle{,.disabled} > /dev/null 2>&1
+#killall SystemUIServer > /dev/null 2>&1
 
 # Hibernation
 FILEPATH=/pivate/var/vm/sleepimage
