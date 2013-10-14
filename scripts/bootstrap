@@ -307,18 +307,17 @@ clear
 MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
 title
 echo ''
-echo -e "All processes are complete!\nSo what now? Well, we reccomend you read the"
+echo ''
+echo -e "All processes are complete! So what now? Well, we reccomend you read the"
 echo -e "manpage for pkgin at least, as you'll be managing all your non-Apple software"
 echo -e "with this excellent package manager."
 echo ''
 echo -e "From here, get your X11 environment set up, and more importantly; enjoy!"
 echo ''
-echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$BLUE" for all the latest news"
-echo -e "and other ramblings from the authors:"$ESC""
+echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
 echo -e ""$YELLOW"Youri Mouton & Calum MacRae"$ESC""
 echo ''
-echo ""$BLUE"You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"$ESC""
+echo "You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"
 echo -e "\n\n"
 echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
-read -r -p "Press [q] to quit.."
 exit 0
