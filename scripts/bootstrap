@@ -305,6 +305,7 @@ sudo ./scripts/x-setup
 # Final screen!
 clear
 MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
+title
 echo ''
 echo -e "All processes are complete!\nSo what now? Well, we reccomend you read the"
 echo -e "manpage for pkgin at least, as you'll be managing all your non-Apple software"

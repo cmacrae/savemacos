@@ -39,6 +39,7 @@ YELLOW_UL='\033[38;4;33m'
 # Title
 clear
 MESSAGE=""$BLUE_UL"X11 Setup"$ESC""
+title
 echo ''
 echo -e "This script will set X11 to run on login in a seamless manner.\n"
 echo -e "We've taken the liberty of leaving the Dock.app running, as this\nhandles Aqua's virtual workspaces."
