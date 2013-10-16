@@ -87,7 +87,14 @@ sudo -v # Keep sudo authentication open
 # Download and install pkgsrc
 echo "Fetching pkgsrc from the Save OS X repo..."
 ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
-saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz # Safely attempt to retrive the pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+
+# Check architecture
+if [[ $(uname -m) == 'x86_64' ]] ; then
+  saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+else
+  saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz.xz # Safely attempt to retrive the i386 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+fi
+
 sudo -v # Keep sudo authentication open
 
 # Check for Home Brew install
@@ -151,10 +158,16 @@ fi
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding SmartOS & Save OS X repos..."
-sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf                                                    # Add SmartOS & Save OS X pkgsrc repos
-echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf    # 
-echo "http://saveosx.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
-sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf                                                   # Temporarily drop permissions
+sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permissions
+
+# Add Save OS X / SmartOS repos
+if [[ $(uname -m) == 'x86_64' ]]; then
+    echo "http://saveosx.org/packages/Darwin/2013Q2/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
+else
+  echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf
+  echo "http://saveosx.org/packages/Darwin/2013Q2/i386/All/" >> /usr/pkg/etc/pkgin/repositories.conf    #  No sudo access to file
+fi
+sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf # Change permissions back
 echo ''
 sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
