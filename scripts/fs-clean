@@ -84,7 +84,7 @@ fi
 FILEPATH=/System/Library/Voices/*
 while :
 do
-  read -r -p "Would you like to remove the Speach Files? [y/n] " ANSWER
+  read -r -p "Would you like to remove the Speech Files? [y/n] " ANSWER
     confirm "Speach Files"
 done
 
