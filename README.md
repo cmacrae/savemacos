@@ -1,13 +1,11 @@
 Save OS X
 =========
 
-A repo for work on making Apple's operating system more "usable" for us UNIX geeks.
+The official repo for the [Save OS X](http://saveosx.org/) project,  striving to make Apple's operating system more "usable" for us UNIX users.
 
 ![alt text](img/hexley.png)
 
 About
 -----
 
-This is simply a convenient place to drop and share any work being conducted on the (not officially named) Save OS X project. This is a collaborative project between myself and yrmt. This project is still a work in progress, so please, for your own sake; wait until we're finished to run any scripts here ;)
-
-**More to come soon...** 
+This is a collaborative project between Calum MacRae and Youri Muoton. This is still a work in progress, so please, for your own sake; wait until we're finished to run any scripts here ;)
