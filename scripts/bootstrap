@@ -304,7 +304,7 @@ git clone git://github.com/Phyrne/saveosx /tmp/saveosx
 cd /tmp/saveosx
 sudo -v # Keep sudo authentication open
 sudo ./scripts/x-setup
-exit $?
+
 # Final screen!
 clear
 MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
