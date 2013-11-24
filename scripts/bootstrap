@@ -157,14 +157,13 @@ fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
-echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding SmartOS & Save OS X repos..."
+echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permissions
 
-# Add Save OS X / SmartOS repos
+# Add Save OS X repo
 if [[ $(uname -m) == 'x86_64' ]]; then
     echo "http://saveosx.org/packages/Darwin/2013Q2/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
 else
-  echo "http://pkgsrc.smartos.org/packages/Darwin/2013Q2/All" >> /usr/pkg/etc/pkgin/repositories.conf
   echo "http://saveosx.org/packages/Darwin/2013Q2/i386/All/" >> /usr/pkg/etc/pkgin/repositories.conf    #  No sudo access to file
 fi
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf # Change permissions back
@@ -176,18 +175,12 @@ sudo -v # Keep sudo authentication open
 echo ''
 
 # Fetch & install XQuartz if it isn't already installed
-if [[ $(system_profiler SPApplicationsDataType | grep XQuartz | wc -l) -lt 1 ]]; then
+if [[ $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
   echo ''
-  ERR_MSG="retrieving the XQuartz disk image"
-  echo "Fetching XQuartz..."
-  saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
-  sudo -v # Keep sudo authentication open
-  ERR_MSG="mounting the XQuartz disk image"
-  echo "Mounting XQuartz disk image..."
-  saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
   ERR_MSG="installing XQuartz"
   echo "Installing XQuartz..."
-  saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
+  saferun pkgin -y in xquartz
+sudo -v # Keep sudo authentication open
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
   umount /Volumes/xquartz
