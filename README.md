@@ -8,4 +8,4 @@ The official repo for the [Save OS X](http://saveosx.org/) project,  striving to
 About
 -----
 
-This is a collaborative project between Calum MacRae and Youri Muoton. This is still a work in progress, so please, for your own sake; wait until we're finished to run any scripts here ;)
+This is a collaborative project between Calum MacRae and Youri Mouton. This is still a work in progress, so please, for your own sake; wait until we're finished to run any scripts here ;)
