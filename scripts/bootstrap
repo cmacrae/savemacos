@@ -162,9 +162,9 @@ sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permiss
 
 # Add Save OS X repo
 if [[ $(uname -m) == 'x86_64' ]]; then
-    echo "http://saveosx.org/packages/Darwin/2013Q2/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
+    echo "http://saveosx.org/packages/Darwin/2013Q3/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
 else
-  echo "http://saveosx.org/packages/Darwin/2013Q2/i386/All/" >> /usr/pkg/etc/pkgin/repositories.conf    #  No sudo access to file
+  echo "http://saveosx.org/packages/Darwin/2013Q3/i386/All/" >> /usr/pkg/etc/pkgin/repositories.conf    #  No sudo access to file
 fi
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf # Change permissions back
 echo ''
