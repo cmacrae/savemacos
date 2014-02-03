@@ -87,12 +87,51 @@ cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
 </plist>
 EOF
 
-# Make Finder quitable
+# Make Finder quitable, ask user if they would like to disable its launch
 defaults write com.apple.finder QuitMenuItem -bool YES
+echo "Finder has been made quitable."
+while :
+do
+  read -r -p "Would you like to disable its launch upon login? [y/n] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+        echo -e "\nOK, disabling Finder..."
+        sudo -u $USER launchctl unload -w \ 
+        /System/Library/LaunchAgents/com.apple.Finder.plist
+        break
+        ;;
+      [nN][oO]|[nN])
+        echo -e "\nLeaving Finder alone..."
+        break
+        ;; 
+      *)
+        echo "Please answer yes or no..."
+    esac
+done
+
+# Permanently hide dock option
+while :
+  do
+    read -r -p "Would you like to permanently hide the dock? [y/n] " ANSWER
+      case $ANSWER in
+        [yY][eE][sS]|[yY])
+          echo -e "\nOK, hiding Dock.app..."
+          defaults write com.apple.dock autohide-time-modifier \
+          -int 10000000000; killall Dock
+          break
+          ;;
+        [nN][oO]|[nN])
+          echo -e "\nLeaving Dock.app alone..."
+          break
+          ;; 
+        *)
+          echo "Please answer yes or no..."
+      esac
+done
 
 # Hide menu bar for XQuartz
 echo -e "Configuring XQuartz to be seemless..."
- sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; sudo cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
+ mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
 
 # Set XQuartz to launch at login
 echo ''
@@ -100,5 +139,4 @@ echo -e "Necessary X files have been created.\n"$YELLOW"Setting X to launch at l
 sudo -u $USER launchctl load -w /Library/LaunchAgents/com.startx.userlogin.plist
 echo ''
 echo -e ""$GREEN"Complete!"$ESC""
-echo ''
 read -r -p "Press [Enter] to continue... "
