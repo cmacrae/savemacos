@@ -90,9 +90,9 @@ ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the erro
 
 # Check architecture
 if [[ $(uname -m) == 'x86_64' ]] ; then
-  saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+  saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 else
-  saferun curl -s -o /tmp/bootstrap.tar.gz http://saveosx.org/packages/Darwin/bootstrap/bootstrap.tar.gz.xz # Safely attempt to retrive the i386 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+  echo ""$RED_UL"We only support x86_64 systems!"$ESC""
 fi
 
 sudo -v # Keep sudo authentication open
@@ -162,7 +162,7 @@ sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permiss
 
 # Add Save OS X repo
 if [[ $(uname -m) == 'x86_64' ]]; then
-    echo "http://saveosx.org/packages/Darwin/2013Q3/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
+    echo "http://pkgsrc.saveosx.org/Darwin/2013Q3/x86_64/All/" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
   exit 1
