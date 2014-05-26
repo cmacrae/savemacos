@@ -217,7 +217,7 @@ do
           ERR_MSG="installing Git with pkgin"
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
-          sudo /usr/pkg/bin/pkgin -y in scmgit-base scmgit-docs
+          sudo /usr/pkg/bin/pkgin -y in git-base git-docs
           sudo ln -sf /usr/pkin/bin/git* /usr/bin/git*
           break
           ;;
