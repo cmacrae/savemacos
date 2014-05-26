@@ -220,7 +220,9 @@ do
           echo ''
           echo -e "Installing Git with pkgin...\n\n"
           sudo /usr/pkg/bin/pkgin -y in git-base git-docs
-          sudo ln -sf /usr/pkin/bin/git* /usr/bin/git*
+          ls /usr/pkg/bin | grep 'git' | while read GIT_BIN ;
+	    do sudo ln -sf /usr/pkg/bin/${GIT_BIN} /usr/bin/${GIT_BIN} ;
+	  done
           break
           ;;
       [nN][oO]|[nN])
@@ -293,7 +295,6 @@ echo -e "if [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_
 
 echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the clipboard at the end of the file, save and exit"$ESC""
 echo ''
-source $SHELLRC 2>&1 > /dev/null
 read -r -p "Press [Enter] to continue..."
 $EDITOR $SHELLRC
 source $SHELLRC
