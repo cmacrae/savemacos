@@ -58,34 +58,41 @@ sudo -k
 MESSAGE=""$BLUE_UL"Welcome to Save OS X!"$ESC""
 
 title
-echo ''
-echo -e "Here's some stuff about the project that will be echo'd\non the first screen of the script\n"
-echo ''
+cat << EOM
+
+Here's some stuff about the project that will be echo'd
+on the first screen of the script
+
+Please enter your password for sudo authentication
+
+EOM
+
 ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
-echo "Please enter your password for sudo authentication"
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
-echo ''
+echo 
 read -r -p "Press [Enter] to continue..."
 clear
 
 # Grab essential tools (pkgsrc & Xquartz)
 MESSAGE=""$RED_UL"Essential Tools$ESC"
 title
-echo ''
+echo 
 echo -e ""$BLUE"This project uses pkgsrc & XQuartz"$ESC"\n"
-echo ''
+echo 
 echo -e ""$YELLOW_UL"pkgsrc"$ESC""
-echo "pkgsrc is a framework for building third-party software on NetBSD and other UNIX-like systems,"
-echo "currently containing over 12000 packages. It is used to enable freely available software to be"
-echo "configured and built easily on supported platforms."
-echo ''
+cat << EOM
+pkgsrc is a framework for building third-party software on NetBSD and other UNIX-like systems,
+currently containing over 12000 packages. It is used to enable freely available software to be
+configured and built easily on supported platforms.
+
 echo -e ""$YELLOW_UL"XQuartz"$ESC""
-echo "XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X."
-echo "Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with"
-echo "OS X since version 10.5. "
-echo ''
-echo "Proceeding to download and install essential tools"
-echo ''
+XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
+Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
+OS X since version 10.5.
+
+Proceeding to download and install essential tools
+
+EOM
 sudo -v # Keep sudo authentication open
 
 # Download and install pkgsrc
@@ -110,20 +117,25 @@ fi
 
 # If the 'brew' binary is found, echo instructions on removal and exit
 if [[ $(echo $BREW_INSTALLED) == 'true' ]]; then
-  echo ''
+  echo 
   echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
   echo -e "remove it."$ESC""
-  echo ''
+  echo 
   echo -e ""$BLUE_UL"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""
-  echo ''
-  echo "For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:"
-  echo ''
-  echo -e "cd \`brew --prefix\`\nrm -rf Cellar\nbrew prune\nrm \`git ls-files\`"
-  echo -e "rm -rf Library/{Homebrew,Aliases,Formula,Contributions}"
-  echo -e "rm -rf .git"
-  echo -e "rm -rf ~/Library/Caches/Homebrew"
-  echo ''
+cat << EOM
+
+For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:
+
+cd `brew --prefix`
+rm -rf Cellar
+brew prune
+rm `git ls-files`
+rm -rf Library/{Homebrew,Aliases,Formula,Contributions}
+rm -rf .git
+rm -rf ~/Library/Caches/Homebrew
+
+EOM
   echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""
   exit 1
 fi
@@ -138,22 +150,24 @@ fi
 # If the 'port' binary is found, echo instructions on removal and exit
 
 if [[ $(echo $PORTS_INSTALLED) == 'true' ]]; then
-  echo ''
+  echo 
   echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
   echo -e "remove it."$ESC""
-  echo ''
+  echo 
   echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""
-  echo ''
-  echo "For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:"
-  echo ''
-  echo -e "port -fp uninstall installed"
-  echo -e "rm -rf /opt/local"
-  echo -e "rm -rf /Applications/{DarwinPorts,MacPorts}"
-  echo -e "rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\"
-  echo -e "Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}"
-  echo -e "rm -rf ~/.macports"
-  echo ''
+cat << EOM
+
+For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:
+
+port -fp uninstall installed
+rm -rf /opt/local
+rm -rf /Applications/{DarwinPorts,MacPorts}
+rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\
+Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}
+rm -rf ~/.macports
+
+EOM
   echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""
   exit 1
 fi
@@ -174,16 +188,16 @@ else
   exit 1
 fi
 sudo chmod og-w /usr/pkg/etc/pkgin/repositories.conf # Change permissions back
-echo ''
+echo 
 sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
 sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
-echo ''
+echo 
 
 # Fetch & install XQuartz if it isn't already installed
 if [[ $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
-  echo ''
+  echo 
   ERR_MSG="installing XQuartz"
   echo "Installing XQuartz..."
   saferun pkgin -y in xquartz
@@ -192,7 +206,7 @@ sudo -v # Keep sudo authentication open
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
   umount /Volumes/xquartz
 else
-  echo ''
+  echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
   export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH # Update path to so new binaries can be found (not including X11 apps)
 fi
@@ -203,14 +217,16 @@ sudo -v # Keep sudo authentication open
 MESSAGE=""$GREEN_UL"Git"$ESC""
 
 title
-echo
-echo "Using Save OS X requires Git. Apple's implementation of Git is"
-echo "included with XCode. Unless you're a developer of software for"
-echo "OS X/iOS, this isn't necessary"
-echo ''
-echo "Even if you do have XCode intalled, installing Git from pkgsrc"
-echo "will get you a more recent revision."
-echo ''
+cat << EOM
+
+Using Save OS X requires Git. Apple's implementation of Git is
+included with XCode. Unless you're a developer of software for
+OS X/iOS, this isn't necessary
+
+Even if you do have XCode intalled, installing Git from pkgsrc
+will get you a more recent revision.
+
+EOM
 
 sudo -v # Keep sudo authentication open
 
@@ -221,7 +237,7 @@ do
     case $ANSWER in
       [yY][eE][sS]|[yY])
           ERR_MSG="installing Git with pkgin"
-          echo ''
+          echo 
           echo -e "Installing Git with pkgin...\n\n"
           sudo /usr/pkg/bin/pkgin -y in git-base git-docs
           ls /usr/pkg/bin | grep 'git' | while read GIT_BIN ;
@@ -242,7 +258,7 @@ sudo -v # Keep sudo authentication open
 
 # Check to see if user installed from pkgsrc
 if [ $(/usr/pkg/bin/pkgin list | grep '^git' | wc -l) -gt 0 ]; then
-  echo ''
+  echo 
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
   read -r -p "Press [Enter] to continute..."
 fi
@@ -252,7 +268,7 @@ MESSAGE=""$GREEN_UL"Update System PATH"$ESC""
 
 title
 # Prepend binary dirs to system-wide path
-echo ''
+echo 
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
 echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin\n$(cat /etc/paths)" > /tmp/paths
 sudo mv /tmp/paths /etc/paths && sudo chown root:wheel /etc/paths
@@ -275,7 +291,7 @@ do
         ;;
       *)
         echo "Please answer 'yes' or 'other'..."
-        echo ''
+        echo 
     esac
 done
 
@@ -297,7 +313,7 @@ if [ -x /usr/libexec/path_helper ]; then
   eval `/usr/libexec/path_helper -s`
 fi
 
-echo ''
+echo 
 echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
@@ -313,17 +329,18 @@ sudo ./scripts/x-setup
 clear
 MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
 title
-echo ''
-echo ''
-echo -e "All processes are complete! So what now? Well, we reccomend you read the"
-echo -e "manpage for pkgin at least, as you'll be managing all your non-Apple software"
-echo -e "with this excellent package manager."
-echo ''
-echo -e "From here, get your X11 environment set up, and more importantly; enjoy!"
-echo ''
+cat << EOM
+
+All processes are complete! So what now? Well, we reccomend you read the"
+manpage for pkgin at least, as you'll be managing all your non-Apple software"
+with this excellent package manager."
+
+From here, get your X11 environment set up, and more importantly; enjoy!"
+
+EOM
 echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
 echo -e ""$YELLOW"Youri Mouton & Calum MacRae"$ESC""
-echo ''
+echo 
 echo "You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"
 echo -e "\n\n"
 echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
