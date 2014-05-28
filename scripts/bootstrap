@@ -226,6 +226,7 @@ do
           break
           ;;
       [nN][oO]|[nN])
+          read -r -p "Press [Enter] to continute..."
           break
           ;;
       *)
@@ -239,67 +240,57 @@ sudo -v # Keep sudo authentication open
 if [ $(/usr/pkg/bin/pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
   echo ''
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
+  read -r -p "Press [Enter] to continute..."
 fi
 
-# Update user's shell rc file with new $PATH
+# PATH screen
+MESSAGE=""$GREEN_UL"Update System PATH"$ESC""
+
+title
+# Prepend binary dirs to system-wide path
 echo ''
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
-echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | pbcopy # Copy new binary paths, line-by-line to clipboard
-echo -e ""$YELLOW_UL"New binary paths copied to clipboard"$ESC""  
-echo ''
-while :
-do
-  read -r -p "Please choose an editor to edit your system-wide PATH & shell's rc file with [nano/vim]: " ED_SEL
-     case $ED_SEL in                                                  #
-       vim)                                                           #   Ask user which editor to use to
-         EDITOR="vim"                                                 #   add the $PATH to their shell's rc file
-         break                                                        #
-         ;;
-       nano)
-         EDITOR="nano"
-         break
-         ;;
-       *)
-        echo "Please select nano or vim..." 
-        echo ''
-     esac
-done
-
-sudo -v # Keep sudo authentication open
-
-echo -e "$EDITOR selected...\n"
-echo ''
-echo "First, we need to add the new binary paths system-wide"
-echo "In a moment you will be dropped into the file that defines the system-wide PATH"
-echo -e "Please simply "$YELLOW"paste the contents of the clipboard at the beggining of the file"$ESC""
-echo ''
-read -r -p "Press [Enter] to continue..."
-sudo $EDITOR /etc/paths
-echo ''
-echo -e ""$GREEN"That should be the system-wide PATH updated..."$ESC""
-
-echo ''
-echo -e "Now we need to edit your shell's rc file...\n"
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin\n$(cat /etc/paths)" > /tmp/paths
+sudo mv /tmp/paths /etc/paths && sudo chown root:wheel /etc/paths
 
 sudo -v # Keep sudo authentication open
 
 # Check user's shell
 SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
-echo "It looks like your shell is $SHELL"
-# Use the user defined editor to edit the shell rc file
+echo "It looks like your shell's rc file is $SHELLRC"
+while :
+do
+  read -r -p "Add system PATH evaluation to $SHELLRC or another file? [yes/other] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+        break
+        ;;
+      [oO][tT][hH][eE][rR])
+        export SHELLRC="user_defined" 
+        break
+        ;;
+      *)
+        echo "Please answer 'yes' or 'other'..."
+        echo ''
+    esac
+done
+
+# Ask for user's shell if necessary
+if [ ${SHELLRC} == "user_defined" ]; then
+  read -r -p "Please enter the full path to your shell's rc file: " SHELLRC
+  export SHELLRC
+fi
+
 if [ ! -f ${SHELLRC} ]; then
   echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
-echo -e "if [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" | pbcopy
+# Update user's shell rc file with new $PATH 
+echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> ${SHELLRC}
+source $SHELLRC 2>&1 > /dev/null
 
-echo -e "Proceeding to edit "$BLUE"$SHELLRC"$ESC" with "$GREEN"$EDITOR"$ESC".\n\n"$YELLOW_UL"Please paste the clipboard at the end of the file, save and exit"$ESC""
 echo ''
-read -r -p "Press [Enter] to continue..."
-$EDITOR $SHELLRC
-source $SHELLRC
-echo ''
-echo -e ""$GREEN"That should be your \$PATH updated in $SHELLRC"$ESC"\n\n"
+echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
 sudo -v # Keep sudo authentication open
