@@ -6,6 +6,10 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
+if [ $(uname -s) != "Darwin" ]; then
+    echo "This script is for use with OS X!"
+    exit 1
+fi
 
 # Fancy title function
 title() {
