@@ -287,7 +287,11 @@ fi
 
 # Update user's shell rc file with new $PATH 
 echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> ${SHELLRC}
-source $SHELLRC 2>&1 > /dev/null
+
+# Evaluate system path to circumvent explicit calls of new binaries
+if [ -x /usr/libexec/path_helper ]; then
+  eval `/usr/libexec/path_helper -s`
+fi
 
 echo ''
 echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
