@@ -237,7 +237,7 @@ done
 sudo -v # Keep sudo authentication open
 
 # Check to see if user installed from pkgsrc
-if [ $(/usr/pkg/bin/pkgin list | grep '^scmgit' | wc -l) -gt 0 ]; then
+if [ $(/usr/pkg/bin/pkgin list | grep '^git' | wc -l) -gt 0 ]; then
   echo ''
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
   read -r -p "Press [Enter] to continute..."
