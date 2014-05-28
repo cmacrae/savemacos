@@ -1,8 +1,8 @@
 #! /bin/bash
 
-# This is a script to create scripts and plists to launch X upon user login to replace the Aqua desktop, or run along side it.
+# This is a script to create scripts and plists to launch X upon user login to run in a seamless manner along side the Aqua desktop
 #
-# Written by phyrne 21/07/13
+# Written by cmacrae 21/07/13
 
 # Check for root
 if [[ $EUID -ne 0 ]]; then
@@ -40,19 +40,22 @@ YELLOW_UL='\033[38;4;33m'
 clear
 MESSAGE=""$BLUE_UL"X11 Setup"$ESC""
 title
-echo ''
-echo -e "This script will set X11 to run on login in a seamless manner.\n"
-echo -e "We've taken the liberty of leaving the Dock.app running, as this\nhandles Aqua's virtual workspaces."
-echo -e "This means you can have a fully functional, seamless X11 environment, like on any other UNIX based system,"
-echo -e "but still get all the fancy gesture based navigation and animations that Apple have implemented in Aqua."
-echo ''
-echo -e "You will still be able to run your Aqua applications as usual!"
-echo ''
-echo -e "Lastly, before we finish saving OS X ;) Please understand that you will need to set up your"
-echo -e "X11 environment yourself. This is done as it would be on any other OS, simply install your"
-echo -e "window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,"
-echo -e "and you should be all set!"
-echo ''
+cat << EOM
+This script will set X11 to run on login in a seamless manner.
+We've taken the liberty of leaving the Dock.app running, as this
+handles Aqua's virtual workspaces.
+This means you can have a fully functional, seamless X11 environment, like on any other UNIX based system,
+but still get all the fancy gesture based navigation and animations that Apple have implemented in Aqua.
+
+You will still be able to run your Aqua applications as usual!"
+
+Lastly, before we finish saving OS X ;) Please understand that you will need to set up your"
+X11 environment yourself. This is done as it would be on any other OS, simply install your"
+window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,"
+and you should be all set!"
+
+EOM
+
 read -r -p "Press [Enter] to continue..."
 echo ''
 
