@@ -79,7 +79,7 @@ read -r -p "Press [Enter] to continue..."
 clear
 
 # Grab pkgsrc
-MESSAGE=""$RED_UL"pkgsrc/pkgin$ESC"
+MESSAGE=""$RED_UL"pkgsrc/pkgin"$ESC""
 title
 cat << EOM
 
@@ -119,7 +119,7 @@ if [[ $(which brew | awk -F/ '{print$NF}' | grep -v 'not found') == 'brew' ]]; t
 fi
 
 # If the 'brew' binary is found, echo instructions on removal and exit
-if [[ $(echo $BREW_INSTALLED) == 'true' ]]; then
+if [ ${BREW_INSTALLED} == "true" ]; then
   echo 
   echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
@@ -152,7 +152,7 @@ fi
 
 # If the 'port' binary is found, echo instructions on removal and exit
 
-if [[ $(echo $PORTS_INSTALLED) == 'true' ]]; then
+if [ ${PORTS_INSTALLED} == "true" ]; then
 cat << EOM
 
 `echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
