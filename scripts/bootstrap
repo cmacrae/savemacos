@@ -153,26 +153,26 @@ fi
 # If the 'port' binary is found, echo instructions on removal and exit
 
 if [[ $(echo $PORTS_INSTALLED) == 'true' ]]; then
-cat -<< EOM
+cat << EOM
 
-  `echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
-  `echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to"`
-  `echo -e "remove it."$ESC""`
- 
-  `echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""`
+`echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
+`echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to"`
+`echo -e "remove it."$ESC""`
 
-   For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:
+`echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""`
 
-  port -fp uninstall installed
-  rm -rf /opt/local
-  rm -rf /Applications/{DarwinPorts,MacPorts}
-  rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\
-  Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}
-  rm -rf ~/.macports
-  
-  `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
-  EOM
-  exit 1
+ For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:
+
+port -fp uninstall installed
+rm -rf /opt/local
+rm -rf /Applications/{DarwinPorts,MacPorts}
+rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\
+Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}
+rm -rf ~/.macports
+
+`echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
+EOM
+exit 1
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
@@ -198,12 +198,38 @@ sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo 
 
-#XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
-#Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
-#OS X since version 10.5.
+# Grab XQuartz
+MESSAGE=""$BLUE_UL"XQuartz"$ESC"
+title
+cat << EOM
+
+XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
+Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
+OS X since version 10.5.
+
+EOM
+
+# Ask user if they would like to install XQuartz
+while :
+do
+  read -r -p "Would you like to install XQuartz? [y/n] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+          export X_INST="true" 
+          break
+          ;;
+      [nN][oO]|[nN])
+          export X_INST="false"
+          read -r -p "Press [Enter] to continute..."
+          break
+          ;;
+      *)
+          echo "Please answer yes or no..."
+    esac
+done
 
 # Fetch & install XQuartz if it isn't already installed
-if [[ $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
+if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
   echo 
   ERR_MSG="installing XQuartz"
   echo "Installing XQuartz..."
