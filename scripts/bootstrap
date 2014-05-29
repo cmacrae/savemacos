@@ -130,10 +130,10 @@ cat << EOM
 
 For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:
 
-cd `brew --prefix`
+cd \`brew --prefix\`
 rm -rf Cellar
 brew prune
-rm `git ls-files`
+rm \`git ls-files\`
 rm -rf Library/{Homebrew,Aliases,Formula,Contributions}
 rm -rf .git
 rm -rf ~/Library/Caches/Homebrew
