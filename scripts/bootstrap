@@ -60,8 +60,10 @@ MESSAGE=""$BLUE_UL"Welcome to Save OS X!"$ESC""
 title
 cat << EOM
 
-Here's some stuff about the project that will be echo'd
-on the first screen of the script
+Welcome to the Save OS X project, an effort to make OS X
+a more comfortable system for hackers, developers & power users.
+
+This script will set up your environment for you.
 
 Please enter your password for sudo authentication
 
