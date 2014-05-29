@@ -63,7 +63,10 @@ cat << EOM
 Welcome to the Save OS X project, an effort to make OS X
 a more comfortable system for hackers, developers & power users.
 
-This script will set up your environment for you.
+This script will set up your environment for you. It will automatically
+install pkgsrc & its associated binary package manager - pkgin.
+You will also have the choice to install Git & implement a seamless
+X11 environment.
 
 Please enter your password for sudo authentication
 
@@ -75,24 +78,22 @@ echo
 read -r -p "Press [Enter] to continue..."
 clear
 
-# Grab essential tools (pkgsrc & Xquartz)
-MESSAGE=""$RED_UL"Essential Tools$ESC"
+# Grab pkgsrc
+MESSAGE=""$RED_UL"pkgsrc/pkgin$ESC"
 title
-echo 
-echo -e ""$BLUE"This project uses pkgsrc & XQuartz"$ESC"\n"
-echo 
-echo -e ""$YELLOW_UL"pkgsrc"$ESC""
 cat << EOM
+
+`echo -e ""$YELLOW_UL"pkgsrc"$ESC""`
 pkgsrc is a framework for building third-party software on NetBSD and other UNIX-like systems,
 currently containing over 12000 packages. It is used to enable freely available software to be
 configured and built easily on supported platforms.
 
-echo -e ""$YELLOW_UL"XQuartz"$ESC""
-XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
-Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
-OS X since version 10.5.
+`echo -e ""$YELLOW_UL"pkgin"$ESC""`
+The pkgin command is aimed at being an apt/yum like tool for managing pkgsrc binary packages.
+It relies on pkg_summary(5) for installation, removal and upgrade ofpackages and associated 
+dependencies, using a remote repository.
 
-Proceeding to download and install essential tools
+Proceeding to download and install essential tools....
 
 EOM
 sudo -v # Keep sudo authentication open
@@ -152,28 +153,27 @@ fi
 # If the 'port' binary is found, echo instructions on removal and exit
 
 if [[ $(echo $PORTS_INSTALLED) == 'true' ]]; then
-  echo 
-  echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
-  echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
-  echo -e "remove it."$ESC""
-  echo 
-  echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""
-cat << EOM
+cat -<< EOM
 
-For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:
+  `echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
+  `echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to"`
+  `echo -e "remove it."$ESC""`
+ 
+  `echo -e ""$BLUE_UL"Once your system is rid of MacPorts; simply re-run this script to get going again!"$ESC""`
 
-port -fp uninstall installed
-rm -rf /opt/local
-rm -rf /Applications/{DarwinPorts,MacPorts}
-rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\
-Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}
-rm -rf ~/.macports
+   For now, here are the steps you need to take (with root privileges) to eradicate MacPorts from your system:
 
-EOM
-  echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""
+  port -fp uninstall installed
+  rm -rf /opt/local
+  rm -rf /Applications/{DarwinPorts,MacPorts}
+  rm -rf /Library/{LaunchDaemons/org.macports.*,Receipts/DarwinPorts*.pkg,\\
+  Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0}
+  rm -rf ~/.macports
+  
+  `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
+  EOM
   exit 1
 fi
-
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
 cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
@@ -183,8 +183,9 @@ sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permiss
 # Add Save OS X repo
 if [[ $(uname -m) == 'x86_64' && $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]]; then
     echo "http://pkgsrc.saveosx.org/Darwin/2013Q3/x86_64/All" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
+    echo "Your system has now been set up to use the Save OS X repo!"
 elif [[ $(uname -m) == 'x86_64' && $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]]; then
-    echo "It looks like you're already using the Save OS X repo"
+    echo "Your system has now been set up to use the Save OS X repo!"
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
   exit 1
@@ -196,6 +197,10 @@ echo "Updating pkgsrc repository information..."
 sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo 
+
+#XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
+#Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
+#OS X since version 10.5.
 
 # Fetch & install XQuartz if it isn't already installed
 if [[ $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
