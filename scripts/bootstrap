@@ -220,7 +220,7 @@ do
           ;;
       [nN][oO]|[nN])
           export X_INST="false"
-          read -r -p "Press [Enter] to continute..."
+          read -r -p "Press [Enter] to continue..."
           break
           ;;
       *)
@@ -247,7 +247,7 @@ else
   echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
 fi
-read -r -p "Press [Enter] to continute..."
+read -r -p "Press [Enter] to continue..."
 sudo -v # Keep sudo authentication open
 
 # Git screen
@@ -283,7 +283,7 @@ do
           break
           ;;
       [nN][oO]|[nN])
-          read -r -p "Press [Enter] to continute..."
+          read -r -p "Press [Enter] to continue..."
           break
           ;;
       *)
@@ -297,7 +297,7 @@ sudo -v # Keep sudo authentication open
 if [ $(/usr/pkg/bin/pkgin list | grep '^git' | wc -l) -gt 0 ]; then
   echo 
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
-  read -r -p "Press [Enter] to continute..."
+  read -r -p "Press [Enter] to continue..."
 fi
 
 # PATH screen
