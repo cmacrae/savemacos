@@ -76,7 +76,6 @@ ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password corr
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
 echo 
 read -r -p "Press [Enter] to continue..."
-clear
 
 # Grab pkgsrc
 MESSAGE=""$RED_UL"pkgsrc/pkgin"$ESC""
@@ -372,7 +371,6 @@ echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
 # Final screen!
-clear
 MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
 title
 cat << EOM
