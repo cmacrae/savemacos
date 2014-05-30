@@ -253,12 +253,12 @@ MESSAGE=""$BLUE_UL"XQuartz + X11 Hacks"$ESC""
 title
 cat << EOM
 
-`echo -e ""$YELLOW"Xquartz"$ESC""`
+`echo -e ""$YELLOW_UL"Xquartz"$ESC""`
 XQuartz is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
 Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
 OS X since version 10.5.
 
-`echo -e ""$YELLOW"X11 Hacks"$ESC""`
+`echo -e ""$YELLOW_UL"X11 Hacks"$ESC""`
 We've cooked up some hacks for OS X in an attempt to seamlessly implement an X11 environment,
 close to how it would be on any other UNIX-like system. This is achieve using a mixture of
 some custom launchd scripts, so X launches upon login, and some Aqua UI trickery to hide some
@@ -302,7 +302,7 @@ if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQu
   saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
   umount /Volumes/xquartz 2>&1 > /dev/null
-else
+elif [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -gt 0 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -gt 0  ]]; then
   echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
 fi
