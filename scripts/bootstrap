@@ -93,7 +93,7 @@ The pkgin command is aimed at being an apt/yum like tool for managing pkgsrc bin
 It relies on pkg_summary(5) for installation, removal and upgrade ofpackages and associated 
 dependencies, using a remote repository.
 
-Proceeding to download and install essential tools....
+Proceeding to download and install pkgsrc/pkgin tools....
 
 EOM
 sudo -v # Keep sudo authentication open
