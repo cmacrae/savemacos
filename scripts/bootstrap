@@ -231,17 +231,21 @@ done
 # Fetch & install XQuartz if it isn't already installed
 if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
   echo 
+  ERR_MSG="retrieving the XQuartz disk image"
+  echo "Fetching XQuartz..."
+  saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
+  sudo -v # Keep sudo authentication open
+  ERR_MSG="mounting the XQuartz disk image"
+  echo "Mounting XQuartz disk image..."
+  saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
   ERR_MSG="installing XQuartz"
   echo "Installing XQuartz..."
-  saferun pkgin -y in xquartz
-sudo -v # Keep sudo authentication open
+  saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
-  export PATH=/usr/pkg/bin:/usr/pkg/sbin:/opt/X11/bin:$PATH # Update path so new binaries can be found (including X11 apps)
-  umount /Volumes/xquartz
+  umount /Volumes/xquartz 2>&1 > /dev/null
 else
   echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
-  export PATH=/usr/pkg/bin:/usr/pkg/sbin:$PATH # Update path to so new binaries can be found (not including X11 apps)
 fi
 read -r -p "Press [Enter] to continute..."
 sudo -v # Keep sudo authentication open
