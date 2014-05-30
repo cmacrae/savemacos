@@ -199,7 +199,7 @@ sudo -v # Keep sudo authentication open
 echo 
 
 # Grab XQuartz
-MESSAGE=""$BLUE_UL"XQuartz"$ESC"
+MESSAGE=""$BLUE_UL"XQuartz"$ESC""
 title
 cat << EOM
 
