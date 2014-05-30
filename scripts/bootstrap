@@ -233,7 +233,7 @@ if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQu
   echo 
   ERR_MSG="retrieving the XQuartz disk image"
   echo "Fetching XQuartz..."
-  saferun curl -s -o /tmp/xquartz.dmg http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.4.dmg
+  saferun curl -s -o /tmp/xquartz.dmg http://xquartz-dl.macosforge.org/SL/XQuartz-2.7.6.dmg
   sudo -v # Keep sudo authentication open
   ERR_MSG="mounting the XQuartz disk image"
   echo "Mounting XQuartz disk image..."
