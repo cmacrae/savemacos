@@ -99,8 +99,7 @@ do
     case $ANSWER in
       [yY][eE][sS]|[yY])
         echo -e "\nOK, disabling Finder..."
-        sudo -u $USER launchctl unload -w \ 
-        /System/Library/LaunchAgents/com.apple.Finder.plist
+        sudo -u $USER launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist
         break
         ;;
       [nN][oO]|[nN])
