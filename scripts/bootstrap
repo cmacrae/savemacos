@@ -195,7 +195,8 @@ sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
 sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
-echo 
+echo "Package database updated!"
+read -r -p "Press [Enter] to continue..."
 
 # Git screen
 MESSAGE=""$GREEN_UL"Git"$ESC""
@@ -225,7 +226,7 @@ do
           echo -e "Installing Git with pkgin...\n\n"
           sudo /usr/pkg/bin/pkgin -y in git-base git-docs
           ls /usr/pkg/bin | grep 'git' | while read GIT_BIN ;
-      do sudo ln -sf /usr/pkg/bin/${GIT_BIN} /usr/bin/${GIT_BIN} ;
+          do sudo ln -sf /usr/pkg/bin/${GIT_BIN} /usr/bin/${GIT_BIN} ;
     done
           break
           ;;
@@ -301,15 +302,17 @@ if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQu
   saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
   umount /Volumes/xquartz 2>&1 > /dev/null
+  read -r -p "Press [Enter] to continue..."
 elif [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -gt 0 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -gt 0  ]]; then
   echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
+  read -r -p "Press [Enter] to continue..."
 fi
-read -r -p "Press [Enter] to continue..."
 sudo -v # Keep sudo authentication open
 
 if [ $X_INST == "true" ]; then
   # Clone Save OS X git repo and run through X setup script
+  rm -rf /tmp/saveosx 2>&1 > /dev/null
   git clone git://github.com/cmacrae/saveosx /tmp/saveosx
   cd /tmp/saveosx
   sudo -v # Keep sudo authentication open
