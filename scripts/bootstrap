@@ -326,8 +326,8 @@ title
 # Prepend binary dirs to system-wide path
 echo 
 echo -e "Updating \$PATH variable so new binaries can be found...\n"
-echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin\n$(cat /etc/paths)" > /tmp/paths
-sudo mv /tmp/paths /etc/paths && sudo chown root:wheel /etc/paths
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin\n" > /tmp/paths
+sudo mv /tmp/paths /etc/paths.d/saveosx && sudo chown root:wheel /etc/paths.d/saveosx
 
 sudo -v # Keep sudo authentication open
 
