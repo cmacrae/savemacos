@@ -271,7 +271,7 @@ do
 done
 
 # Fetch & install XQuartz if it isn't already installed
-if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -lt 1 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -lt 1  ]]; then
+if [[ ${X_INST} == "true" && ! -d /Applications/Utilities/XQuartz.app ]]; then
   echo 
   ERR_MSG="retrieving the XQuartz disk image"
   echo "Fetching XQuartz..."
@@ -286,7 +286,7 @@ if [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQu
   echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
   umount /Volumes/xquartz 2>&1 > /dev/null
   read -r -p "Press [Enter] to continue..."
-elif [[ ${X_INST} == "true" && $(system_profiler SPApplicationsDataType | grep XQuartz 2> /dev/null | wc -l) -gt 0 ]] && [[ $(pkgin list | grep -i 'xquartz' | wc -l) -gt 0  ]]; then
+elif [[ ${X_INST} == "true" && -d /Applications/Utilities/XQuartz.app ]]; then
   echo 
   echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
   read -r -p "Press [Enter] to continue..."
