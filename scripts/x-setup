@@ -118,8 +118,9 @@ while :
       case $ANSWER in
         [yY][eE][sS]|[yY])
           echo -e "\nOK, hiding Dock.app..."
-          defaults write com.apple.dock autohide-time-modifier \
-          -int 10000000000; killall Dock
+          defaults write com.apple.dock autohide-time-modifier -int 10000000000
+          defaults write com.apple.dock no-bouncing -bool TRUE
+          killall Dock
           break
           ;;
         [nN][oO]|[nN])
