@@ -310,9 +310,9 @@ title
 # Prepend binary dirs to system-wide path
 echo 
 echo -e "Updating \$PATH so new binaries can be found...\n"
-echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | tee -a /etc/paths.d/saveosx
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
 echo -e "Updating \$MANPATH so new manpages can be found...\n"
-echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | tee -a /etc/man.conf
+echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/man.conf > /dev/null
 
 sudo -v # Keep sudo authentication open
 
