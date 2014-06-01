@@ -95,20 +95,6 @@ dependencies, using a remote repository.
 Proceeding to download and install pkgsrc/pkgin tools....
 
 EOM
-sudo -v # Keep sudo authentication open
-
-# Download and install pkgsrc
-echo "Fetching pkgsrc from the Save OS X repo..."
-ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
-
-# Check architecture
-if [[ $(uname -m) == 'x86_64' ]] ; then
-  saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
-else
-  echo ""$RED_UL"We only support x86_64 systems!"$ESC""
-fi
-
-sudo -v # Keep sudo authentication open
 
 # Check for Home Brew install
 if [[ -f /usr/local/bin/brew ]]; then
@@ -157,6 +143,17 @@ rm -rf ~/.macports
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
 EOM
 exit 1
+fi
+
+# Download and install pkgsrc
+echo "Fetching pkgsrc from the Save OS X repo..."
+ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
+
+# Check architecture
+if [[ $(uname -m) == 'x86_64' ]] ; then
+  saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
+else
+  echo ""$RED_UL"We only support x86_64 systems!"$ESC""
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
