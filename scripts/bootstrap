@@ -154,6 +154,7 @@ if [[ $(uname -m) == 'x86_64' ]] ; then
   saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely attempt to retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo, if it fails, exit
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
+  exit 1
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
@@ -162,10 +163,10 @@ echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permissions
 
 # Add Save OS X repo
-if [[ $(uname -m) == 'x86_64' && $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]]; then
+if [[ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]]; then
     echo "http://pkgsrc.saveosx.org/Darwin/2013Q3/x86_64/All" >> /usr/pkg/etc/pkgin/repositories.conf           # No sudo access to file
     echo "Your system has now been set up to use the Save OS X repo!"
-elif [[ $(uname -m) == 'x86_64' && $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]]; then
+elif [[ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]]; then
     echo "Your system has now been set up to use the Save OS X repo!"
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
