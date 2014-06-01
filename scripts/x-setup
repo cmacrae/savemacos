@@ -41,18 +41,11 @@ clear
 MESSAGE=""$BLUE_UL"X11 Setup"$ESC""
 title
 cat << EOM
-This script will set X11 to run on login in a seamless manner.
-We've taken the liberty of leaving the Dock.app running, as this
-handles Aqua's virtual workspaces.
-This means you can have a fully functional, seamless X11 environment, like on any other UNIX based system,
-but still get all the fancy gesture based navigation and animations that Apple have implemented in Aqua.
-
-You will still be able to run your Aqua applications as usual!"
-
-Lastly, before we finish saving OS X ;) Please understand that you will need to set up your"
-X11 environment yourself. This is done as it would be on any other OS, simply install your"
-window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,"
-and you should be all set!"
+Please understand that you will need to set up your X11 environment yourself.
+This is done as it would be on any other OS, simply install your
+window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,
+plus any other configurations your window manager/desktop environment may need
+and you should be all set!
 
 EOM
 
@@ -73,7 +66,7 @@ chmod a+x /opt/X11/bin/startx.zsh
 
 # Create a service file to be enabled to run at login to start X with the above script
 echo -e "Creating X11 Apple service..."
-cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
+cat -<<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -90,15 +83,14 @@ cat <<'EOF' > /Library/LaunchAgents/com.startx.userlogin.plist
 </plist>
 EOF
 
-# Make Finder quitable, ask user if they would like to disable its launch
-defaults write com.apple.finder QuitMenuItem -bool YES
-echo "Finder has been made quitable."
+# Ask user if they would like to disable Finder
 while :
 do
-  read -r -p "Would you like to disable its launch upon login? [y/n] " ANSWER
+  read -r -p "Would you like to disable Finder's launch upon login? [y/n] " ANSWER
     case $ANSWER in
       [yY][eE][sS]|[yY])
         echo -e "\nOK, disabling Finder..."
+        defaults write com.apple.finder QuitMenuItem -bool YES
         sudo -u $USER launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist
         break
         ;;
@@ -134,7 +126,7 @@ done
 
 # Hide menu bar for XQuartz
 echo -e "Configuring XQuartz to be seemless..."
- mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
+mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} ; cp /tmp/saveosx/plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
 
 # Set XQuartz to launch at login
 echo ''
