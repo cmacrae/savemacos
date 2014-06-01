@@ -6,6 +6,7 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
+# Ensure the user is running this script on OS X
 if [ $(uname -s) != "Darwin" ]; then
     echo "This script is for use with OS X!"
     exit 1
@@ -308,9 +309,10 @@ MESSAGE=""$GREEN_UL"Update System PATH"$ESC""
 title
 # Prepend binary dirs to system-wide path
 echo 
-echo -e "Updating \$PATH variable so new binaries can be found...\n"
-echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin\n" > /tmp/paths
-sudo mv /tmp/paths /etc/paths.d/saveosx && sudo chown root:wheel /etc/paths.d/saveosx
+echo -e "Updating \$PATH so new binaries can be found...\n"
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | tee -a /etc/paths.d/saveosx
+echo -e "Updating \$MANPATH so new manpages can be found...\n"
+echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | tee -a /etc/man.conf
 
 sudo -v # Keep sudo authentication open
 
