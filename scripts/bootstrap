@@ -163,9 +163,6 @@ if [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]; then
     echo "Your system has now been set up to use the Save OS X repo!"
 elif [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]; then
     echo "Your system has now been set up to use the Save OS X repo!"
-else
-  echo ""$RED_UL"We only support x86_64 systems!"$ESC""
-  exit 1
 fi
 
 echo 
