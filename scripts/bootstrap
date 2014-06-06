@@ -159,7 +159,7 @@ else
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
-cd /; sudo tar xf /tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
+cd /; sudo tar xf tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 sudo chmod a+w /usr/pkg/etc/pkgin/repositories.conf   # Temporarily drop permissions
 
