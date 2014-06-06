@@ -208,9 +208,7 @@ do
           echo 
           echo -e "Installing Git with pkgin...\n\n"
           sudo /usr/pkg/bin/pkgin -y in git-base git-docs
-          ls /usr/pkg/bin | grep 'git' | while read GIT_BIN ;
-          do sudo ln -sf /usr/pkg/bin/${GIT_BIN} /usr/bin/${GIT_BIN} ;
-    done
+          for f in /usr/pkg/bin/git* ; do sudo ln -sf ${f} /usr/bin ; done
           break
           ;;
       [nN][oO]|[nN])
@@ -225,7 +223,7 @@ done
 sudo -v # Keep sudo authentication open
 
 # Check to see if user installed from pkgsrc
-if [ $(/usr/pkg/bin/pkgin list | grep '^git' | wc -l) -gt 0 ]; then
+if [ -f /usr/pkg/bin/git ]; then
   echo 
   echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
   read -r -p "Press [Enter] to continue..."
