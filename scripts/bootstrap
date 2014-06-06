@@ -98,7 +98,7 @@ Proceeding to download and install pkgsrc/pkgin tools....
 EOM
 
 # Check for Home Brew install
-if [[ -f /usr/local/bin/brew ]]; then
+if [ -f /usr/local/bin/brew ]; then
   echo 
   echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
   echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
@@ -123,7 +123,7 @@ EOM
 fi
 
 # Check for MacPorts install
-if [[ -f /opt/local/bin/port ]]; then
+if [ -f /opt/local/bin/port ]; then
 cat << EOM
 
 `echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
@@ -151,7 +151,7 @@ echo "Fetching pkgsrc from the Save OS X repo..."
 ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 
 # Check architecture
-if [[ $(uname -m) == 'x86_64' ]] ; then
+if [ $(uname -m) == 'x86_64' ] ; then
   saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
@@ -163,10 +163,10 @@ cd /; sudo tar xf tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc boo
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 
 # Add Save OS X repo
-if [[ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]]; then
+if [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]; then
     echo "http://pkgsrc.saveosx.org/Darwin/2013Q3/x86_64/All" | sudo tee -a /usr/pkg/etc/pkgin/repositories.conf > /dev/null
     echo "Your system has now been set up to use the Save OS X repo!"
-elif [[ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]]; then
+elif [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]; then
     echo "Your system has now been set up to use the Save OS X repo!"
 else
   echo ""$RED_UL"We only support x86_64 systems!"$ESC""
