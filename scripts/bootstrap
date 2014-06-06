@@ -38,17 +38,12 @@ saferun() {
 
 # ANSI properties/colours
 ESC='\033[0m'
-BOLD='\033[1m'
 BLUE='\033[38;34m'
 BLUE_UL='\033[38;4;34m'
 GREEN='\033[38;32m'
 GREEN_UL='\033[38;4;32m'
-CYAN='\033[38;36m'
-CYAN_UL='\033[38;4;36m'
 RED='\033[38;31m'
 RED_UL='\033[38;4;31m'
-PURPLE='\033[38;35m'
-PURPLE_UL='\033[38;4;35m'
 YELLOW='\033[38;33m'
 YELLOW_UL='\033[38;4;33m'
 
