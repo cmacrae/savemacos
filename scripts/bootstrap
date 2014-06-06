@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Ensure script is not being run with root privileges
-if [[ $EUID -eq 0 ]]; then
+if [ $EUID -eq 0 ]; then
    echo "Please don't run this script with root priveleges!"
    exit 1
 fi
