@@ -94,13 +94,13 @@ EOM
 
 # Check for Home Brew install
 if [ -f /usr/local/bin/brew ]; then
-  echo 
-  echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
-  echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" 
-  echo -e "remove it."$ESC""
-  echo 
-  echo -e ""$BLUE_UL"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""
 cat << EOM
+
+`echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"`
+`echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" `
+`echo -e "remove it."$ESC""`
+
+`echo -e ""$BLUE_UL"Once your system is rid of Home Brew; simply re-run this script to get going again!"$ESC""`
 
 For now, here are the steps you need to take (with root privileges) to eradicate Home Brew from your system:
 
