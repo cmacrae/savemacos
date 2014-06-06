@@ -233,7 +233,7 @@ OS X since version 10.5.
 
 `echo -e ""$YELLOW_UL"X11 Hacks"$ESC""`
 We've cooked up some hacks for OS X in an attempt to seamlessly implement an X11 environment,
-close to how it would be on any other UNIX-like system. This is achieve using a mixture of
+close to how it would be on any other UNIX-like system. This is achieved using a mixture of
 some custom launchd scripts, so X launches upon login, and some Aqua UI trickery to hide some
 elements.
 Coupling the above with the wealth of window managers & desktop environments available in our
