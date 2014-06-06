@@ -112,9 +112,9 @@ rm -rf Library/{Homebrew,Aliases,Formula,Contributions}
 rm -rf .git
 rm -rf ~/Library/Caches/Homebrew
 
+`echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""`
 EOM
-  echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""
-  exit 1
+exit 1
 fi
 
 # Check for MacPorts install
