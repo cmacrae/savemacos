@@ -286,10 +286,12 @@ sudo -v # Keep sudo authentication open
 if [ $X_INST == "true" ]; then
   # Clone Save OS X git repo and run through X setup script
   rm -rf /tmp/saveosx 2>&1 > /dev/null
-  git clone git://github.com/cmacrae/saveosx /tmp/saveosx
+  mkdir /tmp/saveosx
+  curl -s -o /tmp/saveosx/x-setup https://raw.githubusercontent.com/cmacrae/saveosx/master/scripts/x-setup
+  curl -s -o /tmp/saveosx/xquartz.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/xquartz.plist
   cd /tmp/saveosx
   sudo -v # Keep sudo authentication open
-  sudo ./scripts/x-setup
+  sudo bash x-setup
 fi
 
 # PATH screen
