@@ -94,7 +94,7 @@ EOM
 
 # Check for Home Brew install
 if [ -f /usr/local/bin/brew ]; then
-cat << EOM
+cat -<< EOM
 
 `echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"`
 `echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" `
@@ -111,6 +111,10 @@ rm \`git ls-files\`
 rm -rf Library/{Homebrew,Aliases,Formula,Contributions}
 rm -rf .git
 rm -rf ~/Library/Caches/Homebrew
+rm -rf /usr/local/bin/brew
+
+Note: You may also need to remove ~/.homebrew. If you happen to be using rvm, then ~/.rvm/bin/brew should
+      also be deleted.
 
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""`
 EOM
