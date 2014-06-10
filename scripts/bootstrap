@@ -358,7 +358,7 @@ All processes are complete! So what now? Well, we reccomend you read the
 manpage for pkgin at least, as you'll be managing all your non-Apple software
 with this excellent package manager.
 
-From here, get your X11 environment set up, and more importantly; enjoy!
+From here, if you opte for X, get your environment set up, and more importantly; enjoy!
 
 EOM
 echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
