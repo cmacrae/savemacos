@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>LANG</key>
+		<string>en_US.UTF-8</string>
+		<key>LC_ALL</key>
+		<string>en_US.UTF-8</string>
+		<key>PATH</key>
+		<string>/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/go/bin:/Users/cmacrae/code/go/bin:/usr/pkg/bin:/usr/pkg/sbin</string>
+	</dict>
+	<key>Label</key>
+	<string>com.startx.userlogin</string>
+	<key>Program</key>
+	<string>/opt/X11/bin/startx</string>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/var/log/saveosx.log</string>
+	<key>StandardOutPath</key>
+	<string>/var/log/saveosx.log</string>
+</dict>
+</plist>
