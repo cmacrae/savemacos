@@ -11,7 +11,7 @@ if [ $EUID -ne 0 ]; then
 fi
 
 # Set library path
-LIB_PATH=$HOME/Library/LaunchAgents
+LIB_PATH=/Users/$USER/Library/LaunchAgents
 
 # Fancy title function
 title() {
@@ -57,6 +57,11 @@ echo ''
 
 # Create a service file to be enabled to run at login to start X with the above script
 echo -e "Setting up X11 launchd service..."
+if [ ! -d $LIBPATH ]; then
+  mkdir -p $LIBPATH
+  chown $USER:staff $LIBPATH
+fi
+
 cp -f /tmp/saveosx/com.startx.userlogin.plist $LIB_PATH/
 chown $USER:staff $LIB_PATH/com.startx.userlogin.plist
 chmod 644 $LIB_PATH/com.startx.userlogin.plist
