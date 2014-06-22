@@ -271,27 +271,7 @@ do
     esac
 done
 
-# Fetch & install XQuartz if it isn't already installed
-if [[ ${X_INST} == "true" && ! -d /Applications/Utilities/XQuartz.app ]]; then
-  echo 
-  ERR_MSG="retrieving the XQuartz disk image"
-  echo "Fetching XQuartz..."
-  saferun curl -s -o /tmp/xquartz.dmg http://xquartz-dl.macosforge.org/SL/XQuartz-2.7.6.dmg
-  sudo -v # Keep sudo authentication open
-  ERR_MSG="mounting the XQuartz disk image"
-  echo "Mounting XQuartz disk image..."
-  saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
-  ERR_MSG="installing XQuartz"
-  echo "Installing XQuartz..."
-  saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
-  echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
-  umount /Volumes/xquartz 2>&1 > /dev/null
-  read -r -p "Press [Enter] to continue..."
-elif [[ ${X_INST} == "true" && -d /Applications/Utilities/XQuartz.app ]]; then
-  echo 
-  echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
-  read -r -p "Press [Enter] to continue..."
-fi
+
 sudo -v # Keep sudo authentication open
 
 if [ $X_INST == "true" ]; then
@@ -303,7 +283,7 @@ if [ $X_INST == "true" ]; then
   curl -s -o /tmp/saveosx/org.saveosx.startx.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/org.saveosx.startx.plist
   cd /tmp/saveosx
   sudo -v # Keep sudo authentication open
-  sudo bash x-setup
+  bash x-setup
 fi
 
 # PATH screen
