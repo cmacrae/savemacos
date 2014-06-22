@@ -7,7 +7,7 @@ if [ $EUID -eq 0 ]; then
 fi
 
 # Ensure script is being run in Terminal.app (due to launchctl restrictions)
-if [ $TERM_PROGRAM != "Apple_Terminal" ]; then
+if [[ $TERM_PROGRAM != "Apple_Terminal" || $TERM_PROGRAM == "" ]]; then
   echo "This script must be run in Apple's Terminal.app"
   echo "Please re-run this script in Terminal.app..."
   exit 1
