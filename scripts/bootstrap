@@ -300,7 +300,7 @@ if [ $X_INST == "true" ]; then
   mkdir /tmp/saveosx
   curl -s -o /tmp/saveosx/x-setup https://raw.githubusercontent.com/cmacrae/saveosx/master/scripts/x-setup
   curl -s -o /tmp/saveosx/xquartz.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/xquartz.plist
-  curl -s -o /tmp/saveosx/com.startx.userlogin.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/com.startx.userlogin.plist
+  curl -s -o /tmp/saveosx/org.saveosx.startx.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/org.saveosx.startx.plist
   cd /tmp/saveosx
   sudo -v # Keep sudo authentication open
   sudo bash x-setup
