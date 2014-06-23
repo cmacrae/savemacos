@@ -19,6 +19,11 @@ if [ $(uname -s) != "Darwin" ]; then
     exit 1
 fi
 
+# Ensure the user is running on an x86_64 system
+if [ $(uname -m) != 'x86_64' ] ; then
+ echo ""$RED_UL"We only support x86_64 systems!"$ESC""
+ exit 1
+fi
 # Fancy title function
 title() {
   COLUMNS=$(tput cols)
@@ -157,15 +162,12 @@ echo "Fetching pkgsrc from the Save OS X repo..."
 ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 
 # Check architecture
-if [ $(uname -m) == 'x86_64' ] ; then
+if [ ! -f /tmp/bootstrap.tar.gz ] ; then
   saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64.tar.gz # Safely retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo
-else
-  echo ""$RED_UL"We only support x86_64 systems!"$ESC""
-  exit 1
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
-cd /; sudo tar xf tmp/bootstrap.tar.gz 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
+sudo tar xfP /tmp/bootstrap.tar.gz -C / 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 
 # Add Save OS X repo
@@ -182,6 +184,112 @@ echo "Updating pkgsrc repository information..."
 sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 sudo -v # Keep sudo authentication open
 echo "Package database updated!"
+echo
+# Ask user if they would like use signed packages
+while :
+do
+  read -r -p "Would you like to use signed packages (recommended)? [y/n/what?] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+          USE_GPG=true
+          break
+          ;;
+      [nN][oO]|[nN])
+          USE_GPG=false
+          echo "VERIFIED_INSTALLATION=never" | sudo tee -a /usr/pkg/etc/pkg_install.conf > /dev/null
+          break
+          ;;
+      [wW][hH][aA][tT][?]|[wW]|[?])
+          echo 
+          echo "We use PGP to sign our packages as a security mesure, to ensure their integrity."
+          echo "We highly recommend you use signed packages."
+          echo -e "If you would like to learn more, please visit:\n"$BLUE_UL"http://saveosx.org/signed-packages/"$ESC""
+          echo
+          ;;
+      *)
+          echo "Please answer yes, no or 'what?'..."
+    esac
+done
+
+if [[ $(which gpg | fgrep -v "gpg not found" | wc -l) -lt 1 ]]; then
+  export GPG_INSTALLED=false
+else
+  export GPG_INSTALLED=true
+fi
+
+
+# Set up signed packages if the user wants to
+if [[ $USE_GPG == "true" && $GPG_INSTALLED == "false" ]]; then
+echo "Fetching GNU PG for signed packages..."
+ERR_MESSAGE="retrieving the gnupg package"
+saferun sudo /usr/pkg/bin/pkgin -F -dy in gnupg 
+echo "Retrieved signed GNU PG package."
+echo
+echo -e ""$RED"WARNING:"$ESC""
+echo "The GNU PG package has been signed using our key, but as package signing has"
+echo "not been set up yet (obviously), you can verify this yourself."
+
+while :
+do
+  read -r -p "Would you like to verify the integrity of this package? [y/n] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+cat << EOM
+Here's the public key it has been signed with:
+
+`ar -p /var/db/pkgin/cache/gnupg*.tgz | sed -n 42,58p`
+
+And here's the intended signer's key fingerprint:
+
+`echo -e ""$GREEN"Key fingerprint = 81F7 EC68 C5BD 5DED 7A7B  2832 6A09 5CC6 2D99 C8F7"$ESC""`
+
+EOM
+
+while :
+do
+  read -r -p "Are you satisfied that this package is from a genuine source? [y/n] " ANSWER
+    case $ANSWER in
+      [yY][eE][sS]|[yY])
+          break
+          ;;
+      [nN][oO]|[nN])
+          echo 
+          echo "If you believe this package has not been retrieved from the intended source"
+          echo "or if you feel that its integrity has been compromised in some way, please"
+          echo "contact us immediately:"
+          echo
+          echo -e "irc:\t#saveosx on irc.oftc.net - either yrmt or cmacrae"
+          echo "e-mail:\tyouri.mout@gmail.com / calum0macrae@gmail.com" 
+          echo -e ""$RED"Exiting..."$ESC""
+          exit 0
+          ;;
+      *)
+          echo "Please answer yes or no..."
+    esac
+done
+        break
+        ;;
+      [nN][oO]|[nN])
+        break
+        ;;
+      *)
+        echo "Please answer yes or no...."
+    esac
+done
+elif [[ $USE_GPG == "true" && $GPG_INSTALLED == "true" ]]; then
+  echo "It looks like you already have GPG software installed."
+  echo "Set up will continue,  using the existing GPG tool..."
+fi
+
+
+if [[ $USE_GPG == "true" ]]; then
+  export PATH=$PATH:/usr/pkg/bin # temporarily export the PATH so gpg can be determined
+  echo "Importing yrmt's GPG key..."
+  gpg --recv-keys 2D99C8F7 2>&1 > /dev/null
+  echo "GPG=`which gpg`" | sudo tee -a /usr/pkg/etc/pkg_install.conf 2>&1 > /dev/null
+  echo "VERIFIED_INSTALLATION=always" | sudo tee -a /usr/pkg/etc/pkg_install.conf 2>&1 > /dev/null
+fi
+
 read -r -p "Press [Enter] to continue..."
 
 # Git screen
