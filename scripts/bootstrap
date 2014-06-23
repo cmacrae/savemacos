@@ -73,8 +73,8 @@ a more comfortable system for hackers, developers & power users.
 
 This script will set up your environment for you. It will automatically
 install pkgsrc & its associated binary package manager - pkgin.
-You will also have the choice to install Git & apply a seamless
-X11 environment that we've hacked up for you!
+You will also have the choice to apply a seamless X11 environment that
+we've hacked up for you!
 
 Please enter your password for sudo authentication
 
@@ -292,54 +292,6 @@ fi
 
 read -r -p "Press [Enter] to continue..."
 
-# Git screen
-MESSAGE=""$GREEN_UL"Git"$ESC""
-
-title
-cat << EOM
-
-Using Save OS X requires Git. Apple's implementation of Git is
-included with XCode. Unless you're a developer of software for
-OS X/iOS, this isn't necessary
-
-Even if you do have XCode intalled, installing Git from pkgsrc
-will get you a more recent revision.
-
-EOM
-
-sudo -v # Keep sudo authentication open
-
-# Ask user if they would like to install Git from pkgsrc
-while :
-do
-  read -r -p "Would you like to install Git from pkgsrc? [y/n] " ANSWER
-    case $ANSWER in
-      [yY][eE][sS]|[yY])
-          ERR_MSG="installing Git with pkgin"
-          echo 
-          echo -e "Installing Git with pkgin...\n\n"
-          sudo /usr/pkg/bin/pkgin -y in git-base git-docs
-          for f in /usr/pkg/bin/git* ; do sudo ln -sf ${f} /usr/bin ; done
-          break
-          ;;
-      [nN][oO]|[nN])
-          read -r -p "Press [Enter] to continue..."
-          break
-          ;;
-      *)
-          echo "Please answer yes or no..."
-    esac
-done
-
-sudo -v # Keep sudo authentication open
-
-# Check to see if user installed from pkgsrc
-if [ -f /usr/pkg/bin/git ]; then
-  echo 
-  echo -e ""$GREEN"Succsessfully installed Git from pkgsrc!"$ESC""
-  read -r -p "Press [Enter] to continue..."
-fi
-
 # Grab XQuartz
 MESSAGE=""$BLUE_UL"XQuartz + X11 Hacks"$ESC""
 title
@@ -383,7 +335,7 @@ done
 sudo -v # Keep sudo authentication open
 
 if [ $X_INST == "true" ]; then
-  # Clone Save OS X git repo and run through X setup script
+  # Grab resources and run through the X setup script
   rm -rf /tmp/saveosx 2>&1 > /dev/null
   mkdir /tmp/saveosx
   curl -s -o /tmp/saveosx/x-setup https://raw.githubusercontent.com/cmacrae/saveosx/master/scripts/x-setup
