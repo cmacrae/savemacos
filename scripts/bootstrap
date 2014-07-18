@@ -1,5 +1,30 @@
 #! /bin/bash
 
+# Ensure script is not being run with root privileges
+if [ $EUID -eq 0 ]; then
+   echo "Please don't run this script with root priveleges!"
+   exit 1
+fi
+
+# Ensure script is being run in Terminal.app (due to launchctl restrictions)
+if [[ $TERM_PROGRAM != "Apple_Terminal" || $TERM_PROGRAM == "" ]]; then
+  echo "This script must be run in Apple's Terminal.app"
+  echo "Please re-run this script in Terminal.app..."
+  exit 1
+fi
+
+# Ensure the user is running this script on OS X
+if [ $(uname -s) != "Darwin" ]; then
+    echo "This script is for use with OS X!"
+    exit 1
+fi
+
+# Ensure the user is running on an x86_64 system
+if [ $(uname -m) != 'x86_64' ] ; then
+ echo ""$RED_UL"We only support x86_64 systems!"$ESC""
+ exit 1
+fi
+
 # Fancy title function
 title() {
   COLUMNS=$(tput cols)
