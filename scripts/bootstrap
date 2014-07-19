@@ -1,72 +1,25 @@
 #! /bin/bash
 
-# Ensure script is not being run with root privileges
-if [ $EUID -eq 0 ]; then
-   echo "Please don't run this script with root priveleges!"
-   exit 1
-fi
+# Copyright © 2014 Calum MacRae
+# Use of this source code is governed by an ISC
+# license that can be found in the LICENSE file.
 
-# Ensure script is being run in Terminal.app (due to launchctl restrictions)
-if [[ $TERM_PROGRAM != "Apple_Terminal" || $TERM_PROGRAM == "" ]]; then
-  echo "This script must be run in Apple's Terminal.app"
-  echo "Please re-run this script in Terminal.app..."
+# Save OS X bootstrapper to set-up Save OS X
+
+if [[ ! $(pwd) =~ .*\/saveosx.*\/scripts$ ]]; then
+  echo "Please run this script from the inteded directory!"
+  echo "For instructions, please see the README"
   exit 1
 fi
 
-# Ensure the user is running this script on OS X
-if [ $(uname -s) != "Darwin" ]; then
-    echo "This script is for use with OS X!"
-    exit 1
-fi
-
-# Ensure the user is running on an x86_64 system
-if [ $(uname -m) != 'x86_64' ] ; then
- echo ""$RED_UL"We only support x86_64 systems!"$ESC""
- exit 1
-fi
-
-# Fancy title function
-title() {
-  COLUMNS=$(tput cols)
-  tput clear
-  Y=$((($COLUMNS-${#MESSAGE})/2))
-  X=1
-  tput cup $X $Y
-  echo -e "${MESSAGE}"
-}
-
-# Safe run function to ensure commands are executed successfully
-saferun() {
-  typeset cmnd="$*"
-  typeset ret_code
-
-  eval  $cmnd
-  ret_code=$?
-  
-  if [ $ret_code != 0 ]; then
-     echo -e ""$RED_UL"\n\nIt looks like there was an issue "$ERR_MSG"!"$ESC"\n\nExiting..."
-     exit $?
-  fi
-}
-
-# ANSI properties/colours
-ESC='\033[0m'
-BLUE='\033[38;34m'
-BLUE_UL='\033[38;4;34m'
-GREEN='\033[38;32m'
-GREEN_UL='\033[38;4;32m'
-RED='\033[38;31m'
-RED_UL='\033[38;4;31m'
-YELLOW='\033[38;33m'
-YELLOW_UL='\033[38;4;33m'
+. resources
 
 # First, drop any chached sudo access (sudo does not require a password to perform this function)
 sudo -k
 
 # Welcome screen
-MESSAGE=""$BLUE_UL"Welcome to Save OS X!"$ESC""
+title ""$BLUE_UL"Welcome to Save OS X!"$ESC""
 
-title
 cat << EOM
 
 Welcome to the Save OS X project, an effort to make OS X
@@ -87,8 +40,7 @@ echo
 read -r -p "Press [Enter] to continue..."
 
 # Grab pkgsrc
-MESSAGE=""$RED_UL"pkgsrc/pkgin"$ESC""
-title
+title ""$RED_UL"pkgsrc/pkgin"$ESC""
 cat << EOM
 
 `echo -e ""$YELLOW_UL"pkgsrc"$ESC""`
@@ -222,7 +174,7 @@ fi
 # Set up signed packages if the user wants to
 if [[ $USE_GPG == "true" && $GPG_INSTALLED == "false" ]]; then
 echo "Fetching GNU PG for signed packages..."
-ERR_MESSAGE="retrieving the gnupg package"
+ERR_title "retrieving the gnupg package"
 saferun sudo /usr/pkg/bin/pkgin -F -dy in gnupg 
 echo "Retrieved signed GNU PG package."
 echo
@@ -294,8 +246,7 @@ fi
 read -r -p "Press [Enter] to continue..."
 
 # Grab XQuartz
-MESSAGE=""$BLUE_UL"XQuartz + X11 Hacks"$ESC""
-title
+title ""$BLUE_UL"XQuartz + X11 Hacks"$ESC""
 cat << EOM
 
 `echo -e ""$YELLOW_UL"Xquartz"$ESC""`
@@ -348,9 +299,8 @@ if [ $X_INST == "true" ]; then
 fi
 
 # PATH screen
-MESSAGE=""$GREEN_UL"Update System PATH"$ESC""
+title ""$GREEN_UL"Update System PATH"$ESC""
 
-title
 # Prepend binary dirs to system-wide path
 echo 
 echo -e "Updating \$PATH so new binaries can be found...\n"
@@ -403,8 +353,7 @@ echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
 read -r -p "Press [Enter] to continue..."
 
 # Final screen!
-MESSAGE=""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
-title
+title ""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
 cat << EOM
 
 All processes are complete! So what now? Well, we reccomend you read the
