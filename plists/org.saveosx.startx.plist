@@ -12,7 +12,7 @@
     <string>/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/pkg/bin:/usr/pkg/sbin</string>
   </dict>
   <key>Label</key>
-  <string>com.startx.userlogin</string>
+  <string>org.saveosx.startx</string>
   <key>Program</key>
   <string>/opt/X11/bin/startx</string>
   <key>RunAtLoad</key>
