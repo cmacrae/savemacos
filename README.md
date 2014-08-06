@@ -28,7 +28,7 @@ Simple as that!
 So what do these scripts do?
 ----------------------------
 If you follow the steps in the [installation section](#installation), you'll be greeted by an interactive script.
-In a nutshell, this script will walk you through the set-up of [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), set up your PATH & optionally implement [X11](http://www.x.org/wiki/) (using [XQuartz](https://xquartz.macosforge.org/landing/))in a seamless manner. 
+In a nutshell, this script will walk you through the set-up of [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), set up your PATH & optionally implement [X11](http://www.x.org/wiki/) (using [XQuartz](https://xquartz.macosforge.org/landing/)) in a seamless manner. 
 
 If you're familiar with shell, peruse through the code, it should be pretty clear what's happening :)
 
