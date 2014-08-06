@@ -60,7 +60,7 @@ saferun() {
   ret_code=$?
   
   if [ $ret_code != 0 ]; then
-     echo -e ""$RED_UL"\n\nIt looks like there was an issue running: $1"$ESC"\n\nExiting..."
+     echo -e ""$RED_UL"\n\nIt looks like there was an issue running: $*"$ESC"\n\nExiting..."
      exit $?
   fi
 }
