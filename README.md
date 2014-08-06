@@ -18,6 +18,7 @@ We want to show people that OS X is a perfectly viable option for developers, sy
 Installation
 ------------
 **Note:** *See [Here be Dragons](#here-be-dragons) before proceeding!*
+
 To get started, grab a copy of the repo (either clone it, or download as a zip).
 Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `bootstrap` script.
 
