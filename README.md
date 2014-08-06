@@ -15,8 +15,9 @@ To put it simply: because OS X is capable of much more than is immediately appar
 
 We want to show people that OS X is a perfectly viable option for developers, sysadmins, hackers, or just those who like to tinker.
 
-## <a name="installation"></a>Installation
-**Note:** *See [Here be Dragons](#dragons) before proceeding!*
+Installation
+------------
+**Note:** *See [Here be Dragons](#here-be-dragons) before proceeding!*
 To get started, grab a copy of the repo (either clone it, or download as a zip).
 Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `bootstrap` script.
 
@@ -30,7 +31,7 @@ In a nutshell, this script will walk you through the set-up of [pkgsrc](http://p
 
 If you're familiar with shell, peruse through the code, it should be pretty clear what's happening :)
 
-Why choose Save OS X (specifically pkgin) over <insert package manager here>?
+Why choose Save OS X (specifically pkgin) over \<insert package manager here\>?
 -----------------------------------------------------------------------------
 Here's a list of properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for OS X:
 - Precompiled packages from a trusted source
@@ -44,7 +45,8 @@ Here's a list of properties that make [pkgin](http://pkgin.net/) (a binary packa
 - Easy creation of new ports/packages
 - Source code & package management are kept separated
 
-## <a name="dragons"></a>Here be Dragons
+Here be Dragons
+---------------
 This is still a work in progress, so please, for your own sake; **wait until I'm finished to run any scripts here** ;)
 That said, testers are more than welcome! I've tested these scripts thoroughly on my systems, and nothing horrible has happened yet. So if you're up for it, dive in!
 Feel free to raise an issue for any problems you may encounter, or submit a pull request if you feel something could be implemented better.
