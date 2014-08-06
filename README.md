@@ -55,7 +55,7 @@ Feel free to raise an issue for any problems you may encounter, or submit a pull
 
 Who?
 ----
-[Save OS X](http://saveosx.org/) is a collaborative project between [Calum MacRae](@cmacrae) and [Youri Mouton](@yrmt)
+[Save OS X](http://saveosx.org/) is a collaborative project between [Calum MacRae](https://github.com/cmacrae) and [Youri Mouton](https://github.com/yrmt)
 
 **E-mail:** [calum0macrae@gmail.com](mailto:calum0macrae@gmail.com) / [youri.mout@gmail.com](mailto:youri.mout@gmail.com)
 
