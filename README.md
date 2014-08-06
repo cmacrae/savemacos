@@ -48,6 +48,7 @@ Here's a list of properties that make [pkgin](http://pkgin.net/) (a binary packa
 Here be Dragons
 ---------------
 This is still a work in progress, so please, for your own sake; **wait until I'm finished to run any scripts here** ;)
+
 That said, testers are more than welcome! I've tested these scripts thoroughly on my systems, and nothing horrible has happened yet. So if you're up for it, dive in!
 Feel free to raise an issue for any problems you may encounter, or submit a pull request if you feel something could be implemented better.
 
@@ -56,6 +57,7 @@ Who?
 [Save OS X](http://saveosx.org/) is a collaborative project between [Calum MacRae](@cmacrae) and [Youri Mouton](@yrmt)
 
 **E-mail:** [calum0macrae@gmail.com](mailto:calum0macrae@gmail.com) / [youri.mout@gmail.com](mailto:youri.mout@gmail.com)
+
 **IRC**: Come join us at `#saveosx` on `irc.oftc.net`
 
 License
