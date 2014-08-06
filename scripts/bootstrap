@@ -34,7 +34,6 @@ Please enter your password for sudo authentication
 
 EOM
 
-ERR_MSG="authenticating sudo access.\nPlease ensure you typed your password correctly" # Set error message to be echo'd should sudo authentication fail
 saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
 echo 
 read -r -p "Press [Enter] to continue..."
@@ -112,7 +111,6 @@ fi
 
 # Download and install pkgsrc
 echo "Fetching pkgsrc from the Save OS X repo..."
-ERR_MSG="retrieving the boostrap tarball from the Save OS X repo" # Set the error message to be echo'd should the curl fail
 
 # Check architecture
 if [ ! -f /tmp/bootstrap.tar.gz ] ; then
