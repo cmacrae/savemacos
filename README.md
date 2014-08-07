@@ -51,7 +51,7 @@ Here be Dragons
 This is still a work in progress, so please, for your own sake; **wait until I'm finished to run any scripts here** ;)
 
 That said, testers are more than welcome! I've tested these scripts thoroughly on my systems, and nothing horrible has happened yet. So if you're up for it, dive in!
-Feel free to raise an issue for any problems you may encounter, or submit a pull request if you feel something could be implemented better.
+Feel free to [raise an issue](https://github.com/cmacrae/saveosx/issues) for any problems you may encounter, or submit a pull request if you feel something could be implemented better.
 
 Who?
 ----
