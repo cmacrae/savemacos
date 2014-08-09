@@ -6,12 +6,14 @@
 
 # Save OS X bootstrapper to set-up Save OS X
 
+# Ensure script is being run from the 'scripts' subdir
 if [[ ! $(pwd) =~ .*\/saveosx.*\/scripts$ ]]; then
   echo "Please run this script from the inteded directory!"
   echo "For instructions, please see the README"
   exit 1
 fi
 
+# Grab funcs/vars
 . resources
 
 # First, drop any chached sudo access (sudo does not require a password to perform this function)
