@@ -25,6 +25,15 @@ Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scri
 That should get you started.
 Simple as that!
 
+pkgin usage
+-----------
+Want to find and install a package?
+`pkgin search \<package name\>'
+`pkgin install \<package name\>'
+Nice 'n easy!
+
+See [here](http://pkgin.net/#examples) for pkgin's usage examples.
+
 So what do these scripts do?
 ----------------------------
 If you follow the steps in the [installation section](#installation), you'll be greeted by an interactive script.
