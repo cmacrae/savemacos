@@ -28,8 +28,11 @@ Simple as that!
 pkgin usage
 -----------
 Want to find and install a package?
+
 `pkgin search <package name>`
+
 `pkgin install <package name>`
+
 Nice 'n easy!
 
 See [here](http://pkgin.net/#examples) for pkgin's usage examples.
