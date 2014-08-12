@@ -114,7 +114,7 @@ fi
 # Download and install pkgsrc
 echo "Fetching pkgsrc from the Save OS X repo..."
 
-# Check architecture
+# Download the bootstrap, if not already there (from multiple runs)
 if [ ! -f /tmp/bootstrap.tar.gz ] ; then
   saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2013Q4.tar.gz # Safely retrive the x86_64 pkgsrc bootstrapper from the Save OS X repo
 fi
@@ -287,14 +287,6 @@ done
 sudo -v # Keep sudo authentication open
 
 if [ $X_INST == "true" ]; then
-  # Grab resources and run through the X setup script
-  rm -rf /tmp/saveosx 2>&1 > /dev/null
-  mkdir /tmp/saveosx
-  curl -s -o /tmp/saveosx/x-setup https://raw.githubusercontent.com/cmacrae/saveosx/master/scripts/x-setup
-  curl -s -o /tmp/saveosx/xquartz.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/xquartz.plist
-  curl -s -o /tmp/saveosx/org.saveosx.startx.plist https://raw.githubusercontent.com/cmacrae/saveosx/master/plists/org.saveosx.startx.plist
-  cd /tmp/saveosx
-  sudo -v # Keep sudo authentication open
   bash x-setup
 fi
 
