@@ -174,7 +174,6 @@ fi
 # Set up signed packages if the user wants to
 if [[ $USE_GPG == "true" && $GPG_INSTALLED == "false" ]]; then
 echo "Fetching GNU PG for signed packages..."
-ERR_title "retrieving the gnupg package"
 saferun sudo /usr/pkg/bin/pkgin -F -dy in gnupg 
 echo "Retrieved signed GNU PG package."
 echo
