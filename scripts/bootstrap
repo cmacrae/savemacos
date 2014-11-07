@@ -36,7 +36,10 @@ Please enter your password for sudo authentication
 
 EOM
 
-saferun sudo echo "sudo authenticaion successful!" # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+# Prompt for initial sudo password (will be updated througout with `sudo -v`)
+saferun sudo echo "sudo authenticaion successful!"
+# Keep initial sudo auth alive
+while true ; do sudo -n true ; sleep 60 ; kill -0 "$$" || exit ; done 2>/dev/null &
 echo 
 read -r -p "Press [Enter] to continue..."
 
@@ -132,10 +135,8 @@ elif [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]; t
 fi
 
 echo 
-sudo -v # Keep sudo authentication open
 echo "Updating pkgsrc repository information..."
 sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
-sudo -v # Keep sudo authentication open
 echo "Package database updated!"
 echo
 # Ask user if they would like use signed packages
@@ -282,9 +283,6 @@ do
     esac
 done
 
-
-sudo -v # Keep sudo authentication open
-
 if [ $X_INST == "true" ]; then
   bash x-setup
 fi
@@ -298,8 +296,6 @@ echo -e "Updating \$PATH so new binaries can be found...\n"
 echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
 echo -e "Updating \$MANPATH so new manpages can be found...\n"
 echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/man.conf > /dev/null
-
-sudo -v # Keep sudo authentication open
 
 # Check user's shell
 SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
