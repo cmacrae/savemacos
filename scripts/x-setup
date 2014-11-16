@@ -26,7 +26,12 @@ This will revoke any hacks put in place by the 'x-setup' script.
 EOM
     read -r -p "If you would like to continue and revoke these changes, press [Enter]..."
     clear
-    
+    # Prompt for initial sudo password (will be updated througout with `sudo -v`)
+    echo "Please enter your password for sudo authentication"
+    saferun sudo echo "sudo authenticaion successful!"
+    # Keep initial sudo auth alive
+    while true ; do sudo -n true ; sleep 60 ; kill -0 "$$" || exit ; done 2>/dev/null &
+
     # Ask user if they would like to uninstall XQuartz
     while :
     do
