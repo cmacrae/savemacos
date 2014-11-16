@@ -16,9 +16,60 @@ fi
 # Grab funcs/vars
 . resources
 
-# Title
-title ""$BLUE_UL"X11 Setup"$ESC""
-cat << EOM
+
+revoke() {
+    title ""$BLUE_UL"Revoke Save OS X X11 hacks"$ESC""
+    cat <<EOM
+It looks like this script has been run with the -r flag.
+This will revoke any hacks put in place by the 'x-setup' script.
+
+EOM
+    read -r -p "If you would like to continue and revoke these changes, press [Enter]..."
+    clear
+    
+    # Ask user if they would like to uninstall XQuartz
+    while :
+    do
+	read -r -p "Would you like to uninstall XQuartz? [y/n] " ANSWER
+	case $ANSWER in
+	    [yY][eE][sS]|[yY])
+		echo -e "\nRemoving XQuartz..."
+		sudo rm -rf /Applications/Utilities/XQuartz.app
+		export XQUARTZ_RM=true
+		break
+		;;
+	    [nN][oO]|[nN])
+		echo -e "\nLeaving XQuartz in place..."
+		break
+		;; 
+	    *)
+		echo "Please answer yes or no..."
+	esac
+    done
+    
+    # Disable X11's launch upon login
+    echo "Re-enabling Finder..."
+    sudo defaults write com.apple.finder QuitMenuItem -bool NO &> /dev/null
+    launchctl load -w /System/Library/LaunchAgents/com.apple.Finder.plist &> /dev/null
+    echo "Resetting the dock..."
+    sudo defaults write com.apple.dock autohide-time-modifier -int 0 &> /dev/null
+    sudo defaults write com.apple.dock no-bouncing -bool FALSE &> /dev/null
+    if [ ! -z $XQUARTZ_RM ]; then
+	echo "Unhiding menu bar for XQuartz..."
+	sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{.orig,} &> /dev/null
+    fi
+    echo "Disabling X11's launch upon login..."
+    launchctl unload -w $LIB_PATH/org.saveosx.startx.plist &> /dev/null
+    rm -f $LIB_PATH/org.saveosx.startx.plist
+    echo "All Save OS X X11 hacks have now been revoked."
+    echo "If you would like to re-implement any of these, simply re-run this script"
+    exit 0
+}
+
+main() {
+    # Title
+    title ""$BLUE_UL"X11 Setup"$ESC""
+    cat << EOM
 Please understand that you will need to set up your X11 environment yourself.
 This is done as it would be on any other OS, simply install your
 window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,
@@ -27,90 +78,104 @@ and you should be all set!
 
 EOM
 
-read -r -p "Press [Enter] to continue..."
-echo ''
+    read -r -p "Press [Enter] to continue..."
+    echo ''
 
-# Fetch & install XQuartz if it isn't already installed
-if [ ! -d /Applications/Utilities/XQuartz.app ]; then
-  echo 
-  echo "Fetching XQuartz..."
-  saferun curl -s -o /tmp/xquartz.dmg http://xquartz-dl.macosforge.org/SL/XQuartz-2.7.6.dmg
-  sudo -v # Keep sudo authentication open
-  echo "Mounting XQuartz disk image..."
-  saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
-  echo "Installing XQuartz..."
-  saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
-  echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
-  umount /Volumes/xquartz 2>&1 > /dev/null
-  echo
-elif [ -d /Applications/Utilities/XQuartz.app ]; then
-  echo 
-  echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
+    # Fetch & install XQuartz if it isn't already installed
+    if [ ! -d /Applications/Utilities/XQuartz.app ]; then
+	echo 
+	echo "Fetching XQuartz..."
+	saferun curl -s -o /tmp/xquartz.dmg http://xquartz-dl.macosforge.org/SL/XQuartz-2.7.6.dmg
+	sudo -v # Keep sudo authentication open
+	echo "Mounting XQuartz disk image..."
+	saferun hdiutil mount -mountpoint /Volumes/xquartz /tmp/xquartz.dmg 1>/dev/null # Mount XQuartz disk image, safely should failure occur
+	echo "Installing XQuartz..."
+	saferun sudo installer -pkg /Volumes/xquartz/XQuartz.pkg -target /
+	echo -e "\n"$GREEN"XQuartz installed successfully!"$ESC""
+	umount /Volumes/xquartz 2>&1 > /dev/null
+	echo
+    elif [ -d /Applications/Utilities/XQuartz.app ]; then
+	echo 
+	echo -e "\n"$GREEN"It looks like XQuartz is already installed..."$ESC""
+    fi
+
+    # Set up startx launchd script
+    echo -e "Setting up X11 launchd service..."
+    if [ ! -d $LIBPATH ]; then
+	mkdir -p $LIBPATH
+	chown $USER:staff $LIBPATH
+    fi
+
+    cp -f ../plists/org.saveosx.startx.plist $LIB_PATH/
+    chown $USER:staff $LIB_PATH/org.saveosx.startx.plist
+    chmod 644 $LIB_PATH/org.saveosx.startx.plist
+
+    # Ask user if they would like to disable Finder
+    while :
+    do
+	read -r -p "Would you like to disable Finder's launch upon login? [y/n] " ANSWER
+	case $ANSWER in
+	    [yY][eE][sS]|[yY])
+		echo -e "\nOK, disabling Finder..."
+		sudo defaults write com.apple.finder QuitMenuItem -bool YES
+		launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist
+		break
+		;;
+	    [nN][oO]|[nN])
+		echo -e "\nLeaving Finder alone..."
+		break
+		;; 
+	    *)
+		echo "Please answer yes or no..."
+	esac
+    done
+
+    # Permanently hide dock option
+    while :
+    do
+	read -r -p "Would you like to permanently hide the dock? [y/n] " ANSWER
+	case $ANSWER in
+            [yY][eE][sS]|[yY])
+		echo -e "\nOK, hiding Dock.app..."
+		sudo defaults write com.apple.dock autohide-time-modifier -int 10000000000
+		sudo defaults write com.apple.dock no-bouncing -bool TRUE
+		killall Dock
+		break
+		;;
+            [nN][oO]|[nN])
+		echo -e "\nLeaving Dock.app alone..."
+		break
+		;; 
+            *)
+		echo "Please answer yes or no..."
+	esac
+    done
+
+    # Hide menu bar for XQuartz
+    echo -e "Configuring XQuartz to be seemless..."
+    sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} &> /dev/null ; sudo cp -f ../plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
+
+    # Set XQuartz to launch at login
+    echo ''
+    echo -e "Necessary X files have been created.\n"$YELLOW"Setting X to launch at login"$ESC""
+    # Create the log file to be used by org.saveosx.startx
+    sudo touch /var/log/saveosx.log
+    sudo chown $USER:staff /var/log/saveosx.log
+    launchctl load -w $LIB_PATH/org.saveosx.startx.plist
+    echo ''
+    echo -e ""$GREEN"Complete!"$ESC""
+    read -r -p "Press [Enter] to continue... "
+}
+
+if [[ $# -eq 0 ]]; then
+    main
+elif [[ $# -eq 1 && $1 == "-r" ]]; then
+    revoke
+elif [[ $# -gt 1 || $1 != "-r" ]]; then
+    cat <<EOM
+Unrecognized flag/argument....
+To set up, simply run with no arguments or flags.
+To revoke changes, run with the '-r' flag.
+EOM
+    exit 3
 fi
-
-# Set up startx launchd script
-echo -e "Setting up X11 launchd service..."
-if [ ! -d $LIBPATH ]; then
-  mkdir -p $LIBPATH
-  chown $USER:staff $LIBPATH
-fi
-
-cp -f ../plists/org.saveosx.startx.plist $LIB_PATH/
-chown $USER:staff $LIB_PATH/org.saveosx.startx.plist
-chmod 644 $LIB_PATH/org.saveosx.startx.plist
-
-# Ask user if they would like to disable Finder
-while :
-do
-  read -r -p "Would you like to disable Finder's launch upon login? [y/n] " ANSWER
-    case $ANSWER in
-      [yY][eE][sS]|[yY])
-        echo -e "\nOK, disabling Finder..."
-        sudo defaults write com.apple.finder QuitMenuItem -bool YES
-        launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist
-        break
-        ;;
-      [nN][oO]|[nN])
-        echo -e "\nLeaving Finder alone..."
-        break
-        ;; 
-      *)
-        echo "Please answer yes or no..."
-    esac
-done
-
-# Permanently hide dock option
-while :
-  do
-    read -r -p "Would you like to permanently hide the dock? [y/n] " ANSWER
-      case $ANSWER in
-        [yY][eE][sS]|[yY])
-          echo -e "\nOK, hiding Dock.app..."
-          sudo defaults write com.apple.dock autohide-time-modifier -int 10000000000
-          sudo defaults write com.apple.dock no-bouncing -bool TRUE
-          killall Dock
-          break
-          ;;
-        [nN][oO]|[nN])
-          echo -e "\nLeaving Dock.app alone..."
-          break
-          ;; 
-        *)
-          echo "Please answer yes or no..."
-      esac
-done
-
-# Hide menu bar for XQuartz
-echo -e "Configuring XQuartz to be seemless..."
-sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{,.orig} 2>&1 > /dev/null ; sudo cp -f ../plists/xquartz.plist /Applications/Utilities/XQuartz.app/Contents/Info.plist
-
-# Set XQuartz to launch at login
-echo ''
-echo -e "Necessary X files have been created.\n"$YELLOW"Setting X to launch at login"$ESC""
-# Create the log file to be used by org.saveosx.startx
-sudo touch /var/log/saveosx.log
-sudo chown $USER:staff /var/log/saveosx.log
-launchctl load -w $LIB_PATH/org.saveosx.startx.plist
-echo ''
-echo -e ""$GREEN"Complete!"$ESC""
-read -r -p "Press [Enter] to continue... "
