@@ -329,7 +329,7 @@ if [ ! -f $SHELLRC ]; then
 fi
 
 # Update user's shell rc file with new $PATH 
-if [[ ! $(grep "path_helper" {SHELLRC) ]]; then
+if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
     echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
 fi
 
