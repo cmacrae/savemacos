@@ -18,10 +18,10 @@ fi
 
 
 revoke() {
-    title ""$BLUE_UL"Revoke Save OS X X11 hacks"$ESC""
+    title ""$BLUE_UL"Revoke Save OS X X11 Implementation"$ESC""
     cat <<EOM
 It looks like this script has been run with the -r flag.
-This will revoke any hacks put in place by the 'x-setup' script.
+This will revoke any of the changes  put in place by the 'x-setup' script.
 
 EOM
     read -r -p "If you would like to continue and revoke these changes, press [Enter]..."
@@ -52,17 +52,20 @@ EOM
 	esac
     done
     
-    # Disable X11's launch upon login
+    # Re-enable Finder
     echo "Re-enabling Finder..."
     sudo defaults write com.apple.finder QuitMenuItem -bool NO &> /dev/null
     launchctl load -w /System/Library/LaunchAgents/com.apple.Finder.plist &> /dev/null
+    # Reset the Dock
     echo "Resetting the dock..."
     sudo defaults write com.apple.dock autohide-time-modifier -int 0 &> /dev/null
     sudo defaults write com.apple.dock no-bouncing -bool FALSE &> /dev/null
+    # Unhide the menu bar for XQuartz
     if [ ! -z $XQUARTZ_RM ]; then
 	echo "Unhiding menu bar for XQuartz..."
 	sudo mv /Applications/Utilities/XQuartz.app/Contents/Info.plist{.orig,} &> /dev/null
     fi
+    # Disable XQuartz launchd service
     echo "Disabling X11's launch upon login..."
     launchctl unload -w $LIB_PATH/org.saveosx.startx.plist &> /dev/null
     rm -f $LIB_PATH/org.saveosx.startx.plist
@@ -80,6 +83,9 @@ This is done as it would be on any other OS, simply install your
 window manager/desktop environment of choice (through pkgin), set up your ~/.xinitrc,
 plus any other configurations your window manager/desktop environment may need
 and you should be all set!
+
+If you would like to revoke these changes at any point; you can run the 'x-setup'
+script included with Save OS X with the '-r' flag.
 
 EOM
 
@@ -162,7 +168,7 @@ EOM
 
     # Set XQuartz to launch at login
     echo ''
-    echo -e "Necessary X files have been created.\n"$YELLOW"Setting X to launch at login"$ESC""
+    echo -e ""$YELLOW"Setting X to launch at login"$ESC""
     # Create the log file to be used by org.saveosx.startx
     sudo touch /var/log/saveosx.log
     sudo chown $USER:staff /var/log/saveosx.log
@@ -178,7 +184,7 @@ elif [[ $# -eq 1 && $1 == "-r" ]]; then
     revoke
 elif [[ $# -gt 1 || $1 != "-r" ]]; then
     cat <<EOM
-Unrecognized flag/argument....
+Unrecognized flag/argument: $1
 To set up, simply run with no arguments or flags.
 To revoke changes, run with the '-r' flag.
 EOM
