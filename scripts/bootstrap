@@ -127,16 +127,14 @@ sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null # extract the pkgsrc bootst
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 
 # Add Save OS X repo
-if [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) == 0 ]; then
+if [ ! $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ]; then
     echo "http://pkgsrc.saveosx.org/Darwin/2013Q4/x86_64/All" | sudo tee -a /usr/pkg/etc/pkgin/repositories.conf > /dev/null
-    echo "Your system has now been set up to use the Save OS X repo!"
-elif [ $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf | wc -l) -gt 0 ]; then
-    echo "Your system has now been set up to use the Save OS X repo!"
 fi
 
+echo "Your system has now been set up to use the Save OS X repo!"
 echo 
 echo "Updating pkgsrc repository information..."
-sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
+saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 echo "Package database updated!"
 echo
 # Ask user if they would like use signed packages
