@@ -123,7 +123,7 @@ if [ ! -f /tmp/bootstrap.tar.gz ] ; then
 fi
 
 echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
-sudo tar xfP /tmp/bootstrap.tar.gz -C / 2>&1 > /dev/null # extract the pkgsrc bootstrap in the root directory
+sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null # extract the pkgsrc bootstrap in the root directory
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 
 # Add Save OS X repo
@@ -238,9 +238,9 @@ fi
 if [[ $USE_GPG == "true" ]]; then
   export PATH=$PATH:/usr/pkg/bin # temporarily export the PATH so gpg can be determined
   echo "Importing yrmt's GPG key..."
-  gpg --recv-keys 2D99C8F7 2>&1 > /dev/null
-  echo "GPG=`which gpg`" | sudo tee -a /usr/pkg/etc/pkg_install.conf 2>&1 > /dev/null
-  echo "VERIFIED_INSTALLATION=always" | sudo tee -a /usr/pkg/etc/pkg_install.conf 2>&1 > /dev/null
+  gpg --recv-keys 2D99C8F7 &> /dev/null
+  echo "GPG=`which gpg`" | sudo tee -a /usr/pkg/etc/pkg_install.conf &> /dev/null
+  echo "VERIFIED_INSTALLATION=always" | sudo tee -a /usr/pkg/etc/pkg_install.conf &> /dev/null
 fi
 
 read -r -p "Press [Enter] to continue..."
