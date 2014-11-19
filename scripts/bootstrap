@@ -254,20 +254,21 @@ XQuartz is an open-source effort to develop a version of the X.Org X Window Syst
 Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with
 OS X since version 10.5.
 
-`echo -e ""$YELLOW_UL"X11 Hacks"$ESC""`
-We've cooked up some hacks for OS X in an attempt to seamlessly implement an X11 environment,
-close to how it would be on any other UNIX-like system. This is achieved using a mixture of
-some custom launchd scripts, so X launches upon login, and some Aqua UI trickery to hide some
-elements.
+`echo -e ""$YELLOW_UL"Our X11 Implementation"$ESC""`
+We've put together some little hacks for OS X in an attempt to seamlessly implement an X11 environment,
+close to how it would be on any other UNIX-like system. This is achieved using a custom launchd script,
+so X launches upon login, and some Aqua UI trickery to hide some elements.
+
 Coupling the above with the wealth of window managers & desktop environments available in our
-package repo, you'll feel right at home!
+package repo, you'll feel right at home! Of course, Aqua applications can still be used in conjunction
+with X11, so don't fret :)
 
 EOM
 
 # Ask user if they would like to install XQuartz
 while :
 do
-  read -r -p "Would you like to install XQuartz & our X11 Hacks? [y/n] " ANSWER
+  read -r -p "Would you like to install XQuartz & our X11 environment? [y/n] " ANSWER
     case $ANSWER in
       [yY][eE][sS]|[yY])
           export X_INST="true" 
