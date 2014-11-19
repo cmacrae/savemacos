@@ -130,7 +130,7 @@ EOM
 	    [yY][eE][sS]|[yY])
 		echo -e "\nOK, disabling Finder..."
 		sudo defaults write com.apple.finder QuitMenuItem -bool YES
-		launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist
+		launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist &> /dev/null
 		break
 		;;
 	    [nN][oO]|[nN])
@@ -173,7 +173,7 @@ EOM
     # Create the log file to be used by org.saveosx.startx
     sudo touch /var/log/saveosx.log
     sudo chown $USER:staff /var/log/saveosx.log
-    launchctl load -w $LIB_PATH/org.saveosx.startx.plist
+    launchctl load -w $LIB_PATH/org.saveosx.startx.plist &> /dev/null
     echo ''
     echo -e ""$GREEN"Complete!"$ESC""
     read -r -p "Press [Enter] to continue... "
