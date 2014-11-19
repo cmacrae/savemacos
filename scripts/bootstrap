@@ -188,7 +188,7 @@ do
 cat << EOM
 Here's the public key it has been signed with:
 
-`ar -p /var/db/pkgin/cache/gnupg*.tgz | sed -n 42,58p`
+`ar -p /var/db/pkgin/cache/gnupg*.tgz | sed -n 41,57p`
 
 And here's the intended signer's key fingerprint:
 
