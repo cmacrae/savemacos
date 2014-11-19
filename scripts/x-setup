@@ -40,6 +40,7 @@ EOM
 	    [yY][eE][sS]|[yY])
 		echo -e "\nRemoving XQuartz..."
 		sudo rm -rf /Applications/Utilities/XQuartz.app
+		sudo rm -rf /opt/X11
 		export XQUARTZ_RM=true
 		break
 		;;
