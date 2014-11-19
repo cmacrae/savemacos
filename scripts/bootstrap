@@ -328,7 +328,7 @@ fi
 
 # Update user's shell rc file with new $PATH 
 if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
-    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
+    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> $SHELLRC
 fi
 
 # Evaluate system path to circumvent explicit calls of new binaries
