@@ -165,10 +165,10 @@ do
     esac
 done
 
-if [[ $(which gpg | fgrep -v "gpg not found" | wc -l) -lt 1 ]]; then
-  export GPG_INSTALLED=false
-else
+if [[ $(which gpg) ]]; then
   export GPG_INSTALLED=true
+else
+  export GPG_INSTALLED=false
 fi
 
 
@@ -329,7 +329,7 @@ if [ ! -f ${SHELLRC} ]; then
 fi
 
 # Update user's shell rc file with new $PATH 
-echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> ${SHELLRC}
+echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> ${SHELLRC}
 
 # Evaluate system path to circumvent explicit calls of new binaries
 if [ -x /usr/libexec/path_helper ]; then
