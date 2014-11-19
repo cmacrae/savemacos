@@ -2,11 +2,9 @@ Save OS X
 =========
 The official repo for the [Save OS X](http://saveosx.org/) project's set-up scripts.
 
-![alt text](img/hexley.png)
-
 About
 -----
-[Save OS X](http://saveosx.org/) is a hacking and development project for Apple’s Operating System; OS X.
+[Save OS X](http://saveosx.org/) is a hacking and development project for Apple’s Operating System: OS X.
 We’re geared towards bringing a wealth of software that’s often found on other UNIX derived OS’s to OS X and showing the user that they can use OS X as a great UNIX based workstation.
 
 Why?
@@ -17,8 +15,6 @@ We want to show people that OS X is a perfectly viable option for developers, sy
 
 Installation
 ------------
-**Note:** *See [Here be Dragons](#here-be-dragons) before proceeding!*
-
 To get started, grab a copy of the repo (either clone it, or download as a zip).
 Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `bootstrap` script.
 
@@ -59,13 +55,6 @@ Here's a list of properties that make [pkgin](http://pkgin.net/) (a binary packa
 - Ultra portable framework for use on many other OS's results in high quality ports
 - Easy creation of new ports/packages
 - Source code & package management are kept separated
-
-Here be Dragons
----------------
-This is still a work in progress, so please, for your own sake; **wait until I'm finished to run any scripts here** ;)
-
-That said, testers are more than welcome! I've tested these scripts thoroughly on my systems, and nothing horrible has happened yet. So if you're up for it, dive in!
-Feel free to [raise an issue](https://github.com/cmacrae/saveosx/issues) for any problems you may encounter, or submit a pull request if you feel something could be implemented better.
 
 Who?
 ----
