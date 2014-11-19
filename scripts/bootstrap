@@ -127,7 +127,7 @@ sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null # extract the pkgsrc bootst
 echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
 
 # Add Save OS X repo
-if [ ! $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ]; then
+if [ ! $(grep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf) ]; then
     echo "http://pkgsrc.saveosx.org/Darwin/2013Q4/x86_64/All" | sudo tee -a /usr/pkg/etc/pkgin/repositories.conf > /dev/null
 fi
 
@@ -142,10 +142,10 @@ while :
 do
   read -r -p "Would you like to use signed packages (recommended)? [y/n/what?] " ANSWER
     case $ANSWER in
-      [yY][eE][sS]|[yY])
-          USE_GPG=true
+	[yY][eE][sS]|[yY])
+          export USE_GPG=true
           break
-          ;;
+	  ;;
       [nN][oO]|[nN])
           USE_GPG=false
           echo "VERIFIED_INSTALLATION=never" | sudo tee -a /usr/pkg/etc/pkg_install.conf > /dev/null
