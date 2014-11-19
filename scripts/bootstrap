@@ -319,17 +319,19 @@ do
 done
 
 # Ask for user's shell if necessary
-if [ ${SHELLRC} == "user_defined" ]; then
+if [ $SHELLRC == "user_defined" ]; then
   read -r -p "Please enter the full path to your shell's rc file: " SHELLRC
   export SHELLRC
 fi
 
-if [ ! -f ${SHELLRC} ]; then
+if [ ! -f $SHELLRC ]; then
   echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
 # Update user's shell rc file with new $PATH 
-echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> ${SHELLRC}
+if [[ ! $(grep "path_helper" {SHELLRC) ]]; then
+    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
+fi
 
 # Evaluate system path to circumvent explicit calls of new binaries
 if [ -x /usr/libexec/path_helper ]; then
