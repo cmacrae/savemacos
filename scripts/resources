@@ -82,3 +82,8 @@ YELLOW_UL='\033[38;4;33m'
 
 # Set user's library path
 LIB_PATH=/Users/$USER/Library/LaunchAgents
+
+# Echo a message for people trying to run this....
+echo "This is not intended to be executed."
+echo "This file is for shared functions and variables amongst the other Save OS X scripts..."
+exit 1
