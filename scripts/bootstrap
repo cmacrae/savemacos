@@ -30,7 +30,7 @@ a more comfortable system for hackers, developers & power users.
 This script will set up your environment for you. It will automatically
 install pkgsrc & its associated binary package manager - pkgin.
 You will also have the choice to apply a seamless X11 environment that
-we've hacked up for you!
+we've put together for you!
 
 Please enter your password for sudo authentication
 
