@@ -246,7 +246,7 @@ fi
 read -r -p "Press [Enter] to continue..."
 
 # Grab XQuartz
-title ""$BLUE_UL"XQuartz + X11 Hacks"$ESC""
+title ""$BLUE_UL"XQuartz + Our X11 Implementation"$ESC""
 cat << EOM
 
 `echo -e ""$YELLOW_UL"Xquartz"$ESC""`
