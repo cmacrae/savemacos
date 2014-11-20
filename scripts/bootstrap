@@ -200,7 +200,8 @@ while :
 do
   read -r -p "Are you satisfied that this package is from a genuine source? [y/n] " ANSWER
     case $ANSWER in
-      [yY][eE][sS]|[yY])
+	[yY][eE][sS]|[yY])
+	  saferun sudo /usr/pkg/bin/pkgin -F -y in gnupg 
           break
           ;;
       [nN][oO]|[nN])
