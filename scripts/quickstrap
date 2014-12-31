@@ -8,9 +8,9 @@
 
 # Ensure script is being run from the 'scripts' subdir
 if [[ ! $(pwd) =~ .*\/saveosx.*\/scripts$ ]]; then
-   echo "Please run this script from the inteded directory!"
-   echo "For instructions, please see the README"
-exit 1
+    echo "Please run this script from the inteded directory!"
+    echo "For instructions, please see the README"
+    exit 1
 fi
 
 # Grab funcs/vars
@@ -42,16 +42,16 @@ while true ; do sudo -n true ; sleep 60 ; kill -0 "$$" || exit ; done 2>/dev/nul
 
 # Check for Home Brew install
 if [ -f /usr/local/bin/brew ]; then
-echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
-echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
-exit 1
+    echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
+    echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+    exit 1
 fi
 
 # Check for MacPorts install
 if [ -f /opt/local/bin/port ]; then
-echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
-echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
-exit 1
+    echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
+    echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+    exit 1
 fi
 
 # Download and install pkgsrc
@@ -80,16 +80,16 @@ echo
 
 # Check for GPG
 if [[ $(which gpg) ]]; then
-export GPG_INSTALLED=true
+    export GPG_INSTALLED=true
 else
-export GPG_INSTALLED=false
+    export GPG_INSTALLED=false
 fi
 
 # Install GPG if not already present
 if [ $GPG_INSTALLED == "false" ]; then
-echo "Fetching GNU PG for signed packages..."
-saferun sudo /usr/pkg/bin/pkgin -F -dy in gnupg 
-echo "Retrieved signed GNU PG package."
+    echo "Fetching GNU PG for signed packages..."
+    saferun sudo /usr/pkg/bin/pkgin -F -dy in gnupg 
+    echo "Retrieved signed GNU PG package."
 fi
 
 # Import yrmt's GPG key for signed packages
@@ -111,16 +111,16 @@ SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
 echo "It looks like your shell's rc file is $SHELLRC"
 
 if [ ! -f $SHELLRC ]; then
-echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
+    echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
 # Update user's shell rc file with new $PATH 
 if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
-echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
+    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
 fi
 
 if [ -x /usr/libexec/path_helper ]; then
-eval `/usr/libexec/path_helper -s`
+    eval `/usr/libexec/path_helper -s`
 fi
 
 echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
