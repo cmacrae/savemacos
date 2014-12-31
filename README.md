@@ -72,6 +72,8 @@ Who?
 
 **IRC**: Come join us at `#saveosx` on `irc.oftc.net`
 
+**Twitter**: [@calumacrae](https://twitter.com/calumacrae) / [@YouriMouton](https://twitter.com/YouriMouton)
+
 License
 -------
 Use of this source code is governed by an ISC license that can be found in [the LICENSE file](LICENSE)
