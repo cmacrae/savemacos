@@ -21,6 +21,11 @@ Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scri
 That should get you started.
 Simple as that!
 
+Want secure binary package management on OS X fast?
+---------------------------------------------------
+For a streamlined setup, to get you up and running in under a minute, there's the `quickstrap` script.
+Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `quickstrap` script.
+
 So what do these scripts do?
 ----------------------------
 If you follow the steps in the [installation section](#installation), you'll be greeted by an interactive script.

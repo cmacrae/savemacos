@@ -26,10 +26,13 @@ cat << EOM
 Welcome to the Save OS X project, an effort to make OS X
 a more comfortable system for hackers, developers & power users.
 
+It looks like you're running the 'quickstrap' script.
+You'll be up and running in no time!
+
 This script will set up your environment for you. It will automatically
-install pkgsrc & its associated binary package manager - pkgin.
-You will also have the choice to apply a seamless X11 environment that
-we've put together for you!
+install pkgsrc & its associated binary package manager - pkgin, with signed
+packages, and set up your path environments so binaries and man-pages can
+be found.
 
 Please enter your password for sudo authentication
 
@@ -62,9 +65,9 @@ if [ ! -f /tmp/bootstrap.tar.gz ] ; then
     saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2013Q4.tar.gz
 fi
 # extract the pkgsrc bootstrap in the root directory
-echo -e "pkgsrc retrieved successfully, proceeding to install...\n"
+echo -e "pkgsrc retrieved successfully, proceeding to install..."
 sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null
-echo -e "\n"$GREEN"pkgsrc installed."$ESC" Adding Save OS X repo..."
+echo -e ""$GREEN"pkgsrc installed."$ESC"\nAdding Save OS X repo..."
 
 # Add Save OS X repo
 if [ ! $(fgrep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ) ]; then
@@ -101,39 +104,41 @@ echo "VERIFIED_INSTALLATION=always" | sudo tee -a /usr/pkg/etc/pkg_install.conf 
 
 # Add binary dirs to system-wide path
 echo 
-echo -e "Updating \$PATH so new binaries can be found...\n"
+echo -e "Updating \$PATH so new binaries can be found..."
 echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
-echo -e "Updating \$MANPATH so new manpages can be found...\n"
+echo -e "Updating \$MANPATH so new manpages can be found..."
 echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/man.conf > /dev/null
 
 # Set up PATH eval in user's shellrc
-SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
-echo "It looks like your shell's rc file is $SHELLRC"
+SHELLRC=~/.$(echo $SHELL | awk -F/ '{print$NF}')rc
 
-if [ ! -f $SHELLRC ]; then
+if [ -f $SHELLRC ]; then
+    echo "It looks like your shell's rc file is $SHELLRC"
+else
     echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
 # Update user's shell rc file with new $PATH 
 if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
+    echo "Adding proper PATH evaluation to $SHELLRC"
     echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
+else
+    echo "It looks like you already have proper PATH evaluation in $SHELLRC"
 fi
 
 if [ -x /usr/libexec/path_helper ]; then
     eval `/usr/libexec/path_helper -s`
 fi
 
-echo -e ""$GREEN"Your system's \$PATH has been updated"$ESC"\n\n"
+echo -e "Your system's \$PATH has been updated"
 
 # Final screen!
-title ""$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
+echo -e "\n"$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
 cat << EOM
 
 All processes are complete! So what now? Well, we reccomend you read the
 manpage for pkgin at least, as you'll be managing all your non-Apple software
 with this excellent package manager.
-
-From here, if you opted for X, get your environment set up, and more importantly; enjoy!
 
 EOM
 echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
