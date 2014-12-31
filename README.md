@@ -26,7 +26,7 @@ Want secure binary package management on OS X fast?
 For a streamlined setup, to get you up and running in under a minute, there's the `quickstrap` script.
 Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `quickstrap` script.
 
-[Here's a quick demo of the script in action](https://showterm.io/a3ccab391e69016360b98)
+[Here's a quick demo of the script in action](https://showterm.io/a3ccab391e69016360b98)  
 _Note: The time for some of the exeutions in this demo are inaccurate - it is, in fact, a faster process from the shell. This is due to the way [showterm](https://showterm.io) processes text_
 
 So what do these scripts do?
