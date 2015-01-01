@@ -58,16 +58,16 @@ if [ -f /opt/local/bin/port ]; then
 fi
 
 # Download and install pkgsrc
-echo "Fetching pkgsrc from the Save OS X repo..."
+echo "Fetching pkgin from the Save OS X repo..."
 
 # Download the bootstrap, if not already there (from multiple runs)
 if [ ! -f /tmp/bootstrap.tar.gz ] ; then
     saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2013Q4.tar.gz
 fi
-# extract the pkgsrc bootstrap in the root directory
-echo -e "pkgsrc retrieved successfully, proceeding to install..."
+# extract the pkgin bootstrap in the root directory
+echo -e "pkgin retrieved successfully, proceeding to install..."
 sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null
-echo -e ""$GREEN"pkgsrc installed."$ESC"\nAdding Save OS X repo..."
+echo -e ""$GREEN"pkgin installed."$ESC"\nAdding Save OS X repo..."
 
 # Add Save OS X repo
 if [ ! $(fgrep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ) ]; then
@@ -76,7 +76,7 @@ fi
 
 echo "Your system has now been set up to use the Save OS X repo!"
 echo 
-echo "Updating pkgsrc repository information..."
+echo "Updating pkgin repository information..."
 saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
 echo "Package database updated!"
 echo
