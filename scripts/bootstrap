@@ -86,6 +86,7 @@ Note: You may also need to remove ~/.homebrew. If you happen to be using rvm, th
       also be deleted.
 
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""`
+`echo -e ""$RED"Any processes currently running from software installed by Home Brew will encounter serious failures!"$ESC""
 EOM
 exit 1
 fi
@@ -110,6 +111,7 @@ Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0
 rm -rf ~/.macports
 
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
+`echo -e ""$RED"Any processes currently running from software installed by MacPorts will encounter serious failures!"$ESC""
 EOM
 exit 1
 fi
