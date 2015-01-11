@@ -8,9 +8,9 @@
 
 # Ensure script is being run from the 'scripts' subdir
 if [[ ! $(pwd) =~ .*\/saveosx.*\/scripts$ ]]; then
-  echo "Please run this script from the inteded directory!"
-  echo "For instructions, please see the README"
-  exit 1
+    echo "Please run this script from the inteded directory!"
+    echo "For instructions, please see the README"
+    exit 1
 fi
 
 # Grab funcs/vars
@@ -53,14 +53,6 @@ EOM
 	esac
     done
     
-    # Re-enable Finder
-    echo "Re-enabling Finder..."
-    sudo defaults write com.apple.finder QuitMenuItem -bool NO &> /dev/null
-    launchctl load -w /System/Library/LaunchAgents/com.apple.Finder.plist &> /dev/null
-    # Reset the Dock
-    echo "Resetting the dock..."
-    sudo defaults write com.apple.dock autohide-time-modifier -int 0 &> /dev/null
-    sudo defaults write com.apple.dock no-bouncing -bool FALSE &> /dev/null
     # Unhide the menu bar for XQuartz
     if [ ! -z $XQUARTZ_RM ]; then
 	echo "Unhiding menu bar for XQuartz..."
@@ -121,47 +113,6 @@ EOM
     cp -f ../plists/org.saveosx.startx.plist $LIB_PATH/
     chown $USER:staff $LIB_PATH/org.saveosx.startx.plist
     chmod 644 $LIB_PATH/org.saveosx.startx.plist
-
-    # Ask user if they would like to disable Finder
-    while :
-    do
-	read -r -p "Would you like to disable Finder's launch upon login? [y/n] " ANSWER
-	case $ANSWER in
-	    [yY][eE][sS]|[yY])
-		echo -e "\nOK, disabling Finder..."
-		sudo defaults write com.apple.finder QuitMenuItem -bool YES
-		launchctl unload -w /System/Library/LaunchAgents/com.apple.Finder.plist &> /dev/null
-		break
-		;;
-	    [nN][oO]|[nN])
-		echo -e "\nLeaving Finder alone..."
-		break
-		;; 
-	    *)
-		echo "Please answer yes or no..."
-	esac
-    done
-
-    # Permanently hide dock option
-    while :
-    do
-	read -r -p "Would you like to permanently hide the dock? [y/n] " ANSWER
-	case $ANSWER in
-            [yY][eE][sS]|[yY])
-		echo -e "\nOK, hiding Dock.app..."
-		sudo defaults write com.apple.dock autohide-time-modifier -int 10000000000
-		sudo defaults write com.apple.dock no-bouncing -bool TRUE
-		killall Dock
-		break
-		;;
-            [nN][oO]|[nN])
-		echo -e "\nLeaving Dock.app alone..."
-		break
-		;; 
-            *)
-		echo "Please answer yes or no..."
-	esac
-    done
 
     # Hide menu bar for XQuartz
     echo -e "Configuring XQuartz to be seemless..."
