@@ -8,9 +8,9 @@
 
 # Ensure script is being run from the 'scripts' subdir
 if [[ ! $(pwd) =~ .*\/saveosx.*\/scripts$ ]]; then
-  echo "Please run this script from the inteded directory!"
-  echo "For instructions, please see the README"
-  exit 1
+    echo "Please run this script from the inteded directory!"
+    echo "For instructions, please see the README"
+    exit 1
 fi
 
 # Grab funcs/vars
@@ -63,7 +63,7 @@ EOM
 
 # Check for Home Brew install
 if [ -f /usr/local/bin/brew ]; then
-cat -<< EOM
+    cat -<< EOM
 
 `echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"`
 `echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to" `
@@ -88,12 +88,12 @@ Note: You may also need to remove ~/.homebrew. If you happen to be using rvm, th
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""`
 `echo -e ""$RED"Any processes currently running from software installed by Home Brew will encounter serious failures!"$ESC""
 EOM
-exit 1
+    exit 1
 fi
 
 # Check for MacPorts install
 if [ -f /opt/local/bin/port ]; then
-cat << EOM
+    cat << EOM
 
 `echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"`
 `echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to"`
@@ -113,7 +113,7 @@ rm -rf ~/.macports
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
 `echo -e ""$RED"Any processes currently running from software installed by MacPorts will encounter serious failures!"$ESC""
 EOM
-exit 1
+    exit 1
 fi
 
 # Download and install pkgin
@@ -121,7 +121,7 @@ echo "Fetching pkgin from the Save OS X repo..."
 
 # Download the bootstrap, if not already there (from multiple runs)
 if [ ! -f /tmp/bootstrap.tar.gz ] ; then
-  saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz # Safely retrive the x86_64 pkgin bootstrap from the Save OS X repo
+    saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz # Safely retrive the x86_64 pkgin bootstrap from the Save OS X repo
 fi
 
 echo -e "pkgin retrieved successfully, proceeding to install...\n"
@@ -167,24 +167,24 @@ EOM
 # Ask user if they would like to install XQuartz
 while :
 do
-  read -r -p "Would you like to install XQuartz & our X11 environment? [y/n] " ANSWER
+    read -r -p "Would you like to install XQuartz & our X11 environment? [y/n] " ANSWER
     case $ANSWER in
-      [yY][eE][sS]|[yY])
-          export X_INST="true" 
-          break
-          ;;
-      [nN][oO]|[nN])
-          export X_INST="false"
-          read -r -p "Press [Enter] to continue..."
-          break
-          ;;
-      *)
-          echo "Please answer yes or no..."
+	[yY][eE][sS]|[yY])
+            export X_INST="true" 
+            break
+            ;;
+	[nN][oO]|[nN])
+            export X_INST="false"
+            read -r -p "Press [Enter] to continue..."
+            break
+            ;;
+	*)
+            echo "Please answer yes or no..."
     esac
 done
 
 if [ $X_INST == "true" ]; then
-  bash x-setup
+    bash x-setup
 fi
 
 # PATH screen
@@ -202,29 +202,29 @@ SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
 echo "It looks like your shell's rc file is $SHELLRC"
 while :
 do
-  read -r -p "Add system PATH evaluation to $SHELLRC or another file? [yes/other] " ANSWER
+    read -r -p "Add system PATH evaluation to $SHELLRC or another file? [yes/other] " ANSWER
     case $ANSWER in
-      [yY][eE][sS]|[yY])
-        break
-        ;;
-      [oO][tT][hH][eE][rR])
-        export SHELLRC="user_defined" 
-        break
-        ;;
-      *)
-        echo "Please answer 'yes' or 'other'..."
-        echo 
+	[yY][eE][sS]|[yY])
+            break
+            ;;
+	[oO][tT][hH][eE][rR])
+            export SHELLRC="user_defined" 
+            break
+            ;;
+	*)
+            echo "Please answer 'yes' or 'other'..."
+            echo 
     esac
 done
 
 # Ask for user's shell if necessary
 if [ $SHELLRC == "user_defined" ]; then
-  read -r -p "Please enter the full path to your shell's rc file: " SHELLRC
-  export SHELLRC
+    read -r -p "Please enter the full path to your shell's rc file: " SHELLRC
+    export SHELLRC
 fi
 
 if [ ! -f $SHELLRC ]; then
-  echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
+    echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
 
 # Update user's shell rc file with new $PATH 
@@ -234,7 +234,7 @@ fi
 
 # Evaluate system path to circumvent explicit calls of new binaries
 if [ -x /usr/libexec/path_helper ]; then
-  eval `/usr/libexec/path_helper -s`
+    eval `/usr/libexec/path_helper -s`
 fi
 
 echo 
