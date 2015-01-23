@@ -111,7 +111,7 @@ Receipts/MacPorts*.pkg,Receipts/MacPorts*.pkg,Tcl/darwinports1.0,Tcl/macports1.0
 rm -rf ~/.macports
 
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with MacPorts!"$ESC""`
-`echo -e ""$RED"Any processes currently running from software installed by MacPorts will encounter serious failures!"$ESC""
+`echo -e ""$RED"Any processes currently running from software installed by MacPorts will encounter serious failures!"$ESC""`
 EOM
     exit 1
 fi
