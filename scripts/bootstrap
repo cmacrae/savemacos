@@ -86,7 +86,7 @@ Note: You may also need to remove ~/.homebrew. If you happen to be using rvm, th
       also be deleted.
 
 `echo -e ""$RED_UL"WARNING"$ESC""$RED":  This will remove all software installed with Home Brew!"$ESC""`
-`echo -e ""$RED"Any processes currently running from software installed by Home Brew will encounter serious failures!"$ESC""
+`echo -e ""$RED"Any processes currently running from software installed by Home Brew will encounter serious failures!"$ESC""`
 EOM
     exit 1
 fi
