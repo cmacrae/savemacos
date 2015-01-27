@@ -111,6 +111,7 @@ EOM
     fi
 
     cp -f ../plists/org.saveosx.startx.plist $LIB_PATH/
+    xattr -c $LIB_PATH/org.saveosx.startx.plist
     chown $USER:staff $LIB_PATH/org.saveosx.startx.plist
     chmod 644 $LIB_PATH/org.saveosx.startx.plist
 
