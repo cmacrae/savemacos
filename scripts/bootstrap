@@ -227,6 +227,7 @@ fi
 # If the user doesn't provide any input for the 'other' option, just guess their shell rc
 if [ -z $SHELLRC ]; then
     export SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
+    echo "No shell rc file provided, using $SHELLRC"
 fi
 
 # Create the shellrc if it doesn't exist
@@ -235,7 +236,7 @@ if [ ! -f $SHELLRC ]; then
 fi
 
 # Update user's shell rc file with new $PATH 
-if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
+if [[ -f $SHELLRC &&  ! $(grep "path_helper" $SHELLRC) ]]; then
     echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> $SHELLRC
 fi
 
