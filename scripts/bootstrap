@@ -224,6 +224,12 @@ if [ $SHELLRC == "user_defined" ]; then
     export SHELLRC
 fi
 
+# If the user doesn't provide any input for the 'other' option, just guess their shell rc
+if [ -z $SHELLRC ]; then
+    export SHELLRC=~/.$(echo $SHELL | cut -d'/' -f3)rc
+fi
+
+# Create the shellrc if it doesn't exist
 if [ ! -f $SHELLRC ]; then
     echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
 fi
