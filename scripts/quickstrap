@@ -60,10 +60,12 @@ fi
 # Download and install pkgsrc
 echo "Fetching pkgin from the Save OS X repo..."
 
-# Download the bootstrap, if not already there (from multiple runs)
-if [ ! -f /tmp/bootstrap.tar.gz ] ; then
-    saferun curl -s -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz
+# Download the bootstrap, if not already there or if the SHA256 sum doesn't match with what's expected
+# Had to use fgrep to interpret the output, as the shasum util handles exits in an unusual manner
+if [[ ! $(shasum -a 256 -c bootstrap_SHA256 2> /dev/null | fgrep OK) ]]; then
+    curl -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz
 fi
+
 # extract the pkgin bootstrap in the root directory
 echo -e "pkgin retrieved successfully, proceeding to install..."
 sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null
