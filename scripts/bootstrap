@@ -121,7 +121,7 @@ echo -e "Fetching pkgin from the Save OS X repo...\n"
 
 # Download the bootstrap, if not already there or if the SHA256 sum doesn't match with what's expected
 # Had to use fgrep to interpret the output, as the shasum util handles exits in an unusual manner
-if [[ ! $(shasum -a 256 -c bootstrap_SHA256 2> /dev/null | fgrep OK) ]]; then
+if [[ ! $(shasum -a 256 -c bootstrap_SHA256 | fgrep OK) ]]; then
     saferun curl -o /tmp/bootstrap.tar.gz http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz
 fi
 
