@@ -105,7 +105,7 @@ fi
 # Update user's shell rc file with new $PATH 
 if [[ ! $(grep "path_helper" $SHELLRC) ]]; then
     echo "Adding proper PATH evaluation to $SHELLRC"
-    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/p2ath_helper -s\`\nfi" >> $SHELLRC
+    echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> $SHELLRC
 else
     echo "It looks like you already have proper PATH evaluation in $SHELLRC"
 fi
