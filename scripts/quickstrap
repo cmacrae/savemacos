@@ -103,7 +103,7 @@ else
 fi
 
 # Update user's shell rc file with new $PATH 
-if [[ -f $SHELLRC && ! $(grep "path_helper" $SHELLRC) ]]; then
+if [[ ! $(grep "path_helper" $SHELLRC &> /dev/null) ]]; then
     echo "Adding proper PATH evaluation to $SHELLRC"
     echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> $SHELLRC
 else
