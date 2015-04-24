@@ -37,6 +37,13 @@ The X11 set-up script also has a revoke flag (`-r`), so you can try out our X11 
 
 If you're familiar with shell, peruse through the code, it should be pretty clear what's happening :)
 
+Unobtrusive
+-----------
+Save OS X won't pollute your system by inserting libraries here and there, or dotting files all over the place.
+Installation is confined to a very select few directories, namely: `/usr/pkg` & `/var/db/pkg*`
+
+Want to uninstall Save OS X? It's as easy as: `sudo rm -r /usr/pkg* /var/db/pkg*`
+
 pkgin usage
 -----------
 Want to find and install a package?
