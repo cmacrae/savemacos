@@ -89,9 +89,9 @@ echo "Done!"
 # Add binary dirs to system-wide path
 echo 
 echo -e "Updating \$PATH so new binaries can be found..."
-echo -e "/usr/pkg/bin\n/usr/pkg/sbin\n/opt/X11/bin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
+echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
 echo -e "Updating \$MANPATH so new manpages can be found..."
-echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/man.conf > /dev/null
+echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/saveosx > /dev/null
 
 # Set up PATH eval in user's shellrc
 SHELLRC=~/.$(echo $SHELL | awk -F/ '{print$NF}')rc
