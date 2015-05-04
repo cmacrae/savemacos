@@ -1,6 +1,6 @@
 Save OS X
 =========
-The official repo for the [Save OS X](http://saveosx.org/) project's set-up scripts.
+The official repo for the [Save OS X](http://saveosx.org/) project's bootstrapper.
 
 About
 -----
@@ -15,25 +15,13 @@ We want to show people that OS X is a perfectly viable option for developers, sy
 
 Installation
 ------------
-To get started, grab a copy of the repo (either clone it, or download as a zip).
-Open up a Terminal (this must be Apple's 'Terminal.app'), then `cd` to the `scripts` sub-directory and run the `bootstrap` script.
-
-That should get you started.
-Simple as that!
-
-Want secure binary package management on OS X fast?
----------------------------------------------------
-For a streamlined setup, to get you up and running in under a minute, there's the `quickstrap` script.
-Open up a Terminal, then `cd` to the `scripts` sub-directory and run the `quickstrap` script.
+To get started, grab a copy of the repo (either clone it, or download as a zip), open up a terminal and simply run the `bootstrap` script - you'll be up and running in under a minute!
 
 [Here's a quick demo of the script in action](https://youtu.be/oMWo3nouUsE)  
 
-So what do these scripts do?
+So what does this script do?
 ----------------------------
-If you follow the steps in the [installation section](#installation), you'll be greeted by an interactive script.
-In a nutshell, this script will walk you through the set-up of [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), set up your PATH & optionally implement [X11](http://www.x.org/wiki/) (using [XQuartz](https://xquartz.macosforge.org/landing/)) in a seamless manner. 
-
-The X11 set-up script also has a revoke flag (`-r`), so you can try out our X11 hacks, and later remove them if you're not a fan.
+In a nutshell, this script will install [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), add our package repo, and set up your PATH & MANPATH evaluation.
 
 If you're familiar with shell, peruse through the code, it should be pretty clear what's happening :)
 

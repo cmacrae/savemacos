@@ -1,0 +1,172 @@
+#! /bin/bash
+
+# Copyright © 2014 Calum MacRae
+# Use of this source code is governed by an ISC
+# license that can be found in the LICENSE file.
+
+######################################
+# A bootstrapper to set-up Save OS X #
+######################################
+
+# Sanity checks
+sanity(){
+    # Ensure the user is running this script on OS X
+    if [ $(uname -s) != "Darwin" ]; then
+	echo "This script is for use with OS X!"
+	exit 1
+    fi
+
+    # Ensure script is not being run with root privileges
+    if [ $EUID -eq 0 ]; then
+	echo "Please don't run this script with root priveleges!"
+	exit 1
+    fi
+}
+
+# Safe run function to ensure commands are executed successfully
+saferun() {
+    typeset cmnd="$*"
+    typeset ret_code
+
+    eval  $cmnd
+    ret_code=$?
+    
+    if [ $ret_code != 0 ]; then
+	echo -e ""$RED_UL"\n\nIt looks like there was an issue running: $*"$ESC"\n\nExiting..."
+	exit $?
+    fi
+}
+
+main() {
+    # ANSI properties/colours
+    local ESC='\033[0m'
+    local BLUE='\033[38;34m'
+    local BLUE_UL='\033[38;4;34m'
+    local GREEN='\033[38;32m'
+    local GREEN_UL='\033[38;4;32m'
+    local RED='\033[38;31m'
+    local RED_UL='\033[38;4;31m'
+    local YELLOW='\033[38;33m'
+    local YELLOW_UL='\033[38;4;33m'
+
+    # bootstrap SHA
+    local BOOTSTRAP_URL="http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz"
+    local BOOTSTRAP_PATH="/tmp/bootstrap.tar.gz"
+    local BOOTSTRAP_SHA="535ba5cefee562337048f2de05ee78a4d65d8afa4a82d96acc66f41c6f7da092"
+    local REPO_GPGKEY="2D99C8F7"
+
+    echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
+    echo
+    echo "Welcome to the Save OS X project, an effort to make OS X"
+    echo "a more comfortable system for hackers, developers & power users."
+    echo
+    echo "This script will set up your environment for you. It will automatically"
+    echo "install pkgsrc & its associated binary package manager - pkgin, with signed"
+    echo "packages, and set up your path environments so binaries and man-pages can"
+    echo "be found."
+    echo
+    echo "Please enter your password for sudo authentication"
+
+    # Prompt for initial sudo password & keep alive
+    sudo -k
+    saferun sudo echo "sudo authenticaion successful!"
+    while true ; do sudo -n true ; sleep 60 ; kill -0 "$$" || exit ; done 2>/dev/null &
+
+    # Check for Home Brew install
+    if [ -f /usr/local/bin/brew ]; then
+	echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
+	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	exit 1
+    fi
+
+    # Check for MacPorts install
+    if [ -f /opt/local/bin/port ]; then
+	echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
+	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	exit 1
+    fi
+
+    # Download the bootstrap, if not already there
+    if [[ ! -f $BOOTSTRAP_PATH ]]; then
+	echo "Fetching pkgsrc bootstrap from the Save OS X repo..."
+	saferun curl -o $BOOTSTRAP_PATH $BOOTSTRAP_URL
+    fi
+
+    # Verify the bootstrap integrity
+    echo "Verifying bootstrap integrity..."
+    echo "$BOOTSTRAP_SHA  $BOOTSTRAP_PATH" | shasum -a 256 -c - || exit 1
+
+    # extract the pkgin bootstrap in the root directory
+    echo -e "pkgsrc retrieved successfully, proceeding to install..."
+    sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null
+    echo -e ""$GREEN"pkgsrc installed."$ESC"\nAdding Save OS X repo to pkgin sources..."
+
+    # Add Save OS X repo
+    if [ ! $(fgrep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ) ]; then
+	echo "http://pkgsrc.saveosx.org/Darwin/2014Q4/x86_64/All" | sudo tee -a /usr/pkg/etc/pkgin/repositories.conf > /dev/null
+    fi
+
+    echo "Your system has now been set up to use the Save OS X repo!"
+    echo 
+    echo "Updating pkgin repository information..."
+    saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
+    echo "Package database updated!"
+    echo "Setting up GPG for signed packages..."
+    echo "Importing Save OS X Repo GPG key..."
+    /usr/pkg/bin/gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
+    echo "Done!"
+
+    # Add binary dirs to system-wide path
+    echo 
+    echo -e "Updating \$PATH so new binaries can be found..."
+    if [ ! $(fgrep '/usr/pkg/bin' /etc/paths.d/saveosx ) ]; then
+	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
+    fi
+
+    echo -e "Updating \$MANPATH so new manpages can be found..."
+    if [[ ! $(fgrep '/usr/pkg/man' /etc/manpaths.d/saveosx ) ]]; then
+	echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/saveosx > /dev/null
+    fi
+    
+    # Set up PATH eval in user's shellrc
+    SHELLRC=~/.$(echo $SHELL | awk -F/ '{print$NF}')rc
+
+    if [ -f $SHELLRC ]; then
+	echo "It looks like your shell's rc file is $SHELLRC"
+    else
+	echo -e "It doesn't look like $SHELLRC exists...\nA new shell rc will be created\n"
+    fi
+
+    # Update user's shell rc file with new $PATH 
+    if [[ ! $(fgrep "path_helper" $SHELLRC) ]]; then
+	echo "Adding proper PATH evaluation to $SHELLRC"
+	echo -e "\n# Evaluate system PATH\nif [ -x /usr/libexec/path_helper ]; then\n    eval \`/usr/libexec/path_helper -s\`\nfi" >> $SHELLRC
+    else
+	echo "It looks like you already have proper PATH evaluation in $SHELLRC"
+    fi
+
+    if [ -x /usr/libexec/path_helper ]; then
+	eval `/usr/libexec/path_helper -s`
+    fi
+
+    echo -e "Your system's \$PATH has been updated"
+
+    # Final screen!
+    echo -e "\n"$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
+    echo
+    echo "All processes are complete! So what now? Well, we reccomend you read the"
+    echo "manpage for pkgin at least, as you'll be managing all your non-Apple software"
+    echo "with this excellent package manager."
+    echo
+    echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
+    echo -e ""$YELLOW"Youri Mouton & Calum MacRae"$ESC""
+    echo 
+    echo "You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"
+    echo -e "\n\n"
+    echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
+    exit 0
+}
+
+# Actual run
+sanity
+main
