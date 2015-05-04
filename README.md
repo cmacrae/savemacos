@@ -17,7 +17,8 @@ Installation
 ------------
 To get started, grab a copy of the repo (either clone it, or download as a zip), open up a terminal and simply run the `bootstrap` script - you'll be up and running in under a minute!
 
-[Here's a quick demo of the script in action](https://youtu.be/oMWo3nouUsE)  
+[Here's a quick demo of the script in action](https://youtu.be/oMWo3nouUsE)
+![Save OS X Demo](http://i.imgur.com/F06pnfl.png)
 
 So what does this script do?
 ----------------------------
