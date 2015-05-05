@@ -119,12 +119,12 @@ main() {
     # Add binary dirs to system-wide path
     echo 
     echo -e "Updating \$PATH so new binaries can be found..."
-    if [ ! $(fgrep '/usr/pkg/bin' /etc/paths.d/saveosx ) ]; then
+    if [ ! -f /etc/paths.d/saveosx  ]; then
 	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
     fi
 
     echo -e "Updating \$MANPATH so new manpages can be found..."
-    if [[ ! $(fgrep '/usr/pkg/man' /etc/manpaths.d/saveosx ) ]]; then
+    if [ ! -f /etc/manpaths.d/saveosx ]; then
 	echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/saveosx > /dev/null
     fi
     
@@ -168,5 +168,6 @@ main() {
 }
 
 # Actual run
+clear
 sanity
 main
