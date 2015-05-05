@@ -49,16 +49,21 @@ main() {
     local YELLOW='\033[38;33m'
     local YELLOW_UL='\033[38;4;33m'
 
-    # bootstrap SHA
-    local BOOTSTRAP_URL="http://pkgsrc.saveosx.org/Darwin/bootstrap/bootstrap-x86_64-2014Q4.tar.gz"
-    local BOOTSTRAP_PATH="/tmp/bootstrap.tar.gz"
-    local BOOTSTRAP_SHA="535ba5cefee562337048f2de05ee78a4d65d8afa4a82d96acc66f41c6f7da092"
-    local REPO_GPGKEY="2D99C8F7"
+    # pkgsrc site/bootstrap properties
+    local PKGSRC_SITE="http://pkgsrc.joyent.com/packages/Darwin"
+    local PKGSRC_QUARTER="2015Q1"
+    local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
+    local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
+    local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
+    local BOOTSTRAP_SHA="e72b26176723be395bbf4b3811d3136c0cd9e538089a04079ac439891818f6c0"
+    local REPO_GPGKEY="0xDE817B8E"
 
     echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
     echo
     echo "Welcome to the Save OS X project, an effort to make OS X"
-    echo "a more comfortable system for hackers, developers & power users."
+    echo "a more comfortable system for hackers, developers & power users"
+    echo "by providing fast, secure, 64bit binary package management using"
+    echo -e "the excellent "$YELLOW_UL"pkgsrc"$ESC" from the NetBSD project!"
     echo
     echo "This script will set up your environment for you. It will automatically"
     echo "install pkgsrc & its associated binary package manager - pkgin, with signed"
@@ -87,45 +92,48 @@ main() {
     fi
 
     # Download the bootstrap, if not already there
-    if [[ ! -f $BOOTSTRAP_PATH ]]; then
-	echo "Fetching pkgsrc bootstrap from the Save OS X repo..."
-	saferun curl -o $BOOTSTRAP_PATH $BOOTSTRAP_URL
+    if [ ! -f $BOOTSTRAP_PATH ]; then
+	echo "Fetching pkgsrc bootstrap from Joyent's pkgsrc repo..."
+	saferun curl -o $BOOTSTRAP_PATH "${BOOTSTRAP_URL}/${BOOTSTRAP_TAR}"
     fi
 
     # Verify the bootstrap integrity
     echo "Verifying bootstrap integrity..."
     echo "$BOOTSTRAP_SHA  $BOOTSTRAP_PATH" | shasum -a 256 -c - || exit 1
 
-    # extract the pkgin bootstrap in the root directory
+    # extract the pkgsrc bootstrap in the root directory
     echo -e "pkgsrc retrieved successfully, proceeding to install..."
-    sudo tar xfP /tmp/bootstrap.tar.gz -C / &> /dev/null
-    echo -e ""$GREEN"pkgsrc installed."$ESC"\nAdding Save OS X repo to pkgin sources..."
-
-    # Add Save OS X repo
-    if [ ! $(fgrep 'saveosx' /usr/pkg/etc/pkgin/repositories.conf ) ]; then
-	echo "http://pkgsrc.saveosx.org/Darwin/2014Q4/x86_64/All" | sudo tee -a /usr/pkg/etc/pkgin/repositories.conf > /dev/null
-    fi
-
-    echo "Your system has now been set up to use the Save OS X repo!"
+    sudo tar xfP $BOOTSTRAP_PATH -C / &> /dev/null
+    echo -e ""$GREEN"pkgsrc installed."$ESC""
     echo 
     echo "Updating pkgin repository information..."
     saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
     echo "Package database updated!"
     echo "Setting up GPG for signed packages..."
-    echo "Importing Save OS X Repo GPG key..."
-    /usr/pkg/bin/gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
-    echo "Done!"
+    if [ ! $(command -v gpg &> /dev/null) ]; then
+	echo "It doesn't look like GPG is installed"
+	echo "Installing gnupg from Joyent's repo"
+	saferun sudo /usr/pkg/bin/pkgin -y in gnupg
+	export PATH=$PATH:/usr/pkg/sbin:/usr/pkg/bin
+    fi
+    echo -e "Importing Joyent's repo GPG key..."
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
+    echo -e ""$BLUE"\nImported Joyent's repo GPG key successfully!"$ESC""
+    echo -e "Verifying repo's GPG integrity..."
+    curl -s -o "${BOOTSTRAP_PATH}.asc" "${BOOTSTRAP_URL}/${BOOTSTRAP_TAR}.asc"
+    gpg --verify "${BOOTSTRAP_PATH}.asc" &> /dev/null
+    echo -e ""$BLUE"\Looks good!"$ESC""
 
     # Add binary dirs to system-wide path
     echo 
     echo -e "Updating \$PATH so new binaries can be found..."
-    if [ ! -f /etc/paths.d/saveosx  ]; then
-	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/saveosx > /dev/null
+    if [ ! -f /etc/paths.d/pkgsrc  ]; then
+	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/pkgsrc > /dev/null
     fi
 
     echo -e "Updating \$MANPATH so new manpages can be found..."
-    if [ ! -f /etc/manpaths.d/saveosx ]; then
-	echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/saveosx > /dev/null
+    if [ ! -f /etc/manpaths.d/pkgsrc ]; then
+	echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/pkgsrc > /dev/null
     fi
     
     # Set up PATH eval in user's shellrc
