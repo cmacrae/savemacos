@@ -93,7 +93,7 @@ main() {
 
     # Download the bootstrap, if not already there
     if [ ! -f $BOOTSTRAP_PATH ]; then
-	echo "Fetching pkgsrc bootstrap from Joyent's pkgsrc repo..."
+	echo -e ""$YELLOW"Fetching pkgsrc bootstrap from Joyent's pkgsrc repo..."$ESC""
 	saferun curl -o $BOOTSTRAP_PATH "${BOOTSTRAP_URL}/${BOOTSTRAP_TAR}"
     fi
 
@@ -103,30 +103,30 @@ main() {
 
     # extract the pkgsrc bootstrap in the root directory
     echo -e "pkgsrc retrieved successfully, proceeding to install..."
-    sudo tar xfP $BOOTSTRAP_PATH -C / &> /dev/null
+    saferun sudo tar xfP $BOOTSTRAP_PATH -C / &> /dev/null
     echo -e ""$GREEN"pkgsrc installed."$ESC""
     echo 
-    echo "Updating pkgin repository information..."
+    echo -e ""$YELLOW"Updating pkgin repository information..."$ESC""
     saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
     echo "Package database updated!"
-    echo "Setting up GPG for signed packages..."
+    echo -e "\n"$YELLOW"Setting up GPG for signed packages..."$ESC""
     if [ ! $(command -v gpg &> /dev/null) ]; then
 	echo "It doesn't look like GPG is installed"
 	echo "Installing gnupg from Joyent's repo"
 	saferun sudo /usr/pkg/bin/pkgin -y in gnupg
 	export PATH=$PATH:/usr/pkg/sbin:/usr/pkg/bin
     fi
-    echo -e "Importing Joyent's repo GPG key..."
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
+    echo -e ""$YELLOW"Importing Joyent's repo GPG key..."$ESC""
+    saferun gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
     echo -e ""$BLUE"\nImported Joyent's repo GPG key successfully!"$ESC""
     echo -e "Verifying repo's GPG integrity..."
-    curl -s -o "${BOOTSTRAP_PATH}.asc" "${BOOTSTRAP_URL}/${BOOTSTRAP_TAR}.asc"
-    gpg --verify "${BOOTSTRAP_PATH}.asc" &> /dev/null
-    echo -e ""$BLUE"\Looks good!"$ESC""
+    saferun curl -s -o "${BOOTSTRAP_PATH}.asc" "${BOOTSTRAP_URL}/${BOOTSTRAP_TAR}.asc"
+    saferun gpg --verify "${BOOTSTRAP_PATH}.asc" &> /dev/null
+    echo -e ""$BLUE"Looks good!"$ESC""
 
     # Add binary dirs to system-wide path
     echo 
-    echo -e "Updating \$PATH so new binaries can be found..."
+    echo -e ""$YELLOW"Updating \$PATH so new binaries can be found..."$ESC""
     if [ ! -f /etc/paths.d/pkgsrc  ]; then
 	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/pkgsrc > /dev/null
     fi
