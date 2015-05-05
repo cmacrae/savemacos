@@ -21,6 +21,20 @@ sanity(){
 	echo "Please don't run this script with root priveleges!"
 	exit 1
     fi
+
+    # Check for Home Brew install
+    if [ -f /usr/local/bin/brew ]; then
+	echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
+	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	exit 1
+    fi
+
+    # Check for MacPorts install
+    if [ -f /opt/local/bin/port ]; then
+	echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
+	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	exit 1
+    fi
 }
 
 # Safe run function to ensure commands are executed successfully
@@ -76,20 +90,6 @@ main() {
     sudo -k
     saferun sudo echo "sudo authenticaion successful!"
     while true ; do sudo -n true ; sleep 60 ; kill -0 "$$" || exit ; done 2>/dev/null &
-
-    # Check for Home Brew install
-    if [ -f /usr/local/bin/brew ]; then
-	echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
-	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
-	exit 1
-    fi
-
-    # Check for MacPorts install
-    if [ -f /opt/local/bin/port ]; then
-	echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
-	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
-	exit 1
-    fi
 
     # Download the bootstrap, if not already there
     if [ ! -f $BOOTSTRAP_PATH ]; then
