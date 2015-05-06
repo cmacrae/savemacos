@@ -30,7 +30,7 @@ Unobtrusive
 Save OS X won't pollute your system by inserting libraries here and there, or dotting files all over the place.
 Installation is confined to a very select few directories, namely: `/usr/pkg` & `/var/db/pkgin`
 
-Want to uninstall Save OS X? It's as easy as:
+Want to uninstall Save OS X? It's as easy as:  
 `sudo rm -r /usr/pkg /var/db/pkgin /etc/{man,}paths.d/pkgsrc`
 
 pkgin usage
