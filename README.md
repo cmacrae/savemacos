@@ -4,14 +4,13 @@ The official repo for the [Save OS X](http://saveosx.org/) project's bootstrappe
 
 About
 -----
-[Save OS X](http://saveosx.org/) is a hacking and development project for Apple’s Operating System: OS X.
+[Save OS X](http://saveosx.org/) brings fast, secure, 64bit binary package management to OS X, using the awesome [pkgsrc](http://pkgsrc.net) from The NetBSD Project.
 We’re geared towards bringing a wealth of software that’s often found on other UNIX derived OS’s to OS X and showing the user that they can use OS X as a great UNIX based workstation.
 
 Why?
 ----
-To put it simply: because OS X is capable of much more than is immediately apparent to the average user. It has a familiar set of underlying utilities, many taken from the various BSD projects. We want to complement these with other tools available.
-
-We want to show people that OS X is a perfectly viable option for developers, sysadmins, hackers, or just those who like to tinker.
+Why wait for other ports/package managers to compile your software?
+With pkgin, you get GPG signed binary packages - fast and secure!
 
 Installation
 ------------
@@ -22,16 +21,16 @@ To get started, grab a copy of the repo (either clone it, or download as a zip),
 
 So what does this script do?
 ----------------------------
-In a nutshell, this script will install [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), add our package repo, and set up your PATH & MANPATH evaluation.
+In a nutshell, this script will install [pkgsrc](http://pkgsrc.net), [pkgin](http://pkgin.net), add [Joyent](https://github.com/joyent)'s package repo, and set up your PATH & MANPATH evaluation.
 
 If you're familiar with shell, peruse through the code, it should be pretty clear what's happening :)
 
 Unobtrusive
 -----------
 Save OS X won't pollute your system by inserting libraries here and there, or dotting files all over the place.
-Installation is confined to a very select few directories, namely: `/usr/pkg` & `/var/db/pkg*`
+Installation is confined to a very select few directories, namely: `/usr/pkg` & `/var/db/pkgin`
 
-Want to uninstall Save OS X? It's as easy as: `sudo rm -r /usr/pkg* /var/db/pkg*`
+Want to uninstall Save OS X? It's as easy as: `sudo rm -r /usr/pkg /var/db/pkgin /etc/{man,}paths.d/pkgsrc`
 
 pkgin usage
 -----------
@@ -39,15 +38,15 @@ Want to find and install a package?
 
 `pkgin search <package name>`
 
-`pkgin install <package name>`
+`sudo pkgin install <package name>`
 
 Nice 'n easy!
 
 See [here](http://pkgin.net/#examples) for pkgin's usage examples.
 
-Why choose Save OS X (specifically pkgin) over \<insert package manager here\>?
+Why choose pkgsrc/pkgin over \<insert package manager here\>?
 -----------------------------------------------------------------------------
-Here's a list of properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for OS X:
+Here's a list of just a few properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for OS X:
 - Precompiled packages from a trusted source
 - Signed pacakges with GPG
 - Dead simple makefiles
@@ -63,9 +62,11 @@ Who?
 ----
 [Save OS X](http://saveosx.org/) is a collaborative project between [Calum MacRae](https://github.com/cmacrae) and [Youri Mouton](https://github.com/yrmt)
 
+Packages are now generously hosted by [Joyent](https://github.com/joyent) and built by [jperkin](https://github.com/jperkin).
+
 **E-mail:** [calum0macrae@gmail.com](mailto:calum0macrae@gmail.com) / [youri.mout@gmail.com](mailto:youri.mout@gmail.com)
 
-**IRC**: Come join us at `#saveosx` on `irc.oftc.net`
+**IRC**: For all things pkgsrc, head over to `#pkgsrc` on freenode
 
 **Twitter**: [@calumacrae](https://twitter.com/calumacrae) / [@YouriMouton](https://twitter.com/YouriMouton)
 
