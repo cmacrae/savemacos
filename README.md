@@ -54,7 +54,7 @@ Here's a list of just a few properties that make [pkgin](http://pkgin.net/) (a b
 
 Thanks
 ------
-Packages are now generously hosted by [Joyent](https://github.com/joyent) and built by [jperkin](https://github.com/jperkin).
+Packages are generously hosted by [Joyent](https://github.com/joyent) and built by [jperkin](https://github.com/jperkin).
 
 Contact
 =======
