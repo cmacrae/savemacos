@@ -65,7 +65,7 @@ main() {
 
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="http://pkgsrc.joyent.com/packages/Darwin"
-    local PKGSRC_QUARTER="2015Q1"
+    local PKGSRC_QUARTER="2015Q2"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
