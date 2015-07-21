@@ -107,14 +107,14 @@ main() {
     echo -e ""$GREEN"pkgsrc installed."$ESC""
     echo 
     echo -e ""$YELLOW"Updating pkgin repository information..."$ESC""
-    saferun sudo /usr/pkg/bin/pkgin -y update # Update the pkgsrc repository information
+    saferun sudo /opt/pkg/bin/pkgin -y update # Update the pkgsrc repository information
     echo "Package database updated!"
     echo -e "\n"$YELLOW"Setting up GPG for signed packages..."$ESC""
     if [ ! $(command -v gpg &> /dev/null) ]; then
 	echo "It doesn't look like GPG is installed"
 	echo "Installing gnupg from Joyent's repo"
-	saferun sudo /usr/pkg/bin/pkgin -y in gnupg
-	export PATH=$PATH:/usr/pkg/sbin:/usr/pkg/bin
+	saferun sudo /opt/pkg/bin/pkgin -y in gnupg
+	export PATH=$PATH:/opt/pkg/sbin:/opt/pkg/bin
     fi
     echo -e ""$YELLOW"Importing Joyent's repo GPG key..."$ESC""
     saferun gpg --keyserver hkp://keys.gnupg.net --recv-keys $REPO_GPGKEY &> /dev/null
@@ -128,12 +128,12 @@ main() {
     echo 
     echo -e ""$YELLOW"Updating \$PATH so new binaries can be found..."$ESC""
     if [ ! -f /etc/paths.d/pkgsrc  ]; then
-	echo -e "/usr/pkg/bin\n/usr/pkg/sbin" | sudo tee -a /etc/paths.d/pkgsrc > /dev/null
+	echo -e "/opt/pkg/bin\n/opt/pkg/sbin" | sudo tee -a /etc/paths.d/pkgsrc > /dev/null
     fi
 
     echo -e "Updating \$MANPATH so new manpages can be found..."
     if [ ! -f /etc/manpaths.d/pkgsrc ]; then
-	echo -e "MANPATH /usr/pkg/man\nMANPATH /usr/pkg/share/man" | sudo tee -a /etc/manpaths.d/pkgsrc > /dev/null
+	echo -e "MANPATH /opt/pkg/man\nMANPATH /opt/pkg/share/man" | sudo tee -a /etc/manpaths.d/pkgsrc > /dev/null
     fi
     
     # Set up PATH eval in user's shellrc
