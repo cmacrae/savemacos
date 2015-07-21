@@ -21,10 +21,10 @@ In a nutshell, this script will install [pkgsrc](http://pkgsrc.net), [pkgin](htt
 Unobtrusive
 -----------
 [pkgsrc](http://pkgsrc.net) won't pollute your system by inserting libraries here and there, or dotting files all over the place.
-Installation is confined to a very select few directories, namely: `/usr/pkg` & `/var/db/pkgin`
+Installation is confined to a very select few directories, namely: `/opt/pkg` & `/var/db/pkgin`
 
 Want to uninstall [pkgsrc](http://pkgsrc.net)/[pkgin](http://pkgin.net)? It's as easy as:  
-`sudo rm -r /usr/pkg /var/db/pkgin /etc/{man,}paths.d/pkgsrc`
+`sudo rm -r /opt/pkg /var/db/pkgin /etc/{man,}paths.d/pkgsrc`
 
 pkgin usage
 -----------
