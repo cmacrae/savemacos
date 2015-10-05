@@ -162,15 +162,10 @@ main() {
     # Final screen!
     echo -e "\n"$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
     echo
-    echo "All processes are complete! So what now? Well, we reccomend you read the"
+    echo "All processes are complete! So what now? Well, you should probably read the"
     echo "manpage for pkgin at least, as you'll be managing all your non-Apple software"
     echo "with this excellent package manager."
     echo
-    echo -e ""$BLUE"Please visit "$BLUE_UL"http://saveosx.org/"$ESC""$BLUE" for all the latest news and other ramblings from the authors:"$ESC""
-    echo -e ""$YELLOW"Youri Mouton & Calum MacRae"$ESC""
-    echo 
-    echo "You can reach us at: youri.mout@gmail.com & calum0macrae@gmail.com"
-    echo -e "\n\n"
     echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
     exit 0
 }
