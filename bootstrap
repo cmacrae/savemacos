@@ -65,11 +65,11 @@ main() {
 
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="http://pkgsrc.joyent.com/packages/Darwin"
-    local PKGSRC_QUARTER="2015Q2"
+    local PKGSRC_QUARTER="2015Q3"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
-    local BOOTSTRAP_SHA="5e9717932454c6c06db2004a0efe59b40a216aa2c661bc323bd651f8ce4e6c46"
+    local BOOTSTRAP_SHA="fa45eb576c06d458df731726ccdf0608e5e99113357bf4b9ed2b7e33c39cc2de"
     local REPO_GPGKEY="0xDE817B8E"
 
     echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
