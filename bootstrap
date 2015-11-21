@@ -69,7 +69,7 @@ main() {
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
-    local BOOTSTRAP_SHA="fa45eb576c06d458df731726ccdf0608e5e99113357bf4b9ed2b7e33c39cc2de"
+    local BOOTSTRAP_SHA="ac06f891bd1fb3f2dbaeccba731a2d9f68bbc925da8adfa8d0b865a51ca79c4b"
     local REPO_GPGKEY="0xDE817B8E"
 
     echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
