@@ -42,7 +42,7 @@ Why choose pkgsrc/pkgin over \<insert package manager here\>?
 -----------------------------------------------------------------------------
 Here's a list of just a few properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for OS X:
 - Precompiled packages from a trusted source
-- Signed pacakges with GPG
+- Signed packages with GPG
 - Dead simple makefiles
 - A robust multi platform framework
 - Can be bootstrapped without any external dependencies other than a C compiler & a shell
