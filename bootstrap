@@ -64,7 +64,7 @@ main() {
     local YELLOW_UL='\033[38;4;33m'
 
     # pkgsrc site/bootstrap properties
-    local PKGSRC_SITE="http://pkgsrc.joyent.com/packages/Darwin"
+    local PKGSRC_SITE="https://pkgsrc.joyent.com/packages/Darwin"
     local PKGSRC_QUARTER="2015Q3"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
