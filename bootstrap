@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Copyright © 2015 Calum MacRae
+# Copyright © 2016 Calum MacRae
 # Use of this source code is governed by an ISC
 # license that can be found in the LICENSE file.
 
@@ -65,11 +65,11 @@ main() {
 
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="https://pkgsrc.joyent.com/packages/Darwin"
-    local PKGSRC_QUARTER="2015Q3"
+    local PKGSRC_QUARTER="trunk"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
-    local BOOTSTRAP_SHA="ac06f891bd1fb3f2dbaeccba731a2d9f68bbc925da8adfa8d0b865a51ca79c4b"
+    local BOOTSTRAP_SHA="03c62369028c75e58e312286cc8a466fa4e0edf74c1d36d007bf3a12a6daefd9"
     local REPO_GPGKEY="0xDE817B8E"
 
     echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
