@@ -66,8 +66,9 @@ main() {
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="https://pkgsrc.joyent.com/packages/Darwin"
     local PKGSRC_QUARTER="trunk"
+    local BOOTSTRAP_TRUNK_RELEASE="20160211"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
-    local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64.tar.gz"
+    local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64-${BOOTSTRAP_TRUNK_RELEASE}.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
     local BOOTSTRAP_SHA="03c62369028c75e58e312286cc8a466fa4e0edf74c1d36d007bf3a12a6daefd9"
     local REPO_GPGKEY="0xDE817B8E"
