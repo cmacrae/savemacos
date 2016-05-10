@@ -196,26 +196,20 @@ main(){
 	       ;;
 	   --with-brew)
 	       export ALLOW_BREW=true
-	       clear
-	       sanity
 	       install
 	       ;;
 	   --with-ports)
 	       export ALLOW_PORTS=true
-	       clear
-	       sanity
-	       install
 	       ;;
 	   *)
 	       echo "ERROR: Unrecognized parameter. See usage (--help) for options..." 1>&2
 	       exit 2
 	       ;;
        esac
-    else
+    fi
 	clear
 	sanity
 	install
-    fi
 }
 
 # Actual run
