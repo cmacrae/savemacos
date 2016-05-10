@@ -207,9 +207,9 @@ main(){
 	       ;;
        esac
     fi
-	clear
-	sanity
-	install
+    clear
+    sanity
+    install
 }
 
 # Actual run
