@@ -196,7 +196,6 @@ main(){
 	       ;;
 	   --with-brew)
 	       export ALLOW_BREW=true
-	       install
 	       ;;
 	   --with-ports)
 	       export ALLOW_PORTS=true
