@@ -7,6 +7,18 @@
 ######################################
 # A bootstrapper to set-up Save OS X #
 ######################################
+# Usage
+usage(){
+cat <<EOF
+ Usage: bootstrap [Options]
+
+ Options:
+
+   -h, --help: Show this message
+   --with-brew: Allow installs along side Homebrew
+   --with-ports: Allow installs along side MacPorts
+EOF
+}
 
 # Sanity checks
 sanity(){
@@ -22,17 +34,21 @@ sanity(){
 	exit 1
     fi
 
-    # Check for Home Brew install
-    if [ -f /usr/local/bin/brew ]; then
-	echo -e ""$RED"It looks like you have Home Brew installed. This could seriously conflict with pkgsrc!"
+    # Check for Homebrew install
+    if [[ -f /usr/local/bin/brew && ! $ALLOW_BREW ]]; then
+	echo -e ""$RED"It looks like you have Homebrew installed. This could seriously conflict with pkgsrc!"
 	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	echo
+	echo "Alternatively, to install along side Homebrew; use the '--with-brew' option."
 	exit 1
     fi
 
     # Check for MacPorts install
-    if [ -f /opt/local/bin/port ]; then
+    if [[ -f /opt/local/bin/port && ! $ALLOW_PORTS ]]; then
 	echo -e ""$RED"It looks like you have MacPorts installed. This could seriously conflict with pkgsrc!"
 	echo -e "As we don't wish to affect what you may have implemented, we'll leave it up to you to remove it."$ESC""
+	echo
+	echo "Alternatively, to install along side MacPorts; use the '--with-ports' option."
 	exit 1
     fi
 }
@@ -51,18 +67,7 @@ saferun() {
     fi
 }
 
-main() {
-    # ANSI properties/colours
-    local ESC='\033[0m'
-    local BLUE='\033[38;34m'
-    local BLUE_UL='\033[38;4;34m'
-    local GREEN='\033[38;32m'
-    local GREEN_UL='\033[38;4;32m'
-    local RED='\033[38;31m'
-    local RED_UL='\033[38;4;31m'
-    local YELLOW='\033[38;33m'
-    local YELLOW_UL='\033[38;4;33m'
-
+install() {
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="https://pkgsrc.joyent.com/packages/Darwin"
     local PKGSRC_QUARTER="trunk"
@@ -171,7 +176,47 @@ main() {
     exit 0
 }
 
+main(){
+    # ANSI properties/colours
+    local ESC='\033[0m'
+    local BLUE='\033[38;34m'
+    local BLUE_UL='\033[38;4;34m'
+    local GREEN='\033[38;32m'
+    local GREEN_UL='\033[38;4;32m'
+    local RED='\033[38;31m'
+    local RED_UL='\033[38;4;31m'
+    local YELLOW='\033[38;33m'
+    local YELLOW_UL='\033[38;4;33m'
+
+    if [ $# -gt 0 ]; then
+    case "$1" in
+	   -h|--help)
+	       usage
+	       exit 3
+	       ;;
+	   --with-brew)
+	       export ALLOW_BREW=true
+	       clear
+	       sanity
+	       install
+	       ;;
+	   --with-ports)
+	       export ALLOW_PORTS=true
+	       clear
+	       sanity
+	       install
+	       ;;
+	   *)
+	       echo "ERROR: Unrecognized parameter. See usage (--help) for options..." 1>&2
+	       exit 2
+	       ;;
+       esac
+    else
+	clear
+	sanity
+	install
+    fi
+}
+
 # Actual run
-clear
-sanity
-main
+main $@
