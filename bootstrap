@@ -172,6 +172,8 @@ install() {
     echo "manpage for pkgin at least, as you'll be managing all your non-Apple software"
     echo "with this excellent package manager."
     echo
+    echo ""$YELLOW"Open a new shell to get started."$ESC""
+    echo
     echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
     exit 0
 }
