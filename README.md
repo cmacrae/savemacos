@@ -1,6 +1,6 @@
 About
 -----
-A streamlined bootstrapper for getting [pkgsrc](http://pkgsrc.net)/[pkgin](http://pkgin.net) up and running on OS X, fast!
+A streamlined bootstrapper for getting [pkgsrc](http://pkgsrc.net)/[pkgin](http://pkgin.net) up and running on macOS, fast!
 
 Why?
 ----
@@ -12,7 +12,7 @@ Installation
 To get started, grab a copy of the repo (either clone it, or download as a zip), open up a terminal and simply run the `bootstrap` script - you'll be up and running in under a minute!
 
 [Here's a quick demo of the script in action](https://youtu.be/wGR0vk4jlTE)
-[![Save OS X Demo](http://i.imgur.com/0PZSyhu.png)](https://youtu.be/wGR0vk4jlTE)
+[![Save macOS Demo](http://i.imgur.com/0PZSyhu.png)](https://youtu.be/wGR0vk4jlTE)
 
 So what does this script do?
 ----------------------------
@@ -40,7 +40,7 @@ See [here](http://pkgin.net/#examples) for pkgin's usage examples.
 
 Why choose pkgsrc/pkgin over \<insert package manager here\>?
 -----------------------------------------------------------------------------
-Here's a list of just a few properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for OS X:
+Here's a list of just a few properties that make [pkgin](http://pkgin.net/) (a binary package manager for pkgsrc) different from other package managers available for macOS:
 - Precompiled packages from a trusted source
 - Signed packages with GPG
 - Dead simple makefiles
