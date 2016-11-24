@@ -206,7 +206,7 @@ main(){
 	       export ALLOW_PORTS=true
 	       ;;
 	   *)
-	       echo "ERROR: Unrecognized parameter. See usage (--help) for options..." 1>&2
+	       echo -e "ERROR: Unrecognized parameter: '${1}'\nSee usage (--help) for options..." 1>&2
 	       exit 2
 	       ;;
        esac
