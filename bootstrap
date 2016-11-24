@@ -4,9 +4,10 @@
 # Use of this source code is governed by an ISC
 # license that can be found in the LICENSE file.
 
-######################################
-# A bootstrapper to set-up Save OS X #
-######################################
+#######################################
+# A bootstrapper to set-up Save macOS #
+#######################################
+
 # Usage
 usage(){
 cat <<EOF
@@ -22,9 +23,9 @@ EOF
 
 # Sanity checks
 sanity(){
-    # Ensure the user is running this script on OS X
+    # Ensure the user is running this script on macOS
     if [ $(uname -s) != "Darwin" ]; then
-	echo "This script is for use with OS X!"
+	echo "This script is for use with macOS!"
 	exit 1
     fi
 
@@ -78,9 +79,9 @@ install() {
     local BOOTSTRAP_SHA="b7793e061375a234a4f800d7320f9e0d667f65346fd64cfc1668c9a97e2b767e"
     local REPO_GPGKEY="0xDE817B8E"
 
-    echo -e "\n"$BLUE_UL"Welcome to Save OS X!"$ESC""
+    echo -e "\n"$BLUE_UL"Welcome to Save macOS!"$ESC""
     echo
-    echo "Welcome to the Save OS X project, an effort to make OS X"
+    echo "Welcome to the Save macOS project, an effort to make macOS"
     echo "a more comfortable system for hackers, developers & power users"
     echo "by providing fast, secure, 64bit binary package management using"
     echo -e "the excellent "$YELLOW_UL"pkgsrc"$ESC" from the NetBSD project!"
@@ -166,7 +167,7 @@ install() {
     echo -e "Your system's \$PATH has been updated"
 
     # Final screen!
-    echo -e "\n"$GREEN_UL"Hurrah! You Saved OS X!"$ESC""
+    echo -e "\n"$GREEN_UL"Hurrah! You Saved macOS!"$ESC""
     echo
     echo "All processes are complete! So what now? Well, you should probably read the"
     echo "manpage for pkgin at least, as you'll be managing all your non-Apple software"
@@ -174,7 +175,7 @@ install() {
     echo
     echo -e ""$YELLOW"Open a new shell to get started."$ESC""
     echo
-    echo -e ""$GREEN"Thanks for using Save OS X!"$ESC""
+    echo -e ""$GREEN"Thanks for using Save macOS!"$ESC""
     exit 0
 }
 
