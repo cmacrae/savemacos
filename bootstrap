@@ -106,9 +106,7 @@ install() {
 
     # Verify the bootstrap integrity
     echo "Verifying bootstrap integrity..."
-    echo "$BOOTSTRAP_SHA  $BOOTSTRAP_PATH" | shasum -a 256 -c - || echo -e "\n"$RED_UL"It looks like there was a problem verifying the pkgsrc bootstrap archive!"$ESC"" ;
-    echo -e "Please delete the bootstrap archive at the following path and try again:" ;
-    echo "$BOOTSTRAP_PATH" && exit 1
+    echo "$BOOTSTRAP_SHA  $BOOTSTRAP_PATH" | shasum -a 256 -c - || exit 1
 
     # extract the pkgsrc bootstrap in the root directory
     echo -e "pkgsrc retrieved successfully, proceeding to install..."
