@@ -72,11 +72,11 @@ install() {
     # pkgsrc site/bootstrap properties
     local PKGSRC_SITE="https://pkgsrc.joyent.com/packages/Darwin"
     local PKGSRC_QUARTER="trunk"
-    local BOOTSTRAP_TRUNK_RELEASE="20161011"
+    local BOOTSTRAP_TRUNK_RELEASE="20170205"
     local BOOTSTRAP_URL="${PKGSRC_SITE}/bootstrap/"
     local BOOTSTRAP_TAR="bootstrap-${PKGSRC_QUARTER}-x86_64-${BOOTSTRAP_TRUNK_RELEASE}.tar.gz"
     local BOOTSTRAP_PATH="/tmp/${BOOTSTRAP_TAR}"
-    local BOOTSTRAP_SHA="b7793e061375a234a4f800d7320f9e0d667f65346fd64cfc1668c9a97e2b767e"
+    local BOOTSTRAP_SHA="0b44c8e86e5083a9f151a448b12b718e04d6deed9bd6be61a792023b7a5513b4"
     local REPO_GPGKEY="0xDE817B8E"
 
     echo -e "\n"$BLUE_UL"Welcome to Save macOS!"$ESC""
